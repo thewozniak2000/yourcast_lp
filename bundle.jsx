@@ -1039,29 +1039,29 @@ function HIWSection({ th }) {
   const ruleFg = isLight ? 'rgba(45,41,38,0.08)' : 'rgba(250,247,242,0.08)';
 
   const getVisual = (screen) => {
-    if (screen === 'TopicPicker') return <PhoneFrame width={218}><ScreenTopicPicker /></PhoneFrame>;
+    if (screen === 'TopicPicker') return <PhoneFrame width={280}><ScreenTopicPicker /></PhoneFrame>;
     if (screen === 'Funnel') return <FunnelVisual isLight={isLight} />;
-    if (screen === 'EpisodeReady') return <PhoneFrame width={218}><ScreenEpisodeReady /></PhoneFrame>;
-    if (screen === 'Feedback') return <PhoneFrame width={218}><ScreenFeedback /></PhoneFrame>;
+    if (screen === 'EpisodeReady') return <PhoneFrame width={280}><ScreenEpisodeReady /></PhoneFrame>;
+    if (screen === 'Feedback') return <PhoneFrame width={280}><ScreenFeedback /></PhoneFrame>;
     return null;
   };
 
   return (
     <section style={{ background: th.bg, padding: '96px 24px' }}>
-      <div style={{ maxWidth: 1020, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <h2 style={{ fontFamily: ED, fontSize: 'clamp(30px, 5vw, 52px)', fontWeight: 400, color: headColor, textAlign: 'center', marginBottom: 68 }}>
           Here's how it works.
         </h2>
 
         {HIW_STEPS.map((step, i) =>
         <div key={i}>
-            <div className="lp-step-row" style={{ display: 'flex', alignItems: 'center', gap: 56, padding: '48px 0' }}>
+            <div className="lp-step-row" style={{ display: 'flex', alignItems: 'center', gap: 72, padding: '56px 0' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: UI, fontSize: 'clamp(56px, 9vw, 104px)', fontWeight: 300, color: numFg, lineHeight: 1, marginBottom: 8, letterSpacing: '-0.02em' }}>{step.n}</div>
-                <h3 style={{ fontFamily: UI, fontSize: 'clamp(18px, 2.4vw, 23px)', fontWeight: 400, color: headColor, marginBottom: 12, lineHeight: 1.3 }}>{step.title}</h3>
-                <p style={{ fontFamily: UI, fontSize: 'clamp(14px, 1.7vw, 16px)', fontWeight: 300, color: mutedFg, lineHeight: 1.75, maxWidth: 400 }}>{step.body}</p>
+                <h3 style={{ fontFamily: UI, fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 400, color: headColor, marginBottom: 12, lineHeight: 1.3 }}>{step.title}</h3>
+                <p style={{ fontFamily: UI, fontSize: 'clamp(15px, 1.7vw, 17px)', fontWeight: 300, color: mutedFg, lineHeight: 1.75, maxWidth: 460 }}>{step.body}</p>
               </div>
-              <div className="lp-step-phone" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 260 }}>
+              <div className="lp-step-phone" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 320 }}>
                 {getVisual(step.screen)}
               </div>
             </div>
