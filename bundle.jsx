@@ -937,7 +937,7 @@ function HeroSection({ th }) {
 
         {/* Right: Phone — static image */}
         <div className="lp-hero-phone" style={{ width: '48%', maxWidth: 580, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 32px 0 0', position: 'relative', flexShrink: 0 }}>
-          <img src="uploads/hero-phone.png" alt="Yourcast player screen" style={{ width: 310, height: 'auto', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.15))' }} />
+          <img src="uploads/hero-phone.png" alt="Yourcast player screen" style={{ width: 465, height: 'auto', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.15))' }} />
         </div>
       </div>
     </section>);
