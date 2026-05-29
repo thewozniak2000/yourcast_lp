@@ -1424,7 +1424,7 @@ function PricingSection({ th }) {
             <div style={{ fontFamily: ED, fontSize: 52, fontStyle: 'italic', fontWeight: 400, color: textFg, lineHeight: 1, marginBottom: 6 }}>TBD</div>
             <div style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: mutedFg, marginBottom: 28, lineHeight: 1.55 }}>Everything in Beta, plus:</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32, flex: 1 }}>
-              {['Longer episodes', 'Multiple daily casts', 'Learning mode', 'Multiple podcasts with different cadence & vibe'].map((f, i) => (
+              {['Longer episodes', 'Multiple daily casts', 'Multiple podcasts with different cadence & vibe'].map((f, i) => (
                 <CheckItem key={i} label={f} fg={textFg} accent={mutedFg} />
               ))}
             </div>
