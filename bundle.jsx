@@ -908,11 +908,6 @@ function HeroSection({ th }) {
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 70% at 15% 10%, rgba(176,137,104,0.22) 0%, transparent 55%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 50% at 80% 60%, rgba(196,101,74,0.05) 0%, transparent 55%)', pointerEvents: 'none' }} />
 
-      {/* Logo bar */}
-      <div style={{ padding: '28px 48px', position: 'relative', zIndex: 1, flexShrink: 0 }}>
-        <DualVoiceLogo size={40} fg={T.charcoal} />
-      </div>
-
       {/* Two-column layout */}
       <div className="lp-hero-layout" style={{ flex: 1, display: 'flex', alignItems: 'stretch', position: 'relative', zIndex: 1 }}>
 
