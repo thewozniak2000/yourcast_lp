@@ -1048,7 +1048,7 @@ function HIWSection({ th }) {
 
   return (
     <section style={{ background: th.bg, padding: '96px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto' }}>
         <h2 style={{ fontFamily: ED, fontSize: 'clamp(30px, 5vw, 52px)', fontWeight: 400, color: headColor, textAlign: 'center', marginBottom: 68 }}>
           Here's how it works.
         </h2>
