@@ -1445,7 +1445,7 @@ function FinalCTASection({ th }) {
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(250,247,242,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ maxWidth: 580, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <h2 style={{ fontFamily: ED, fontSize: 'clamp(32px, 5.5vw, 60px)', fontWeight: 400, color: headColor, lineHeight: 1.14, marginBottom: 40 }}>
-          Your personalized podcast<br />is waiting.
+          Your personal researcher is ready<br />to work for you.
         </h2>
         <WaitlistForm light={isLight} />
       </div>
