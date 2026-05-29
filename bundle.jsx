@@ -909,7 +909,7 @@ function HeroSection({ th }) {
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 50% at 80% 60%, rgba(196,101,74,0.05) 0%, transparent 55%)', pointerEvents: 'none' }} />
 
       {/* Two-column layout */}
-      <div className="lp-hero-layout" style={{ flex: 1, display: 'flex', alignItems: 'stretch', position: 'relative', zIndex: 1 }}>
+      <div className="lp-hero-layout" style={{ flex: 1, display: 'flex', alignItems: 'stretch', position: 'relative', zIndex: 1, maxWidth: 1280, width: '100%', margin: '0 auto' }}>
 
         {/* Left: Text */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(20px, 3vw, 48px) clamp(24px, 4vw, 56px) clamp(32px, 5vw, 64px) clamp(24px, 4vw, 48px)' }}>
