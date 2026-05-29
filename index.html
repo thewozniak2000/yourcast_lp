@@ -70,11 +70,16 @@
 <body>
   <div id="root"></div>
 
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="landing-ds.jsx"></script>
-  <script type="text/babel" src="landing-s1-sa.jsx"></script>
-  <script type="text/babel" src="landing-s2.jsx"></script>
-  <script type="text/babel" src="landing-s3-sa.jsx"></script>
-  <script type="text/babel" src="landing-app.jsx"></script>
+  <script>
+    // Build window.__resources from meta tags
+    window.__resources = {};
+    document.querySelectorAll('meta[name="ext-resource-dependency"]').forEach(function(meta) {
+      var id = meta.getAttribute('data-resource-id');
+      var path = meta.getAttribute('content');
+      if (id && path) window.__resources[id] = path;
+    });
+  </script>
+
+  <script type="text/babel" src="bundle.jsx"></script>
 </body>
 </html>
