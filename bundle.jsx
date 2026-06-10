@@ -1366,9 +1366,9 @@ function TeamSection({ th }) {
           {TEAM.map((p, i) => <TeamCard key={i} person={p} isLight={isLight} />)}
         </div>
         <div style={{ marginTop: 64, textAlign: 'center' }}>
-          <h2 style={{ fontFamily: ED, fontSize: 'clamp(20px, 3vw, 32px)', fontWeight: 400, color: headColor, marginBottom: 28 }}>
-            Our product is supported by:
-          </h2>
+          <p style={{ fontFamily: UI, fontSize: 'clamp(16px, 2.2vw, 20px)', fontWeight: 400, color: headColor, lineHeight: 1.5, marginBottom: 28 }}>
+            Supported by
+          </p>
           <a href="https://elevenlabs.io/startup-grants" target="_blank" rel="noopener noreferrer">
             <img
               src={isLight
