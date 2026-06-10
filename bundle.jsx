@@ -1365,6 +1365,20 @@ function TeamSection({ th }) {
         <div style={{ display: 'flex', gap: 22, flexWrap: 'wrap' }}>
           {TEAM.map((p, i) => <TeamCard key={i} person={p} isLight={isLight} />)}
         </div>
+        <div style={{ marginTop: 64, textAlign: 'center' }}>
+          <h2 style={{ fontFamily: ED, fontSize: 'clamp(20px, 3vw, 32px)', fontWeight: 400, color: headColor, marginBottom: 28 }}>
+            Our product is supported by:
+          </h2>
+          <a href="https://elevenlabs.io/startup-grants" target="_blank" rel="noopener noreferrer">
+            <img
+              src={isLight
+                ? 'https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp'
+                : 'https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp'}
+              alt="ElevenLabs Grants"
+              style={{ width: 250 }}
+            />
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -1430,17 +1444,6 @@ function PricingSection({ th }) {
               <span style={{ fontFamily: UI, fontSize: 14, fontWeight: 300, color: ghostFg }}>Notify me when available</span>
             </div>
           </div>
-        </div>
-        <div style={{ marginTop: 48, display: 'flex', justifyContent: 'center' }}>
-          <a href="https://elevenlabs.io/startup-grants" target="_blank" rel="noopener noreferrer">
-            <img
-              src={isLight
-                ? 'https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp'
-                : 'https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp'}
-              alt="ElevenLabs Grants"
-              style={{ width: 250 }}
-            />
-          </a>
         </div>
       </div>
     </section>
