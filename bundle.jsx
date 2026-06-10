@@ -617,9 +617,13 @@ function PhoneFrame({ children, width = 240 }) {
 }
 
 /* ── WaitlistForm ────────────────────────────────────── */
+const SUPABASE_URL    = 'https://sgywnoogktmuszkgylwk.supabase.co';
+const SUPABASE_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNneXdub29na3RtdXN6a2d5bHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwODQ2ODIsImV4cCI6MjA5NjY2MDY4Mn0.pLuYaNF9I_cYQBtBwZmlwKgwhG6SW-ix31AlQv1Dsow';
+
 function WaitlistForm({ light = true }) {
   const [email, setEmail] = React.useState('');
   const [done, setDone]   = React.useState(false);
+  const [error, setError] = React.useState('');
 
   const btnBg  = light ? T.charcoal : T.cream;
   const btnFg  = light ? T.cream    : T.charcoal;
@@ -629,10 +633,28 @@ function WaitlistForm({ light = true }) {
   const phCls  = light ? 'yc-ph-light'          : 'yc-ph-dark';
   const micro  = light ? 'rgba(45,41,38,0.4)'   : 'rgba(250,247,242,0.4)';
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     if (!email.includes('@')) return;
-    setDone(true);
+    setError('');
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON,
+          'Authorization': `Bearer ${SUPABASE_ANON}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok && res.status !== 409) {
+        throw new Error('Request failed');
+      }
+      setDone(true);
+    } catch (_) {
+      setError('Something went wrong. Please try again.');
+    }
   };
 
   if (done) return (
@@ -655,6 +677,7 @@ function WaitlistForm({ light = true }) {
         </button>
       </div>
       <div style={{ fontFamily: UI, fontSize: 12, fontWeight: 300, color: micro }}>Just a launch update once we go live soon.</div>
+      {error && <div style={{ fontFamily: UI, fontSize: 12, fontWeight: 300, color: '#e05a5a' }}>{error}</div>}
     </form>
   );
 }
