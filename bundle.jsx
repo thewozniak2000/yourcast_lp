@@ -1431,6 +1431,17 @@ function PricingSection({ th }) {
             </div>
           </div>
         </div>
+        <div style={{ marginTop: 48, display: 'flex', justifyContent: 'center' }}>
+          <a href="https://elevenlabs.io/startup-grants" target="_blank" rel="noopener noreferrer">
+            <img
+              src={isLight
+                ? 'https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp'
+                : 'https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp'}
+              alt="ElevenLabs Grants"
+              style={{ width: 250 }}
+            />
+          </a>
+        </div>
       </div>
     </section>
   );
