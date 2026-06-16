@@ -721,25 +721,193 @@ function ScreenPlayer() {
 /* ── App Screen: Topic Picker ────────────────────────── */
 function ScreenTopicPicker() {
   const m  = 'rgba(250,247,242,0.35)';
-  const ml = 'rgba(250,247,242,0.65)';
+  const ml = 'rgba(250,247,242,0.60)';
   const topics = ['AI & Tech', 'Climate', 'Policy', 'Science', 'Business', 'Culture', 'Philosophy', 'Geopolitics', 'Finance', 'Health'];
   const sel = [0, 1, 2, 6];
   return (
-    <div style={{ width: '100%', height: '100%', background: T.dark, padding: '46px 15px 17px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ fontFamily: UI, fontSize: 8, fontWeight: 500, color: T.coral, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>Step 1 of 3</div>
-      <div style={{ fontFamily: ED, fontSize: 17, fontStyle: 'italic', color: T.cream, lineHeight: 1.3, marginBottom: 4 }}>What do you care about?</div>
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5.5 }}>
-        {topics.map((t, i) => (
-          <div key={i} style={{ padding: '5px 10px', borderRadius: 999, background: sel.includes(i) ? T.coral : 'rgba(255,255,255,0.07)', border: `1px solid ${sel.includes(i) ? T.coral : 'rgba(255,255,255,0.1)'}` }}>
-            <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: sel.includes(i) ? 400 : 300, color: sel.includes(i) ? '#fff' : ml }}>{t}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{ marginTop: 'auto', paddingTop: 12 }}>
-        <div style={{ height: 38, borderRadius: 999, background: T.coral, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: UI, fontSize: 12, fontWeight: 400, color: '#fff' }}>Continue</span>
+    <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
+      {/* Ambient glow */}
+      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 220, height: 100, background: 'radial-gradient(ellipse at 50% 0%, rgba(196,101,74,0.14) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      {/* Status bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0, position: 'relative' }}>
+        <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 500, color: T.cream }}>9:41</span>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
         </div>
+      </div>
+      {/* Nav */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+        <div style={{ display: 'flex', alignItems: 'baseline' }}>
+          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
+          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
+        </div>
+        <div style={{ width: 16 }} />
+      </div>
+      {/* Content */}
+      <div style={{ flex: 1, padding: '2px 14px 14px', display: 'flex', flexDirection: 'column' }}>
+        {/* Progress dots */}
+        <div style={{ display: 'flex', gap: 5, marginBottom: 14 }}>
+          {[0,1,2].map(i => (
+            <div key={i} style={{ height: 3, borderRadius: 2, background: i === 0 ? T.coral : 'rgba(250,247,242,0.15)', width: i === 0 ? 20 : 8, transition: 'width 0.3s' }} />
+          ))}
+        </div>
+        <div style={{ fontFamily: ED, fontSize: 19, fontStyle: 'italic', color: T.cream, lineHeight: 1.2, marginBottom: 4 }}>What do you care about?</div>
+        <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, marginBottom: 14, lineHeight: 1.5 }}>Pick topics to shape your daily podcast</div>
+        {/* Chips */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7, flex: 1, alignContent: 'start' }}>
+          {topics.map((t, i) => {
+            const active = sel.includes(i);
+            return (
+              <div key={i} style={{
+                height: 32, borderRadius: 999,
+                background: active ? 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)' : 'rgba(250,247,242,0.07)',
+                border: `1px solid ${active ? 'rgba(196,101,74,0.5)' : 'rgba(250,247,242,0.13)'}`,
+                boxShadow: active ? '0 3px 12px rgba(196,101,74,0.3), inset 0 1px 0 rgba(255,255,255,0.12)' : 'inset 0 1px 0 rgba(255,255,255,0.04)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+              }}>
+                {active && (
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l1.8 1.8L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )}
+                <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: active ? 400 : 300, color: active ? '#fff' : ml, whiteSpace: 'nowrap' }}>{t}</span>
+              </div>
+            );
+          })}
+        </div>
+        {/* Footer */}
+        <div style={{ paddingTop: 12 }}>
+          <div style={{ fontFamily: UI, fontSize: 8, fontWeight: 300, color: m, textAlign: 'center', marginBottom: 8 }}>{sel.length} topics selected</div>
+          <div style={{
+            height: 32, borderRadius: 999,
+            background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)',
+            boxShadow: '0 4px 16px rgba(196,101,74,0.4), inset 0 1px 0 rgba(255,255,255,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          }}>
+            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 500, color: '#fff', letterSpacing: '0.04em' }}>Continue</span>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── App Screen: Home Feed ───────────────────────────── */
+function SunIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <circle cx="6.5" cy="6.5" r="2.8" stroke="#C4654A" strokeWidth="1.2"/>
+      <path d="M6.5 1v1.2M6.5 10.8V12M12 6.5h-1.2M2.2 6.5H1M10.1 2.9l-.85.85M3.75 9.25l-.85.85M10.1 10.1l-.85-.85M3.75 3.75l-.85-.85" stroke="#C4654A" strokeWidth="1.2" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function MoonIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M9.5 7.5A5 5 0 014.5 2.5a5 5 0 100 7 3.5 3.5 0 005-2z" stroke="rgba(250,247,242,0.5)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+function StarIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M6 1.5l1.1 3.3H10.6l-2.8 2 1.1 3.3L6 8.1 3.1 10.1l1.1-3.3-2.8-2h3.5L6 1.5z" stroke="rgba(250,247,242,0.5)" strokeWidth="1.1" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function FeedCard({ episode }) {
+  const { icon, title, tags, summary, thumb } = episode;
+  const m  = 'rgba(250,247,242,0.38)';
+  const ml = 'rgba(250,247,242,0.72)';
+  return (
+    <div style={{ background: '#1a1510', borderRadius: 14, overflow: 'hidden', flexShrink: 0 }}>
+      {/* Thumbnail */}
+      <div style={{ height: 80, background: thumb, position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, #1a1510 100%)' }} />
+      </div>
+      {/* Content */}
+      <div style={{ padding: '0 13px 13px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+          {icon}
+          <span style={{ fontFamily: ED, fontSize: 17, fontStyle: 'italic', fontWeight: 400, color: T.cream, lineHeight: 1 }}>{title}</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 7 }}>
+          {tags.map((t, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && <span style={{ fontFamily: UI, fontSize: 8, color: m }}>·</span>}
+              <span style={{ fontFamily: UI, fontSize: 8, fontWeight: 300, color: t.highlight ? T.coral : m, letterSpacing: '0.03em' }}>{t.label}</span>
+            </React.Fragment>
+          ))}
+        </div>
+        <div style={{ fontFamily: UI, fontSize: 9.5, fontWeight: 300, color: ml, lineHeight: 1.6, marginBottom: 11 }}>{summary}</div>
+        <div style={{ display: 'flex', gap: 7 }}>
+          <div style={{ flex: 1, height: 30, borderRadius: 999, background: T.coral, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><path d="M1 1l6 4-6 4V1z" fill="white"/></svg>
+            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 400, color: '#fff', letterSpacing: '0.02em' }}>Listen</span>
+          </div>
+          <div style={{ height: 30, paddingInline: 13, borderRadius: 999, border: '1px solid rgba(250,247,242,0.15)', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1l1 2.9H9L6.5 5.6l1 2.9L5 7 2.5 8.5l1-2.9L1 3.9h3L5 1z" stroke="rgba(250,247,242,0.45)" strokeWidth="0.9" strokeLinejoin="round"/></svg>
+            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 300, color: m }}>Rate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ScreenHomeFeed() {
+  const m = 'rgba(250,247,242,0.35)';
+  const EPISODES = [
+    {
+      icon: <SunIcon />,
+      title: 'Morning Brief',
+      tags: [{ label: 'monologue' }, { label: 'newsbeat', highlight: true }, { label: '18 min' }],
+      summary: "Claude 4.7 launches with expanded agentic capabilities, benchmarks up 15%. Karpathy's parallel sessions method goes viral. NATO faces Turkish blockade.",
+      thumb: 'linear-gradient(135deg, #2a1a0e 0%, #1a1008 50%, #0f0a06 100%)',
+    },
+    {
+      icon: <MoonIcon />,
+      title: 'Evening Digest',
+      tags: [{ label: 'monologue' }, { label: 'analysis' }, { label: '12 min' }],
+      summary: 'Stoltenberg travels to Ankara as Turkey blocks expansion vote. GUS publishes labour report — unemployment 5.2%, real wages up 3.8%.',
+      thumb: 'linear-gradient(135deg, #0e1520 0%, #080e18 50%, #060a12 100%)',
+    },
+    {
+      icon: <StarIcon />,
+      title: 'Deep Focus',
+      tags: [{ label: 'longform' }, { label: 'analysis' }, { label: '31 min' }],
+      summary: 'A single-topic deep dive on AI Governance: what Brussels voted on, what Anthropic published.',
+      thumb: 'linear-gradient(135deg, #12100e 0%, #0c0a08 100%)',
+    },
+  ];
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
+      {/* Status bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0 }}>
+        <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 500, color: T.cream }}>9:41</span>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
+        </div>
+      </div>
+      {/* Nav */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
+          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
+          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M11.5 3.1l-1.4 1.4M4.5 11.5l-1.4 1.4" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+      </div>
+      {/* Date */}
+      <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: 'rgba(250,247,242,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', paddingInline: 16, marginBottom: 10, flexShrink: 0 }}>Tuesday, 27 May</div>
+      {/* Feed */}
+      <div style={{ flex: 1, overflowY: 'hidden', paddingInline: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {EPISODES.map((ep, i) => <FeedCard key={i} episode={ep} />)}
       </div>
     </div>
   );
@@ -774,35 +942,173 @@ function ScreenEpisodeReady() {
 /* ── App Screen: Feedback ────────────────────────────── */
 function ScreenFeedback() {
   const m  = 'rgba(250,247,242,0.35)';
-  const ml = 'rgba(250,247,242,0.65)';
+  const ml = 'rgba(250,247,242,0.60)';
+  const TUNE_TAGS = ['More AI', 'Less politics', 'Shorter', 'More depth'];
+  const active = 0;
   return (
-    <div style={{ width: '100%', height: '100%', background: T.dark, padding: '46px 15px 17px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ fontFamily: UI, fontSize: 8, fontWeight: 500, color: T.coral, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10 }}>Feedback</div>
-      <div style={{ fontFamily: ED, fontSize: 15.5, fontStyle: 'italic', color: T.cream, lineHeight: 1.35, marginBottom: 4 }}>How was the Karpathy story?</div>
-      <div style={{ fontFamily: UI, fontSize: 10, fontWeight: 300, color: m, marginBottom: 16 }}>Your feedback tunes the next episode.</div>
-      <div style={{ display: 'flex', gap: 7, marginBottom: 16 }}>
-        <div style={{ flex: 1, height: 38, borderRadius: 999, background: T.coral, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2.5 4.8L4.5 1.2l1.1.6L4.5 4.6h4.3a.6.6 0 01.6.6v.7l-.6 2.7a1 1 0 01-.9.9H3.7a.6.6 0 01-.6-.6L2.5 4.8z" stroke="white" strokeWidth="1.1"/><rect x="1.2" y="4.5" width="1.7" height="4.8" rx=".85" fill="white"/></svg>
-          <span style={{ fontFamily: UI, fontSize: 11, fontWeight: 400, color: '#fff' }}>Loved it</span>
-        </div>
-        <div style={{ flex: 1, height: 38, borderRadius: 999, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M8.5 6.2L6.5 9.8l-1.1-.6 1.1-2.8H2.2a.6.6 0 01-.6-.6v-.7l.6-2.7A1 1 0 013.1 2H7.3a.6.6 0 01.6.6L8.5 6.2z" stroke="rgba(250,247,242,0.45)" strokeWidth="1.1"/><rect x="8.1" y="1.7" width="1.7" height="4.8" rx=".85" fill="rgba(250,247,242,0.45)"/></svg>
-          <span style={{ fontFamily: UI, fontSize: 11, fontWeight: 300, color: ml }}>Skip next</span>
+    <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
+      {/* Ambient glow */}
+      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 220, height: 100, background: 'radial-gradient(ellipse at 50% 0%, rgba(196,101,74,0.10) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      {/* Status bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0, position: 'relative' }}>
+        <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 500, color: T.cream }}>9:41</span>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
         </div>
       </div>
-      <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, marginBottom: 7 }}>More or less like this?</div>
-      <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-        {['More AI', 'Less politics', 'Shorter', 'More depth'].map((l, i) => (
-          <div key={i} style={{ padding: '4px 10px', borderRadius: 999, border: `1px solid ${i === 0 ? T.coral : 'rgba(255,255,255,0.14)'}`, background: i === 0 ? 'rgba(196,101,74,0.18)' : 'transparent' }}>
-            <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: 300, color: i === 0 ? T.coral : ml }}>{l}</span>
+      {/* Nav */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+        <div style={{ display: 'flex', alignItems: 'baseline' }}>
+          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
+          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
+        </div>
+        <div style={{ width: 16 }} />
+      </div>
+      {/* Content */}
+      <div style={{ flex: 1, padding: '2px 14px 14px', display: 'flex', flexDirection: 'column' }}>
+        {/* Episode context card */}
+        <div style={{ background: '#1a1510', borderRadius: 12, padding: '10px 12px', marginBottom: 14, border: '1px solid rgba(250,247,242,0.07)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
+            <SunIcon />
+            <span style={{ fontFamily: ED, fontSize: 13, fontStyle: 'italic', color: T.cream }}>Morning Brief</span>
+            <span style={{ fontFamily: UI, fontSize: 8, fontWeight: 300, color: m, marginLeft: 'auto' }}>18 min</span>
           </div>
-        ))}
+          <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: ml, lineHeight: 1.5 }}>Karpathy's parallel sessions method goes viral. NATO faces Turkish blockade...</div>
+        </div>
+        {/* Question */}
+        <div style={{ fontFamily: ED, fontSize: 17, fontStyle: 'italic', color: T.cream, lineHeight: 1.25, marginBottom: 4 }}>How was the Karpathy story?</div>
+        <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, marginBottom: 14, lineHeight: 1.5 }}>Your feedback tunes the next episode.</div>
+        {/* Main buttons */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <div style={{
+            flex: 1, height: 32, borderRadius: 999,
+            background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)',
+            boxShadow: '0 3px 12px rgba(196,101,74,0.3), inset 0 1px 0 rgba(255,255,255,0.12)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2.5 4.8L4.5 1.2l1.1.6L4.5 4.6h4.3a.6.6 0 01.6.6v.7l-.6 2.7a1 1 0 01-.9.9H3.7a.6.6 0 01-.6-.6L2.5 4.8z" stroke="white" strokeWidth="1.1"/><rect x="1.2" y="4.5" width="1.7" height="4.8" rx=".85" fill="white"/></svg>
+            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 500, color: '#fff' }}>Loved it</span>
+          </div>
+          <div style={{
+            flex: 1, height: 32, borderRadius: 999,
+            background: 'rgba(250,247,242,0.06)', border: '1px solid rgba(250,247,242,0.12)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M8.5 6.2L6.5 9.8l-1.1-.6 1.1-2.8H2.2a.6.6 0 01-.6-.6v-.7l.6-2.7A1 1 0 013.1 2H7.3a.6.6 0 01.6.6L8.5 6.2z" stroke="rgba(250,247,242,0.4)" strokeWidth="1.1"/><rect x="8.1" y="1.7" width="1.7" height="4.8" rx=".85" fill="rgba(250,247,242,0.4)"/></svg>
+            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 300, color: ml }}>Skip next</span>
+          </div>
+        </div>
+        {/* Voice / text input */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16, background: 'rgba(250,247,242,0.06)', border: '1px solid rgba(250,247,242,0.12)', borderRadius: 999, padding: '0 6px 0 14px', height: 34 }}>
+          <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: 'rgba(250,247,242,0.35)', flex: 1 }}>Tell us what you think…</span>
+          <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)', boxShadow: '0 0 10px rgba(196,101,74,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="10" height="13" viewBox="0 0 10 13" fill="none">
+              <rect x="3" y="0.5" width="4" height="7" rx="2" fill="white"/>
+              <path d="M1 6.5c0 2.2 1.8 4 4 4s4-1.8 4-4" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+              <line x1="5" y1="10.5" x2="5" y2="12.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+          </div>
+        </div>
+        {/* Tune chips */}
+        <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: m, marginBottom: 9 }}>More or less like this?</div>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {TUNE_TAGS.map((l, i) => (
+            <div key={i} style={{
+              height: 26, paddingInline: 12, borderRadius: 999,
+              background: i === active ? 'rgba(196,101,74,0.15)' : 'rgba(250,247,242,0.06)',
+              border: `1px solid ${i === active ? 'rgba(196,101,74,0.5)' : 'rgba(250,247,242,0.12)'}`,
+              display: 'flex', alignItems: 'center',
+            }}>
+              <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: i === active ? 400 : 300, color: i === active ? T.coral : ml }}>{l}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenEpisodeReady, ScreenFeedback });
+function ScreenSources() {
+  const m  = 'rgba(250,247,242,0.35)';
+  const ml = 'rgba(250,247,242,0.60)';
+  const SRCS = [
+    { cat: "KARPATHY'S PARALLEL AI CODING", title: 'Running Parallel Claude Sessions for 50× Productivity', body: 'By running multiple Claude Code sessions simultaneously — each with a distinct role — developers compress weeks of solo work into hours. A workflow rapidly adopted at AI-native startups.', src: 'Aibuilderclub' },
+    { cat: 'CLAUDE 4.7', title: 'Anthropic Releases Claude 4.7 With Expanded Agentic Capabilities', body: 'The new model shows 15% improvement across coding benchmarks and introduces native tool-chaining — orchestrating multi-step tasks without human interruption between each step.', src: 'The Verge' },
+    { cat: 'NATO & TURKEY', title: 'Stoltenberg Travels to Ankara as Alliance Faces Turkish Blockade', body: 'NATO chief visits Turkey after Ankara suspended access through the Bosphorus, citing tensions with Black Sea member states. Talks expected to address force-posture commitments.', src: 'Reuters' },
+  ];
+  return (
+    <div style={{ width:'100%', height:'100%', background:'#141110', display:'flex', flexDirection:'column', boxSizing:'border-box', overflow:'hidden' }}>
+      {/* Status bar */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 16px 4px', flexShrink:0 }}>
+        <span style={{ fontFamily:UI, fontSize:9, fontWeight:500, color:T.cream }}>9:41</span>
+        <div style={{ display:'flex', gap:4, alignItems:'center' }}>
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
+        </div>
+      </div>
+      {/* Nav */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'4px 16px 10px', flexShrink:0 }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="rgba(250,247,242,0.65)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <svg width="16" height="4" viewBox="0 0 16 4" fill="none"><circle cx="2" cy="2" r="1.5" fill="rgba(250,247,242,0.65)"/><circle cx="8" cy="2" r="1.5" fill="rgba(250,247,242,0.65)"/><circle cx="14" cy="2" r="1.5" fill="rgba(250,247,242,0.65)"/></svg>
+      </div>
+      {/* Player title */}
+      <div style={{ padding:'0 16px 14px', flexShrink:0 }}>
+        <div style={{ fontFamily:UI, fontSize:8, fontWeight:300, color:m, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:5 }}>Daily Podcast</div>
+        <div style={{ fontFamily:ED, fontSize:27, fontWeight:300, color:T.cream, lineHeight:1.08 }}>Morning Brief</div>
+      </div>
+      {/* Bottom sheet */}
+      <div style={{ flex:1, background:'#1e1a16', borderRadius:'14px 14px 0 0', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+        <div style={{ display:'flex', justifyContent:'center', padding:'7px 0 2px', flexShrink:0 }}>
+          <div style={{ width:30, height:3, borderRadius:2, background:'rgba(250,247,242,0.18)' }}/>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'4px 14px 8px', flexShrink:0 }}>
+          <span style={{ fontFamily:UI, fontSize:15, fontWeight:400, color:T.cream }}>Sources</span>
+          <div style={{ width:20, height:20, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 1l6 6M7 1L1 7" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          </div>
+        </div>
+        <div style={{ flex:1, overflow:'hidden', padding:'0 14px' }}>
+          {SRCS.map((s, i) => (
+            <div key={i} style={{ marginBottom:12, paddingBottom:12, borderBottom: i < SRCS.length-1 ? '1px solid rgba(250,247,242,0.07)' : 'none' }}>
+              <div style={{ fontFamily:UI, fontSize:9.5, fontWeight:500, color:T.coral, letterSpacing:'0.09em', textTransform:'uppercase', marginBottom:4 }}>{s.cat}</div>
+              {s.title && <div style={{ fontFamily:ED, fontSize:14, fontStyle:'italic', color:T.cream, lineHeight:1.3, marginBottom:5 }}>{s.title}</div>}
+              {s.body  && <div style={{ fontFamily:UI, fontSize:10, fontWeight:300, color:ml, lineHeight:1.5, marginBottom:6 }}>{s.body}</div>}
+              {s.src   && (
+                <div style={{ display:'inline-flex', alignItems:'center', gap:4, height:22, paddingInline:10, borderRadius:999, border:'1px solid rgba(250,247,242,0.18)', background:'rgba(250,247,242,0.04)' }}>
+                  <span style={{ fontFamily:UI, fontSize:10, fontWeight:300, color:ml }}>{s.src}</span>
+                  <svg width="7" height="7" viewBox="0 0 7 7" fill="none"><path d="M1 6L6 1M6 1H3M6 1v3" stroke="rgba(250,247,242,0.45)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Player bar */}
+        <div style={{ borderTop:'1px solid rgba(250,247,242,0.07)', padding:'8px 14px 10px', flexShrink:0 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:7 }}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1.5" width="2.5" height="11" rx="1" fill="rgba(250,247,242,0.5)"/><path d="M4.5 7L12 2v10L4.5 7z" fill="rgba(250,247,242,0.5)"/></svg>
+            <div style={{ width:26, height:26, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', gap:3, flexShrink:0 }}>
+              <div style={{ width:3, height:9, borderRadius:1.5, background:'#141110' }}/>
+              <div style={{ width:3, height:9, borderRadius:1.5, background:'#141110' }}/>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="10.5" y="1.5" width="2.5" height="11" rx="1" fill="rgba(250,247,242,0.5)"/><path d="M9.5 7L2 2v10l7.5-5z" fill="rgba(250,247,242,0.5)"/></svg>
+            <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:ml, flex:1 }}>Claude 4.7</span>
+            <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:m }}>2:17</span>
+          </div>
+          <div style={{ height:2, borderRadius:1, background:'rgba(250,247,242,0.12)' }}>
+            <div style={{ width:'35%', height:'100%', background:T.coral, borderRadius:1 }}/>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenSources });
 })();
 (() => {
 /* ─── landing-nav.jsx — Fixed Top Navigation ─── */
@@ -891,7 +1197,7 @@ Object.assign(window, { TopNav });
 })();
 (() => {
 /* ─── landing-s1-sa.jsx — Hero · Problem · How It Works (standalone) ─── */
-const { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenEpisodeReady, ScreenFeedback } = window;
+const { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback } = window;
 
 /* ── Inline waveform (replaces Player.html iframe) ───── */
 const BAR_HEIGHTS = [0.28,0.55,0.72,0.38,0.85,0.62,0.91,0.48,0.32,0.67,0.82,0.41,0.74,0.52,0.29,0.63,0.88,0.44,0.71,0.54,0.31,0.79,0.61,0.43,0.57,0.76,0.35,0.93,0.50,0.65,0.40,0.78,0.33,0.84,0.53,0.68,0.45,0.90,0.36,0.70];
@@ -956,12 +1262,20 @@ function HeroSection({ th }) {
           <div style={{ maxWidth: 440 }}>
             <WaitlistForm light={true} />
           </div>
+
         </div>
 
         {/* Right: Phone — static image */}
         <div className="lp-hero-phone" style={{ width: '48%', maxWidth: 580, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 32px 0 0', position: 'relative', flexShrink: 0 }}>
           <img src="uploads/hero-phone.png" alt="Yourcast player screen" style={{ width: 465, height: 'auto', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.15))' }} />
         </div>
+      </div>
+      {/* ElevenLabs — bottom of fold */}
+      <div style={{ position: 'absolute', bottom: 28, right: 'clamp(24px, 4vw, 48px)', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: 'rgba(45,41,38,0.28)', letterSpacing: '0.02em' }}>Supported by</span>
+        <a href="https://elevenlabs.io/startup-grants" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', opacity: 0.38 }}>
+          <img src="https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp" alt="ElevenLabs Grants" style={{ height: 16, width: 'auto' }} />
+        </a>
       </div>
     </section>);
 }
@@ -1021,8 +1335,8 @@ function ProblemSection({ th }) {
 const HIW_STEPS = [
 { n: '01', title: 'Define your areas of interest', body: "What do you want to track? What do you want to learn about? We'll handle the rest.", screen: 'TopicPicker' },
 { n: '02', title: 'We source, filter, and write', body: "AI scans hundreds of sources, cuts the noise, and writes a script tailored to your depth and style.", screen: 'Funnel' },
-{ n: '03', title: 'Every morning, hit play', body: "Your unique podcast is ready. One tap and you're listening — no one else gets this episode.", screen: 'EpisodeReady' },
-{ n: '04', title: 'You give feedback, we get smarter', body: "Optionally rate episodes or react to segments. The more you tell us, the better your next episode gets.", screen: 'Feedback' }];
+{ n: '03', title: 'Every morning, hit play', body: "Your unique podcast is ready. One tap and you're listening — no one else gets this episode.", screen: 'HomeFeed' },
+{ n: '04', title: 'You give feedback, we get smarter', body: "Just say what you think — we'll handle the rest. The more you share, the better your next episode gets.", screen: 'Feedback' }];
 
 function FunnelVisual({ isLight }) {
   const pillBg = isLight ? T.linen : 'rgba(255,255,255,0.06)';
@@ -1064,6 +1378,7 @@ function HIWSection({ th }) {
   const getVisual = (screen) => {
     if (screen === 'TopicPicker') return <PhoneFrame width={280}><ScreenTopicPicker /></PhoneFrame>;
     if (screen === 'Funnel') return <FunnelVisual isLight={isLight} />;
+    if (screen === 'HomeFeed')    return <PhoneFrame width={280}><ScreenHomeFeed /></PhoneFrame>;
     if (screen === 'EpisodeReady') return <PhoneFrame width={280}><ScreenEpisodeReady /></PhoneFrame>;
     if (screen === 'Feedback') return <PhoneFrame width={280}><ScreenFeedback /></PhoneFrame>;
     return null;
@@ -1312,7 +1627,7 @@ function FAQSection({ th }) {
 Object.assign(window, { DifferentiatorsSection, PersonalizationSection, FAQSection });})();
 (() => {
 /* ─── landing-s3-sa.jsx — Team · Pricing · Final CTA · Footer (standalone) ─── */
-const { T, UI, ED, WaitlistForm, DualVoiceLogo } = window;
+const { T, UI, ED, WaitlistForm, DualVoiceLogo, PhoneFrame, ScreenSources } = window;
 
 /* ══════════════════ SECTION 9: TEAM ══════════════════ */
 const TEAM = [
@@ -1500,13 +1815,22 @@ function FinalCTASection({ th }) {
   const isLight   = th.fg === T.charcoal;
   const headColor = th.fg;
   return (
-    <section style={{ background: th.bg, padding: '120px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(250,247,242,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: 580, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontFamily: ED, fontSize: 'clamp(32px, 5.5vw, 60px)', fontWeight: 400, color: headColor, lineHeight: 1.14, marginBottom: 40 }}>
-          Your personal researcher is ready<br />to work for you.
-        </h2>
-        <WaitlistForm light={isLight} />
+    <section style={{ background: th.bg, padding: '100px 48px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 60% at 30% 50%, rgba(250,247,242,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 64, position: 'relative', zIndex: 1 }}>
+        {/* Left: text + form */}
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <h2 style={{ fontFamily: ED, fontSize: 'clamp(28px, 3.4vw, 48px)', fontWeight: 400, color: headColor, lineHeight: 1.18, marginBottom: 28, whiteSpace: 'nowrap' }}>
+            Your personal researcher<br />is ready to work for you.
+          </h2>
+          <div style={{ width: '100%', maxWidth: 480 }}>
+            <WaitlistForm light={isLight} />
+          </div>
+        </div>
+        {/* Right: phone mockup */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center' }}>
+          <PhoneFrame width={299}><ScreenSources /></PhoneFrame>
+        </div>
       </div>
     </section>
   );
