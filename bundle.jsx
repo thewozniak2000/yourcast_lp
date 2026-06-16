@@ -1434,9 +1434,12 @@ function PricingSection({ th }) {
   return (
     <section style={{ background: th.bg, padding: '96px 24px' }}>
       <div style={{ maxWidth: 840, margin: '0 auto' }}>
-        <h2 style={{ fontFamily: ED, fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 400, color: headFg, textAlign: 'center', marginBottom: 52 }}>
+        <h2 style={{ fontFamily: ED, fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 400, color: headFg, textAlign: 'center', marginBottom: 16 }}>
           Early access is free.
         </h2>
+        <p style={{ fontFamily: UI, fontSize: 'clamp(14px, 1.8vw, 16px)', fontWeight: 300, color: mutedFg, textAlign: 'center', marginBottom: 52, lineHeight: 1.6 }}>
+          We're finishing up our Beta — launching summer&nbsp;'26.
+        </p>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 320px', padding: '36px 32px', borderRadius: 24, background: card1Bg, border: `1.5px solid ${T.coral}`, display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: T.coral, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Closed Beta</div>
