@@ -1328,7 +1328,7 @@ const TEAM = [
   {
     name: 'Bartek Krawczyk',
     role: 'AI & Engineering',
-    bio:  'Crazy about building difficult things — but even crazier about the quality of what we want to deliver for you.',
+    bio:  'Crazy about building difficult things with Agentic Engineering — but even crazier about the quality of what we want to deliver for you.',
     photo: window.__resources.team2Photo,
     linkedin: 'https://www.linkedin.com/in/bart-krawczyk/',
     initials: null,
