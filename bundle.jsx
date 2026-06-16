@@ -1319,10 +1319,10 @@ const TEAM = [
   {
     name: 'Daniel Woźniak',
     role: 'Product & Design',
-    bio:  'Podcast & news junkie, fighting daily with his FOMO while trying to understand what is really going on around the world.',
+    bio:  React.createElement(React.Fragment, null, 'Podcast & news junkie, fighting daily with his FOMO while trying to understand what is really going on around the world. Host of ', React.createElement('a', { href: 'https://www.youtube.com/@dealwithitpodcast', target: '_blank', rel: 'noopener noreferrer', style: { color: 'inherit', fontWeight: 400, textDecoration: 'underline', textUnderlineOffset: 3 } }, 'deal with IT'), ' podcast.'),
     photo: window.__resources.team1Photo,
     linkedin: 'https://www.linkedin.com/in/daniel-a-wozniak',
-    podcast: { label: 'deal with IT', url: 'https://www.youtube.com/@dealwithitpodcast' },
+    youtube: 'https://www.youtube.com/@dealwithitpodcast',
     initials: null,
   },
   {
@@ -1334,6 +1334,15 @@ const TEAM = [
     initials: null,
   },
 ];
+
+function YouTubeIcon({ color }) {
+  return (
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="none">
+      <rect width="17" height="12" rx="2.5" fill={color}/>
+      <path d="M7 3.5l4.5 2.5L7 8.5V3.5z" fill="white"/>
+    </svg>
+  );
+}
 
 function LinkedInIcon({ color }) {
   return (
@@ -1366,7 +1375,7 @@ function TeamCard({ person, isLight }) {
       <div style={{ fontFamily: UI, fontSize: 18, fontWeight: 400, color: nameFg, marginBottom: 4 }}>{person.name}</div>
       <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: roleFg, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>{person.role}</div>
       <div style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: bioFg, lineHeight: 1.72, flex: 1 }}>{person.bio}</div>
-      <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ marginTop: 20, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {person.linkedin && (
           <a href={person.linkedin} target="_blank" rel="noopener noreferrer"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 7, textDecoration: 'none' }}>
@@ -1374,11 +1383,11 @@ function TeamCard({ person, isLight }) {
             <span style={{ fontFamily: UI, fontSize: 12, fontWeight: 300, color: linkFg }}>LinkedIn</span>
           </a>
         )}
-        {person.podcast && (
-          <a href={person.podcast.url} target="_blank" rel="noopener noreferrer"
+        {person.youtube && (
+          <a href={person.youtube} target="_blank" rel="noopener noreferrer"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 7, textDecoration: 'none' }}>
-            <span style={{ fontFamily: UI, fontSize: 12, fontWeight: 300, color: linkFg }}>Podcast: </span>
-            <span style={{ fontFamily: UI, fontSize: 12, fontWeight: 400, color: T.coral, textDecoration: 'underline', textUnderlineOffset: 3 }}>{person.podcast.label}</span>
+            <YouTubeIcon color={linkFg} />
+            <span style={{ fontFamily: UI, fontSize: 12, fontWeight: 300, color: linkFg }}>YouTube</span>
           </a>
         )}
       </div>
