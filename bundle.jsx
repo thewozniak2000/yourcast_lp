@@ -1890,8 +1890,8 @@ function HeroSection({ th }) {
         </div>
 
         {/* Right: Phone — static image */}
-        <div className="lp-hero-phone" style={{ width: '42%', maxWidth: 420, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px 0 0', flexShrink: 0 }}>
-          <PhoneFrame width={280}><ScreenPlayerHero /></PhoneFrame>
+        <div className="lp-hero-phone" style={{ width: '42%', maxWidth: 440, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 28px 0 0', flexShrink: 0 }}>
+          <PhoneFrame width={300}><ScreenPlayerHero /></PhoneFrame>
         </div>
       </div>
       {/* ElevenLabs — bottom of fold */}
