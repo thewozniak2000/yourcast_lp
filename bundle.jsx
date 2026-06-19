@@ -1600,7 +1600,7 @@ function HeroSection({ th }) {
           </div>
 
           {/* H1 */}
-          <h1 style={{ fontFamily: ED, fontSize: 'clamp(44px, 5.2vw, 72px)', fontWeight: 400, color: T.charcoal, lineHeight: 1.1, marginBottom: 16, letterSpacing: '-0.01em' }}>
+          <h1 style={{ fontFamily: ED, fontSize: 'clamp(34px, 5.2vw, 72px)', fontWeight: 400, color: T.charcoal, lineHeight: 1.1, marginBottom: 16, letterSpacing: '-0.01em' }}>
             A podcast no one else<br />will ever hear.
           </h1>
 
