@@ -760,6 +760,17 @@
 
       return (
         <div>
+          <div className="board-topbar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="board-logo">
+                your<span className="board-logo-serif">cast</span>
+              </div>
+              <div className="board-badge">design system</div>
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(250,247,242,0.28)' }}>
+              9 sections
+            </div>
+          </div>
           <div className="ds-subnav">
             {DS_SECTIONS.map(s => (
               <a key={s.id} href={`#${s.id}`} className={`ds-subnav-link${activeSection === s.id ? ' active' : ''}`}>
