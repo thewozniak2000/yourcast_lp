@@ -36,28 +36,28 @@
     .yc-ph-dark::placeholder  { color: rgba(250,247,242,0.38); }
 
     @keyframes pillDrift {
-      0%,100% { transform: translateY(0px);   opacity: 1;    }
-      30%      { transform: translateY(-4px);  opacity: 0.85; }
-      65%      { transform: translateY(2px);   opacity: 0.95; }
+      0%,100% { transform: translateY(0px); opacity: 1; }
+      30%      { transform: translateY(-4px); opacity: 0.85; }
+      65%      { transform: translateY(2px); opacity: 0.95; }
     }
     @keyframes waveBar {
       0%, 100% { transform: scaleY(0.28); }
-      50%       { transform: scaleY(1);    }
+      50%       { transform: scaleY(1); }
     }
     @keyframes slideUpSheet {
       from { transform: translateY(100%); }
-      to   { transform: translateY(0);    }
+      to   { transform: translateY(0); }
     }
     @keyframes slideDownSheet {
-      from { transform: translateY(0);    }
+      from { transform: translateY(0); }
       to   { transform: translateY(100%); }
     }
     @keyframes playPulse {
-      0%, 100% { transform: scale(1);    }
+      0%, 100% { transform: scale(1); }
       50%       { transform: scale(1.08); }
     }
     @keyframes livePulse {
-      0%, 100% { opacity: 1;   transform: scale(1);   }
+      0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.3; transform: scale(0.65); }
     }
 
@@ -129,10 +129,45 @@
       white-space: nowrap;
     }
     .board-tab:hover { color: rgba(250, 247, 242, 0.75); }
-    .board-tab.active {
-      background: rgba(250, 247, 242, 0.12);
-      color: #faf7f2;
+    .board-tab.active { background: rgba(250, 247, 242, 0.12); color: #faf7f2; }
+
+    /* ── DS sub-nav ── */
+    .ds-subnav {
+      position: sticky;
+      top: 56px;
+      z-index: 90;
+      background: rgba(18, 14, 10, 0.88);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(250, 247, 242, 0.05);
+      padding: 0 64px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+    .ds-subnav::-webkit-scrollbar { display: none; }
+    .ds-subnav-link {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.35);
+      padding: 0 14px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      white-space: nowrap;
+      border: none;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.04em;
+      transition: color 0.15s;
+      text-decoration: none;
+    }
+    .ds-subnav-link:hover { color: rgba(250, 247, 242, 0.75); }
+    .ds-subnav-link.active { color: #c4654a; }
 
     /* ── Screens canvas ── */
     .board-canvas {
@@ -172,178 +207,158 @@
       margin: 0 4px;
     }
 
-    /* ── Design system page ── */
+    /* ── Design System page ── */
     .ds-page {
-      padding: 56px 64px 100px;
-      max-width: 1100px;
+      padding: 64px 64px 120px;
+      max-width: 960px;
     }
+
+    /* Section structure */
     .ds-section {
-      margin-bottom: 64px;
+      margin-bottom: 80px;
+      scroll-margin-top: 96px;
     }
-    .ds-section-label {
+    .ds-eyebrow {
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(250, 247, 242, 0.28);
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(250, 247, 242, 0.07);
+      color: rgba(196, 101, 74, 0.7);
+      margin-bottom: 6px;
     }
     .ds-section-title {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 300;
       color: #faf7f2;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
     }
     .ds-section-desc {
       font-size: 13px;
       font-weight: 300;
       color: rgba(250, 247, 242, 0.42);
-      margin-bottom: 28px;
-      line-height: 1.6;
+      margin-bottom: 32px;
+      line-height: 1.7;
+      max-width: 560px;
     }
+    .ds-rule { height: 1px; background: rgba(250,247,242,0.06); margin-bottom: 80px; }
 
-    /* Color swatches */
-    .ds-color-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .ds-swatch {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 120px;
-    }
-    .ds-swatch-box {
-      width: 120px;
-      height: 80px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .ds-swatch-name {
+    /* Token table */
+    .ds-table {
+      width: 100%;
+      border-collapse: collapse;
       font-size: 12px;
-      font-weight: 500;
-      color: rgba(250, 247, 242, 0.8);
     }
-    .ds-swatch-hex {
-      font-size: 11px;
-      font-weight: 300;
-      color: rgba(250, 247, 242, 0.35);
-      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    }
-    .ds-swatch-role {
+    .ds-table th {
+      text-align: left;
       font-size: 10px;
-      font-weight: 300;
-      color: rgba(250, 247, 242, 0.25);
-      line-height: 1.4;
-    }
-
-    /* Typography specimens */
-    .ds-type-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 20px 0;
-      border-bottom: 1px solid rgba(250, 247, 242, 0.05);
-    }
-    .ds-type-row:last-child { border-bottom: none; }
-    .ds-type-meta {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(250, 247, 242, 0.25);
+      color: rgba(250,247,242,0.28);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(250,247,242,0.06);
+    }
+    .ds-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(250,247,242,0.04);
+      vertical-align: middle;
+    }
+    .ds-table tr:last-child td { border-bottom: none; }
+    .ds-table .mono {
       font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    }
-
-    /* Spacing tokens */
-    .ds-space-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .ds-space-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .ds-space-bar {
-      background: rgba(196, 101, 74, 0.35);
-      height: 20px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-    .ds-space-label {
-      font-size: 12px;
-      font-weight: 400;
-      color: rgba(250, 247, 242, 0.6);
-      min-width: 32px;
-    }
-    .ds-space-val {
       font-size: 11px;
-      font-weight: 300;
-      color: rgba(250, 247, 242, 0.28);
-      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      color: rgba(250,247,242,0.65);
     }
-
-    /* Radius tokens */
-    .ds-radius-grid {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .ds-radius-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .ds-radius-box {
-      background: rgba(250, 247, 242, 0.07);
-      border: 1px solid rgba(250, 247, 242, 0.1);
-      width: 80px;
-      height: 80px;
-    }
-    .ds-radius-label {
+    .ds-table .usage {
       font-size: 11px;
-      font-weight: 400;
-      color: rgba(250, 247, 242, 0.55);
-      text-align: center;
-    }
-    .ds-radius-val {
-      font-size: 10px;
-      font-weight: 300;
-      color: rgba(250, 247, 242, 0.25);
-      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-      text-align: center;
+      color: rgba(250,247,242,0.35);
     }
 
-    /* Component examples */
-    .ds-comp-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
+    /* Demo area */
+    .ds-demo {
+      background: rgba(250,247,242,0.03);
+      border: 1px solid rgba(250,247,242,0.07);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
     }
-    .ds-comp-card {
-      background: rgba(250, 247, 242, 0.04);
-      border: 1px solid rgba(250, 247, 242, 0.08);
-      border-radius: 14px;
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .ds-comp-label {
+    .ds-demo-label {
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(250, 247, 242, 0.22);
-      margin-bottom: 4px;
+      color: rgba(250,247,242,0.2);
+      margin-bottom: 16px;
     }
+    .ds-demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .ds-demo-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Swatch */
+    .ds-swatch-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .ds-swatch { display: flex; flex-direction: column; gap: 8px; width: 110px; }
+    .ds-swatch-box { width: 110px; height: 72px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
+    .ds-swatch-name { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.8); }
+    .ds-swatch-hex { font-size: 11px; font-weight: 300; color: rgba(250,247,242,0.38); font-family: ui-monospace,'SF Mono',Menlo,monospace; }
+    .ds-swatch-role { font-size: 10px; font-weight: 300; color: rgba(250,247,242,0.25); line-height: 1.4; }
+
+    /* Opacity strip */
+    .ds-opacity-row { display: flex; gap: 4px; margin-bottom: 16px; }
+    .ds-opacity-cell { flex: 1; height: 40px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .ds-opacity-val { font-size: 9px; font-weight: 500; font-family: ui-monospace,monospace; }
+
+    /* Type specimens */
+    .ds-type-row { padding: 16px 0; border-bottom: 1px solid rgba(250,247,242,0.05); }
+    .ds-type-row:last-child { border-bottom: none; }
+    .ds-type-meta { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(250,247,242,0.25); font-family: ui-monospace,monospace; margin-bottom: 6px; }
+
+    /* Spacing bars */
+    .ds-space-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+    .ds-space-bar { background: rgba(196,101,74,0.3); height: 18px; border-radius: 3px; flex-shrink: 0; }
+    .ds-space-token { font-size: 11px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.55); min-width: 64px; }
+    .ds-space-val { font-size: 11px; color: rgba(250,247,242,0.3); min-width: 36px; }
+
+    /* Radius items */
+    .ds-radius-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ds-radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .ds-radius-box { width: 72px; height: 72px; background: rgba(250,247,242,0.06); border: 1px solid rgba(250,247,242,0.1); }
+    .ds-radius-lbl { font-size: 11px; color: rgba(250,247,242,0.55); text-align: center; }
+    .ds-radius-val-lbl { font-size: 10px; color: rgba(250,247,242,0.25); font-family: ui-monospace,monospace; text-align: center; }
+
+    /* Shadow items */
+    .ds-shadow-item { display: flex; align-items: center; gap: 20px; padding: 14px 0; border-bottom: 1px solid rgba(250,247,242,0.04); }
+    .ds-shadow-item:last-child { border-bottom: none; }
+    .ds-shadow-box { width: 56px; height: 36px; background: rgba(250,247,242,0.08); border-radius: 8px; flex-shrink: 0; }
+    .ds-shadow-info { flex: 1; }
+    .ds-shadow-token { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.7); margin-bottom: 3px; }
+    .ds-shadow-value { font-size: 10px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.3); }
+
+    /* Motion token rows */
+    .ds-motion-row { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(250,247,242,0.04); }
+    .ds-motion-row:last-child { border-bottom: none; }
+
+    /* Gradient items */
+    .ds-grad-item { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(250,247,242,0.04); }
+    .ds-grad-item:last-child { border-bottom: none; }
+    .ds-grad-box { width: 80px; height: 48px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.06); }
+    .ds-grad-info { flex: 1; min-width: 0; }
+    .ds-grad-name { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.7); margin-bottom: 3px; }
+    .ds-grad-value { font-size: 10px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.28); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Anim demo */
+    .ds-anim-demo { display: flex; gap: 24px; flex-wrap: wrap; }
+    .ds-anim-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .ds-anim-label { font-size: 10px; color: rgba(250,247,242,0.3); text-align: center; font-family: ui-monospace,monospace; }
   </style>
 
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -366,29 +381,15 @@
   <script type="text/babel" src="bundle.jsx"></script>
 
   <script type="text/babel">
-    const {
-      useState,
-      PhoneFrame,
-      ScreenPlayerHero,
-      ScreenTopicPicker,
-      ScreenHomeFeed,
-      ScreenFeedback,
-      ScreenPodcastConfig,
-      ScreenSegmentModal,
-    } = { useState: React.useState, ...window };
+    const { useState, useEffect, useRef } = React;
+    const { PhoneFrame, ScreenPlayerHero, ScreenTopicPicker, ScreenHomeFeed,
+            ScreenFeedback, ScreenPodcastConfig, ScreenSegmentModal } = window;
 
-    /* ─── Screens data ─── */
-    const SCREENS = [
-      { name: 'Home Feed',      code: 'ScreenHomeFeed',    desc: 'Lista episodów / feed główny',      component: ScreenHomeFeed,    width: 300 },
-      { name: 'Hero Player',    code: 'ScreenPlayerHero',  desc: 'Player · waveform · bottom sheets', component: ScreenPlayerHero,  width: 300 },
-      { name: 'Feedback',       code: 'ScreenFeedback',    desc: 'Bottom sheet do fragmentu',         component: ScreenFeedback,    width: 300 },
-      { name: 'Segment Modal',  code: 'ScreenSegmentModal',desc: 'Modal oceny segmentu 1/7',          component: ScreenSegmentModal,width: 300 },
-      { name: 'Podcast Config', code: 'ScreenPodcastConfig',desc: 'Konfiguracja odcinka',             component: ScreenPodcastConfig,width: 300 },
-      { name: 'Topic Picker',   code: 'ScreenTopicPicker', desc: 'Krok 01 — wybór tematów i źródeł', component: ScreenTopicPicker, width: 300 },
-    ];
+    /* ─── Token data ─── */
+    const UI = "'Outfit', sans-serif";
+    const ED = "'Cormorant Garamond', serif";
 
-    /* ─── Design system data ─── */
-    const COLORS = [
+    const PRIMITIVE_COLORS = [
       { name: 'Coral',    token: 'coral',    hex: '#c4654a', role: 'Primary accent · CTA · highlights' },
       { name: 'Cream',    token: 'cream',    hex: '#faf7f2', role: 'Light bg · text on dark · logo' },
       { name: 'Charcoal', token: 'charcoal', hex: '#2d2926', role: 'Light mode text · dark surfaces' },
@@ -401,225 +402,839 @@
       { name: 'Sage',     token: 'sage',     hex: '#6b7c6e', role: 'Muted green · subtle accents' },
     ];
 
-    const SPACES = [
-      { label: 'xs',  px: 4  },
-      { label: 'sm',  px: 8  },
-      { label: 'md',  px: 16 },
-      { label: 'lg',  px: 24 },
-      { label: 'xl',  px: 40 },
-      { label: '2xl', px: 64 },
-      { label: '3xl', px: 96 },
+    const SEMANTIC_TOKENS = [
+      { role: 'bg-base',          dark: '#0f0d0a',              light: 'cream (#faf7f2)',      usage: 'App screen backgrounds' },
+      { role: 'bg-surface',       dark: '#1a1510',              light: '#ffffff',              usage: 'Cards, feed items' },
+      { role: 'bg-card',          dark: '#1e1b18',              light: 'stone (#f0ebe4)',      usage: 'Nested card surfaces' },
+      { role: 'bg-sheet',         dark: '#1c1916',              light: '#ffffff',              usage: 'Bottom sheets, modals' },
+      { role: 'text-primary',     dark: '#faf7f2',              light: '#2d2926',              usage: 'Headlines, primary content' },
+      { role: 'text-secondary',   dark: 'cream@0.62',           light: 'charcoal@0.65',        usage: 'Body text, descriptions' },
+      { role: 'text-muted',       dark: 'cream@0.38',           light: 'charcoal@0.38',        usage: 'Metadata, timestamps' },
+      { role: 'text-subtle',      dark: 'cream@0.28',           light: 'charcoal@0.25',        usage: 'Placeholders, disabled' },
+      { role: 'accent',           dark: '#c4654a',              light: '#c4654a',              usage: 'Coral — all primary interactions' },
+      { role: 'accent-subtle',    dark: 'coral@0.12',           light: 'coral@0.08',           usage: 'Selected state bg, tinted areas' },
+      { role: 'border',           dark: 'cream@0.08',           light: 'charcoal@0.1',         usage: 'Default card/section borders' },
+      { role: 'border-emphasis',  dark: 'cream@0.15',           light: 'charcoal@0.25',        usage: 'Focus rings, active borders' },
+      { role: 'success',          dark: '#1FD078',              light: '#16a852',              usage: 'Done button, positive actions' },
+      { role: 'error',            dark: '#e05a5a',              light: '#dc2626',              usage: 'Error text, negative feedback' },
     ];
 
-    const RADII = [
-      { label: 'None',   val: '0px',   r: 0  },
-      { label: 'sm',     val: '6px',   r: 6  },
-      { label: 'md',     val: '10px',  r: 10 },
-      { label: 'lg',     val: '14px',  r: 14 },
-      { label: 'xl',     val: '20px',  r: 20 },
-      { label: 'pill',   val: '999px', r: 40 },
+    const OPACITY_SCALE = [
+      { val: '0.35', label: '35' },
+      { val: '0.38', label: '38' },
+      { val: '0.45', label: '45' },
+      { val: '0.62', label: '62' },
+      { val: '0.72', label: '72' },
+      { val: '0.85', label: '85' },
+      { val: '0.90', label: '90' },
+      { val: '1.00', label: '100' },
     ];
 
     const TYPE_SCALE = [
-      { label: 'Display',  size: 52, weight: 300, family: "'Outfit', sans-serif",                              sample: 'Your personal podcast.' },
-      { label: 'Serif H1', size: 40, weight: 400, family: "'Cormorant Garamond', serif", italic: true,         sample: 'A podcast no one else will hear.' },
-      { label: 'H2',       size: 28, weight: 300, family: "'Outfit', sans-serif",                              sample: 'What makes yourcast different' },
-      { label: 'H3',       size: 20, weight: 400, family: "'Outfit', sans-serif",                              sample: 'AI that listens to you' },
-      { label: 'Body',     size: 16, weight: 300, family: "'Outfit', sans-serif",                              sample: 'yourcast turns your reading list into a private podcast — tailored to you, narrated by AI, delivered every morning.' },
-      { label: 'Label',    size: 13, weight: 500, family: "'Outfit', sans-serif", upper: true, spacing: '0.08em', sample: 'How it works' },
-      { label: 'Caption',  size: 12, weight: 300, family: "'Outfit', sans-serif",                              sample: 'Just a launch update once we go live soon.' },
-      { label: 'Micro',    size: 11, weight: 300, family: "'Outfit', sans-serif", upper: true, spacing: '0.1em', sample: 'Tuesday, 27 May · Morning Brief' },
+      { role: 'display',     font: 'Outfit',           size: 32, weight: 500, italic: false, usage: 'Episode title in player' },
+      { role: 'h1-serif',    font: 'Cormorant Garamond',size: 24, weight: 400, italic: true,  usage: 'Episode title in feed cards' },
+      { role: 'h2-serif',    font: 'Cormorant Garamond',size: 20, weight: 400, italic: true,  usage: 'Modal title, section headings' },
+      { role: 'h3',          font: 'Outfit',           size: 17, weight: 600, italic: false, usage: 'Nav title, config heading' },
+      { role: 'h4',          font: 'Outfit',           size: 15, weight: 400, italic: false, usage: 'Config title, sub-header' },
+      { role: 'body',        font: 'Outfit',           size: 13, weight: 300, italic: false, usage: 'Descriptions, read sheet body' },
+      { role: 'body-sm',     font: 'Outfit',           size: 11, weight: 300, italic: false, usage: 'Tags, form labels, list items' },
+      { role: 'label',       font: 'Outfit',           size: 11, weight: 500, italic: false, usage: 'Buttons, badges, interactive labels' },
+      { role: 'caption',     font: 'Outfit',           size: 9,  weight: 300, italic: false, usage: 'Timestamps, metadata' },
+      { role: 'micro',       font: 'Outfit',           size: 8,  weight: 600, italic: false, usage: 'Uppercase section labels, status bar' },
     ];
 
-    /* ─── Subcomponents ─── */
-    function ColorSwatches() {
+    const SPACING = [
+      { token: 'space-1',  px: 4  }, { token: 'space-2',  px: 8  },
+      { token: 'space-3',  px: 12 }, { token: 'space-4',  px: 16 },
+      { token: 'space-5',  px: 20 }, { token: 'space-6',  px: 24 },
+      { token: 'space-8',  px: 32 }, { token: 'space-10', px: 40 },
+      { token: 'space-12', px: 48 }, { token: 'space-16', px: 64 },
+    ];
+
+    const RADII = [
+      { token: 'radius-sm',     px: '6px',   r: 6  },
+      { token: 'radius-md',     px: '10px',  r: 10 },
+      { token: 'radius-lg',     px: '14px',  r: 14 },
+      { token: 'radius-xl',     px: '16px',  r: 16 },
+      { token: 'radius-2xl',    px: '20px',  r: 20 },
+      { token: 'radius-pill',   px: '999px', r: 40 },
+      { token: 'radius-circle', px: '50%',   r: 36 },
+    ];
+
+    const SHADOWS = [
+      { token: 'shadow-sm',    value: '0 1px 3px rgba(0,0,0,0.2)',                                       usage: 'Slider thumb' },
+      { token: 'shadow-md',    value: '0 4px 12px rgba(0,0,0,0.3)',                                       usage: 'Cards, sheet handles' },
+      { token: 'shadow-coral', value: '0 10px 28px rgba(196,101,74,0.4)',                                 usage: 'Coral CTA buttons' },
+      { token: 'shadow-modal', value: '0 20px 60px rgba(0,0,0,0.6)',                                      usage: 'Centered modals' },
+      { token: 'shadow-phone', value: '0 28px 72px rgba(0,0,0,0.26), 0 6px 20px rgba(0,0,0,0.14)',       usage: 'PhoneFrame container' },
+    ];
+
+    const MOTION_TOKENS = [
+      { token: 'duration-fast',   value: '150ms',                            usage: 'Hover state changes' },
+      { token: 'duration-base',   value: '200ms',                            usage: 'Button transitions, selection' },
+      { token: 'duration-sheet',  value: '320ms',                            usage: 'Bottom sheet slide in/out' },
+      { token: 'duration-slow',   value: '400ms',                            usage: 'Complex page transitions' },
+      { token: 'easing-sheet',    value: 'cubic-bezier(0.32,0.72,0,1)',      usage: 'iOS-style spring (sheet)' },
+      { token: 'easing-standard', value: 'ease-in-out',                      usage: 'Waveform, waveBar, pillDrift' },
+      { token: 'easing-exit',     value: 'ease-in',                          usage: 'Elements leaving the screen' },
+      { token: 'easing-enter',    value: 'ease-out',                         usage: 'Elements entering the screen' },
+    ];
+
+    const KEYFRAMES = [
+      { name: 'pillDrift',      desc: 'Floating pill hover drift',       usage: 'CTA badges, topic pills on LP' },
+      { name: 'waveBar',        desc: 'Audio waveform bar animation',    usage: 'ScreenPlayerHero waveform (48 bars staggered)' },
+      { name: 'slideUpSheet',   desc: 'Bottom sheet slide in from bottom', usage: 'All bottom sheets (sources, read, chapters)' },
+      { name: 'slideDownSheet', desc: 'Bottom sheet slide out',          usage: 'Sheet dismiss' },
+      { name: 'playPulse',      desc: 'Subtle scale pulse on play btn',  usage: 'ScreenPlayerHero play button' },
+      { name: 'livePulse',      desc: 'Blinking opacity + scale pulse',  usage: 'Live indicator dot' },
+    ];
+
+    const GRADIENTS = [
+      { name: 'image-fade',    value: 'linear-gradient(to bottom, transparent 40%, #1a1510 100%)',                                                                    usage: 'Feed card thumbnail fade to card bg' },
+      { name: 'scrim-heavy',   value: 'linear-gradient(to bottom, rgba(21,17,13,0.25) 0%, rgba(21,17,13,0.6) 55%, #15110d 78%, #15110d 100%)',                       usage: 'Hero player background scrim' },
+      { name: 'scrim-light',   value: 'linear-gradient(to bottom, transparent 30%, rgba(15,13,10,0.88) 70%)',                                                         usage: 'Feedback screen overlay' },
+      { name: 'hero-radial',   value: 'radial-gradient(ellipse 80% 70% at 22% 18%, rgba(176,137,104,0.28) 0%, transparent 52%)',                                     usage: 'LP hero warm depth atmosphere' },
+      { name: 'modal-bg',      value: 'linear-gradient(135deg, #1a1610 0%, #141110 100%)',                                                                            usage: 'Centered modal background' },
+      { name: 'sheet-bg',      value: 'linear-gradient(to bottom, #1a1610 0%, #0f0d0a 100%)',                                                                         usage: 'Bottom sheet backgrounds' },
+      { name: 'success-btn',   value: 'linear-gradient(135deg, #1FD078 0%, #16a852 100%)',                                                                            usage: 'Done / confirm buttons (green)' },
+    ];
+
+    const DS_SECTIONS = [
+      { id: 'brand',      label: '01 · Brand'      },
+      { id: 'colors',     label: '02 · Colors'     },
+      { id: 'type',       label: '03 · Typography' },
+      { id: 'spacing',    label: '04 · Spacing'    },
+      { id: 'radius',     label: '05 · Radius'     },
+      { id: 'elevation',  label: '06 · Elevation'  },
+      { id: 'motion',     label: '07 · Motion'     },
+      { id: 'components', label: '08 · Components' },
+      { id: 'gradients',  label: '09 · Gradients'  },
+    ];
+
+    /* ─── Screens data ─── */
+    const SCREENS = [
+      { name: 'Home Feed',      code: 'ScreenHomeFeed',     desc: 'Lista episodów / feed główny',       component: ScreenHomeFeed,     width: 300 },
+      { name: 'Hero Player',    code: 'ScreenPlayerHero',   desc: 'Player · waveform · bottom sheets',  component: ScreenPlayerHero,   width: 300 },
+      { name: 'Feedback',       code: 'ScreenFeedback',     desc: 'Bottom sheet do fragmentu',          component: ScreenFeedback,     width: 300 },
+      { name: 'Segment Modal',  code: 'ScreenSegmentModal', desc: 'Modal oceny segmentu 1/7',           component: ScreenSegmentModal, width: 300 },
+      { name: 'Podcast Config', code: 'ScreenPodcastConfig',desc: 'Konfiguracja odcinka',              component: ScreenPodcastConfig,width: 300 },
+      { name: 'Topic Picker',   code: 'ScreenTopicPicker',  desc: 'Krok 01 — wybór tematów i źródeł',  component: ScreenTopicPicker,  width: 300 },
+    ];
+
+    /* ─── Sub-components ─── */
+
+    function TokenTable({ cols, rows }) {
       return (
-        <div className="ds-color-grid">
-          {COLORS.map(c => (
-            <div className="ds-swatch" key={c.token}>
-              <div className="ds-swatch-box" style={{ background: c.hex }} />
-              <div>
-                <div className="ds-swatch-name">{c.name}</div>
-                <div className="ds-swatch-hex">{c.hex}</div>
-                <div className="ds-swatch-role">{c.role}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <table className="ds-table">
+          <thead>
+            <tr>{cols.map(c => <th key={c}>{c}</th>)}</tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i}>
+                {row.map((cell, j) => (
+                  <td key={j} className={j === 0 ? 'mono' : j === row.length - 1 ? 'usage' : ''}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       );
     }
 
-    function SpacingTokens() {
-      const max = Math.max(...SPACES.map(s => s.px));
+    /* ── 01 Brand ── */
+    function BrandSection() {
       return (
-        <div className="ds-space-grid">
-          {SPACES.map(s => (
-            <div className="ds-space-row" key={s.label}>
-              <div className="ds-space-label">{s.label}</div>
-              <div className="ds-space-bar" style={{ width: Math.round((s.px / max) * 320) }} />
-              <div className="ds-space-val">{s.px}px</div>
-            </div>
-          ))}
-        </div>
-      );
-    }
+        <div id="brand" className="ds-section">
+          <div className="ds-eyebrow">01 · Brand Identity</div>
+          <div className="ds-section-title">DualVoice Identity</div>
+          <div className="ds-section-desc">Two typefaces in one wordmark — Outfit (rational, modern) answers Cormorant Garamond (editorial, intimate). The tension between them is the brand.</div>
 
-    function RadiusTokens() {
-      return (
-        <div className="ds-radius-grid">
-          {RADII.map(r => (
-            <div className="ds-radius-item" key={r.label}>
-              <div className="ds-radius-box" style={{ borderRadius: r.r }} />
-              <div>
-                <div className="ds-radius-label">{r.label}</div>
-                <div className="ds-radius-val">{r.val}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    function TypeScale() {
-      return (
-        <div>
-          {TYPE_SCALE.map(t => (
-            <div className="ds-type-row" key={t.label}>
-              <div className="ds-type-meta">{t.label} · {t.size}px / {t.weight}</div>
-              <div style={{
-                fontFamily: t.family,
-                fontSize: Math.min(t.size, 44),
-                fontWeight: t.weight,
-                fontStyle: t.italic ? 'italic' : 'normal',
-                textTransform: t.upper ? 'uppercase' : 'none',
-                letterSpacing: t.spacing || 'normal',
-                color: '#faf7f2',
-                lineHeight: 1.25,
-                opacity: 0.9,
-              }}>
-                {t.sample}
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    function ComponentExamples() {
-      const UI = "'Outfit', sans-serif";
-      const ED = "'Cormorant Garamond', serif";
-      return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-
-          {/* Buttons */}
-          <div className="ds-comp-card">
-            <div className="ds-comp-label">Buttons</div>
-            <div className="ds-comp-row">
-              <button style={{ padding: '13px 28px', background: '#c4654a', color: '#faf7f2', border: 'none', borderRadius: 0, fontFamily: UI, fontSize: 14, fontWeight: 400, cursor: 'pointer', letterSpacing: '0.01em' }}>
-                Join the waitlist
-              </button>
-              <button style={{ padding: '13px 28px', background: 'transparent', color: '#faf7f2', border: '1px solid rgba(250,247,242,0.25)', borderRadius: 0, fontFamily: UI, fontSize: 14, fontWeight: 400, cursor: 'pointer' }}>
-                Learn more
-              </button>
-              <button style={{ padding: '10px 20px', background: 'transparent', color: '#c4654a', border: '1px solid rgba(196,101,74,0.35)', borderRadius: 0, fontFamily: UI, fontSize: 13, fontWeight: 400, cursor: 'pointer' }}>
-                Read sources
-              </button>
-            </div>
-          </div>
-
-          {/* Badges */}
-          <div className="ds-comp-card">
-            <div className="ds-comp-label">Badges & Pills</div>
-            <div className="ds-comp-row">
-              <span style={{ padding: '4px 10px', background: 'rgba(196,101,74,0.15)', color: '#c4654a', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Morning Brief</span>
-              <span style={{ padding: '4px 10px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.55)', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 400 }}>AI · Geopolitics · Tech</span>
-              <span style={{ padding: '3px 8px', background: 'transparent', color: 'rgba(250,247,242,0.32)', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', border: '1px solid rgba(250,247,242,0.12)' }}>design board</span>
-              <span style={{ padding: '4px 10px', background: '#c4654a', color: '#faf7f2', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500 }}>Live</span>
-            </div>
-          </div>
-
-          {/* Input */}
-          <div className="ds-comp-card">
-            <div className="ds-comp-label">Email input · Waitlist</div>
-            <div style={{ display: 'flex', border: '1px solid rgba(45,41,38,0.2)', borderRadius: 0, overflow: 'hidden', background: '#faf7f2', maxWidth: 420 }}>
-              <input
-                placeholder="your@email.com"
-                style={{ flex: 1, padding: '13px 20px', background: 'transparent', border: 'none', outline: 'none', fontFamily: UI, fontSize: 14, fontWeight: 300, color: '#2d2926', minWidth: 0 }}
-                className="yc-ph-light"
-              />
-              <button style={{ padding: '13px 24px', background: '#2d2926', color: '#faf7f2', border: 'none', cursor: 'pointer', fontFamily: UI, fontSize: 14, fontWeight: 400, whiteSpace: 'nowrap', flexShrink: 0 }}>
-                Join
-              </button>
-            </div>
-          </div>
-
-          {/* Logo */}
-          <div className="ds-comp-card">
-            <div className="ds-comp-label">Logo · DualVoice</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {[{ size: 40, dark: false }, { size: 28, dark: false }, { size: 20, dark: false }].map(({ size, dark }) => (
-                <div key={size} style={{ display: 'flex', alignItems: 'baseline', lineHeight: 1, gap: 0 }}>
-                  <span style={{ fontFamily: UI, fontSize: size, fontWeight: 400, color: '#faf7f2', letterSpacing: '0.01em' }}>your</span>
-                  <span style={{ fontFamily: ED, fontSize: size * 1.1, fontWeight: 400, fontStyle: 'italic', color: '#c4654a', letterSpacing: '0.03em', marginLeft: size * 0.025 }}>cast</span>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Wordmark — three scales</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {[48, 32, 22].map(s => (
+                <div key={s} style={{ display: 'flex', alignItems: 'baseline' }}>
+                  <span style={{ fontFamily: UI, fontSize: s, fontWeight: 400, color: '#faf7f2', letterSpacing: '0.01em' }}>your</span>
+                  <span style={{ fontFamily: ED, fontSize: s * 1.1, fontWeight: 400, fontStyle: 'italic', color: '#c4654a', letterSpacing: '0.03em', marginLeft: s * 0.025 }}>cast</span>
+                  <span style={{ fontFamily: UI, fontSize: 11, fontWeight: 300, color: 'rgba(250,247,242,0.28)', marginLeft: 16 }}>{s}px</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Section header pattern */}
-          <div className="ds-comp-card">
-            <div className="ds-comp-label">Section header pattern</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4654a' }}>How it works</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 400, fontStyle: 'italic', color: '#faf7f2', lineHeight: 1.2 }}>Three steps to your daily episode</div>
-              <div style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: 'rgba(250,247,242,0.55)', marginTop: 8, lineHeight: 1.6, maxWidth: 480 }}>
-                yourcast handles everything from sourcing to narration — you just press play.
-              </div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Brand colours — the only three that matter</div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {[
+                { name: 'Coral',   hex: '#c4654a', role: 'Accent · CTA · accent-only hue' },
+                { name: 'Cream',   hex: '#faf7f2', role: 'Text on dark · primary light surface' },
+                { name: 'Ink',     hex: '#1c1917', role: 'Deepest dark · footer · body type' },
+              ].map(c => (
+                <div key={c.name} style={{ display: 'flex', gap: 12, alignItems: 'center', background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.07)', borderRadius: 10, padding: '12px 16px' }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, background: c.hex, border: '1px solid rgba(255,255,255,0.08)', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontFamily: UI, fontSize: 13, fontWeight: 500, color: '#faf7f2' }}>{c.name}</div>
+                    <div style={{ fontFamily: 'ui-monospace,monospace', fontSize: 11, color: 'rgba(250,247,242,0.38)' }}>{c.hex}</div>
+                    <div style={{ fontFamily: UI, fontSize: 10, color: 'rgba(250,247,242,0.25)', marginTop: 2 }}>{c.role}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
+          <div className="ds-demo">
+            <div className="ds-demo-label">Tagline specimen</div>
+            <div style={{ fontFamily: ED, fontSize: 20, fontStyle: 'italic', color: 'rgba(250,247,242,0.75)', lineHeight: 1.4 }}>
+              A podcast no one else will hear.
+            </div>
+          </div>
         </div>
       );
     }
 
-    function DesignSystemPage() {
+    /* ── 02 Colors ── */
+    function ColorsSection() {
       return (
-        <div className="ds-page">
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontStyle: 'italic', fontWeight: 400, color: '#faf7f2', marginBottom: 8 }}>Design System</div>
-            <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 300, color: 'rgba(250,247,242,0.38)', lineHeight: 1.6 }}>
-              Tokens, typography, spacing, and components — the visual language of yourcast.
+        <div id="colors" className="ds-section">
+          <div className="ds-eyebrow">02 · Color System</div>
+          <div className="ds-section-title">Primitive → Semantic → Component</div>
+          <div className="ds-section-desc">10 primitive tokens. One vivid hue (coral). All other colors are warm earth neutrals. Semantic tokens map roles to primitives; component tokens consume semantics.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Primitive palette</div>
+            <div className="ds-swatch-grid">
+              {PRIMITIVE_COLORS.map(c => (
+                <div className="ds-swatch" key={c.token}>
+                  <div className="ds-swatch-box" style={{ background: c.hex }} />
+                  <div className="ds-swatch-name">{c.name}</div>
+                  <div className="ds-swatch-hex">{c.hex}</div>
+                  <div className="ds-swatch-role">{c.role}</div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="ds-section">
-            <div className="ds-section-label">01 · Colors</div>
-            <div className="ds-section-desc">10 core tokens. Coral is the only vivid hue; everything else is warm neutrals.</div>
-            <ColorSwatches />
+          <div className="ds-demo">
+            <div className="ds-demo-label">Cream opacity scale — text hierarchy on dark</div>
+            <div className="ds-opacity-row">
+              {OPACITY_SCALE.map(o => (
+                <div key={o.val} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: '100%', height: 36, borderRadius: 4, background: `rgba(250,247,242,${o.val})`, border: '1px solid rgba(255,255,255,0.05)' }} />
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 9, color: 'rgba(250,247,242,0.4)' }}>{o.label}%</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
+              {[
+                ['35%', 'Subtle muted'],
+                ['38%', 'Placeholder'],
+                ['45%', 'Disabled'],
+                ['62%', 'Body text'],
+                ['72%', 'Secondary'],
+                ['85%', 'Emphasis'],
+                ['90%', 'Strong'],
+                ['100%', 'Primary'],
+              ].map(([pct, role]) => (
+                <div key={pct} style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.45)' }}>{pct}</span>
+                  <span style={{ fontSize: 10, color: 'rgba(250,247,242,0.25)' }}>— {role}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="ds-section">
-            <div className="ds-section-label">02 · Typography</div>
-            <div className="ds-section-desc">Outfit (UI sans) pairs with Cormorant Garamond (editorial serif). Weights: 300 body, 400 normal, 500–600 labels.</div>
-            <TypeScale />
+          <div className="ds-demo">
+            <div className="ds-demo-label">Coral tint scale — accent states</div>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {[0.08,0.12,0.15,0.20,0.35,0.40,1].map(a => (
+                <div key={a} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: '100%', height: 36, borderRadius: 4, background: `rgba(196,101,74,${a})`, border: '1px solid rgba(255,255,255,0.05)' }} />
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 9, color: 'rgba(250,247,242,0.35)' }}>{Math.round(a*100)}%</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="ds-section">
-            <div className="ds-section-label">03 · Spacing</div>
-            <div className="ds-section-desc">Base-4 scale. All padding, margin, and gap values come from this set.</div>
-            <SpacingTokens />
+          <TokenTable
+            cols={['Role', 'Dark UI', 'Light UI', 'Usage']}
+            rows={SEMANTIC_TOKENS.map(t => [t.role, t.dark, t.light, t.usage])}
+          />
+        </div>
+      );
+    }
+
+    /* ── 03 Typography ── */
+    function TypeSection() {
+      return (
+        <div id="type" className="ds-section">
+          <div className="ds-eyebrow">03 · Typography</div>
+          <div className="ds-section-title">Two voices, one system</div>
+          <div className="ds-section-desc">Outfit carries UI clarity at all weights. Cormorant Garamond carries editorial intimacy — reserved for episode titles, section headings, and the wordmark only.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Font families</div>
+            <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 240 }}>
+                <div style={{ fontFamily: UI, fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.28)', marginBottom: 8 }}>UI — Outfit</div>
+                <div style={{ fontFamily: UI, fontSize: 22, fontWeight: 300, color: '#faf7f2', marginBottom: 4 }}>Light 300 — body</div>
+                <div style={{ fontFamily: UI, fontSize: 22, fontWeight: 400, color: '#faf7f2', marginBottom: 4 }}>Regular 400 — standard</div>
+                <div style={{ fontFamily: UI, fontSize: 22, fontWeight: 500, color: '#faf7f2', marginBottom: 4 }}>Medium 500 — labels</div>
+                <div style={{ fontFamily: UI, fontSize: 22, fontWeight: 600, color: '#faf7f2' }}>SemiBold 600 — nav</div>
+              </div>
+              <div style={{ flex: 1, minWidth: 240 }}>
+                <div style={{ fontFamily: UI, fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.28)', marginBottom: 8 }}>Editorial — Cormorant Garamond</div>
+                <div style={{ fontFamily: ED, fontSize: 22, fontWeight: 400, fontStyle: 'italic', color: '#faf7f2', marginBottom: 4 }}>Regular italic 400 — titles</div>
+                <div style={{ fontFamily: ED, fontSize: 22, fontWeight: 500, fontStyle: 'italic', color: '#faf7f2', marginBottom: 4 }}>Medium italic 500 — headings</div>
+                <div style={{ fontFamily: ED, fontSize: 22, fontWeight: 300, fontStyle: 'italic', color: 'rgba(250,247,242,0.55)' }}>Light italic 300 — quotes</div>
+              </div>
+            </div>
           </div>
 
-          <div className="ds-section">
-            <div className="ds-section-label">04 · Border Radius</div>
-            <div className="ds-section-desc">Sharp by default (0px for buttons/inputs). Soft rounding for cards and modals.</div>
-            <RadiusTokens />
+          <div className="ds-demo">
+            <div className="ds-demo-label">Type scale</div>
+            {TYPE_SCALE.map(t => (
+              <div className="ds-type-row" key={t.role}>
+                <div className="ds-type-meta">{t.role} · {t.font} · {t.size}px / {t.weight}{t.italic ? ' italic' : ''}</div>
+                <div style={{
+                  fontFamily: t.font === 'Outfit' ? UI : ED,
+                  fontSize: Math.min(t.size, 32),
+                  fontWeight: t.weight,
+                  fontStyle: t.italic ? 'italic' : 'normal',
+                  color: '#faf7f2',
+                  lineHeight: 1.2,
+                }}>
+                  {t.role === 'micro' ? 'MORNING BRIEF · 27 MAY' :
+                   t.role === 'caption' ? '18 min · Tue 7:02 AM' :
+                   t.role === 'label' ? 'How it works' :
+                   t.role === 'body-sm' ? 'AI · Geopolitics · Technology' :
+                   t.role === 'body' ? 'yourcast turns your reading list into a personal podcast, narrated by AI.' :
+                   t.role === 'h4' ? 'Podcast Configuration' :
+                   t.role === 'h3' ? 'Good morning, Daniel.' :
+                   t.role === 'h2-serif' ? 'How was this segment?' :
+                   t.role === 'h1-serif' ? 'The AI Governance Reckoning' :
+                   'Morning Brief'}
+                </div>
+                <div style={{ fontFamily: UI, fontSize: 10, color: 'rgba(250,247,242,0.25)', marginTop: 4 }}>{t.usage}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ── 04 Spacing ── */
+    function SpacingSection() {
+      const max = Math.max(...SPACING.map(s => s.px));
+      return (
+        <div id="spacing" className="ds-section">
+          <div className="ds-eyebrow">04 · Spacing</div>
+          <div className="ds-section-title">4px base grid</div>
+          <div className="ds-section-desc">Every padding, gap, and margin in the app is a multiple of 4. This creates visual rhythm and prevents arbitrary pixel-pushing.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Spacing tokens</div>
+            {SPACING.map(s => (
+              <div className="ds-space-row" key={s.token}>
+                <span className="ds-space-token">{s.token}</span>
+                <div className="ds-space-bar" style={{ width: Math.round((s.px / max) * 360) }} />
+                <span className="ds-space-val">{s.px}px</span>
+              </div>
+            ))}
+          </div>
+          <TokenTable
+            cols={['Token', 'Value', 'Usage in screens']}
+            rows={[
+              ['space-1 (4px)',  '4px',  'Micro gaps between icon & label, dot separators'],
+              ['space-2 (8px)',  '8px',  'Gap between buttons (write/record), list item gap'],
+              ['space-3 (12px)', '12px', 'Card internal padding, tag paddingInline'],
+              ['space-4 (16px)', '16px', 'Standard horizontal padding (all screens)'],
+              ['space-5 (20px)', '20px', 'Bottom sheet top padding, section margins'],
+              ['space-6 (24px)', '24px', 'Medium card gaps, header padding'],
+              ['space-8 (32px)', '32px', 'Board section padding, hero padding-top'],
+              ['space-10 (40px)','40px', 'Button height (secondary), XL section gaps'],
+              ['space-12 (48px)','48px', 'Board canvas gaps, primary content padding'],
+              ['space-16 (64px)','64px', 'DS page padding, large section dividers'],
+            ]}
+          />
+        </div>
+      );
+    }
+
+    /* ── 05 Border Radius ── */
+    function RadiusSection() {
+      return (
+        <div id="radius" className="ds-section">
+          <div className="ds-eyebrow">05 · Border Radius</div>
+          <div className="ds-section-title">Radius scale</div>
+          <div className="ds-section-desc">Sharp edges signal action (buttons, inputs). Soft rounding signals containment (cards, sheets). Pill is reserved for chips and tags only.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Visual scale</div>
+            <div className="ds-radius-grid">
+              {RADII.map(r => (
+                <div className="ds-radius-item" key={r.token}>
+                  <div className="ds-radius-box" style={{ borderRadius: r.r }} />
+                  <div className="ds-radius-lbl">{r.token.replace('radius-','')}</div>
+                  <div className="ds-radius-val-lbl">{r.px}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <TokenTable
+            cols={['Token', 'Value', 'Usage']}
+            rows={RADII.map(r => [r.token, r.px,
+              r.token === 'radius-sm' ? 'Small icon containers, micro badges' :
+              r.token === 'radius-md' ? 'Buttons, inputs, audio player bar, add-btn' :
+              r.token === 'radius-lg' ? 'Feed cards, section containers, topic picker areas' :
+              r.token === 'radius-xl' ? 'Centered modals (ScreenSegmentModal)' :
+              r.token === 'radius-2xl' ? 'Bottom sheets (top-left, top-right only)' :
+              r.token === 'radius-pill' ? 'Chips, tags, toggles, badges, listen button' :
+              'Avatar circles, icon buttons (nav back/menu)'
+            ])}
+          />
+        </div>
+      );
+    }
+
+    /* ── 06 Elevation ── */
+    function ElevationSection() {
+      return (
+        <div id="elevation" className="ds-section">
+          <div className="ds-eyebrow">06 · Elevation & Shadows</div>
+          <div className="ds-section-title">Shadow scale</div>
+          <div className="ds-section-desc">Dark surfaces use shadow sparingly — depth comes from bg-surface vs bg-card contrast. Shadows are reserved for elements that float above the primary surface.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Shadow tokens</div>
+            {SHADOWS.map(s => (
+              <div className="ds-shadow-item" key={s.token}>
+                <div className="ds-shadow-box" style={{ boxShadow: s.value }} />
+                <div className="ds-shadow-info">
+                  <div className="ds-shadow-token">{s.token}</div>
+                  <div className="ds-shadow-value">{s.value}</div>
+                  <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, color: 'rgba(250,247,242,0.3)', marginTop: 3 }}>{s.usage}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ── 07 Motion ── */
+    function MotionSection() {
+      return (
+        <div id="motion" className="ds-section">
+          <div className="ds-eyebrow">07 · Motion & Animation</div>
+          <div className="ds-section-title">Timing tokens</div>
+          <div className="ds-section-desc">All interactive transitions share a small set of duration + easing tokens. The sheet easing (iOS cubic-bezier) gives native-feel to bottom sheets. All animations respect prefers-reduced-motion.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Duration & easing tokens</div>
+            <TokenTable
+              cols={['Token', 'Value', 'Usage']}
+              rows={MOTION_TOKENS.map(m => [m.token, m.value, m.usage])}
+            />
           </div>
 
-          <div className="ds-section">
-            <div className="ds-section-label">05 · Components</div>
-            <div className="ds-section-desc">Recurring UI patterns assembled from the token set above.</div>
-            <ComponentExamples />
+          <div className="ds-demo">
+            <div className="ds-demo-label">Keyframe library — 6 named animations</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {KEYFRAMES.map(k => (
+                <div key={k.name} style={{ display: 'flex', gap: 16, padding: '12px 0', borderBottom: '1px solid rgba(250,247,242,0.05)', alignItems: 'flex-start' }}>
+                  <div style={{ fontFamily: 'ui-monospace,monospace', fontSize: 12, color: '#c4654a', minWidth: 160, flexShrink: 0 }}>@keyframes {k.name}</div>
+                  <div>
+                    <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 12, color: 'rgba(250,247,242,0.65)', marginBottom: 2 }}>{k.desc}</div>
+                    <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, color: 'rgba(250,247,242,0.3)' }}>{k.usage}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Live animation demos</div>
+            <div style={{ display: 'flex', gap: 32, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+              {/* Waveform demo */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 2.5, height: 40, alignItems: 'center' }}>
+                  {Array.from({ length: 24 }, (_, i) => {
+                    const heights = [12,18,28,36,40,32,24,16,22,38,36,28,20,30,38,32,22,16,26,38,30,20,14,10];
+                    const dur = 0.6 + (i % 7) * 0.09;
+                    const delay = (i % 7) * 0.07;
+                    const isPlayed = i < 10;
+                    return (
+                      <div key={i} style={{
+                        width: 2.5, height: heights[i] || 16, borderRadius: 2,
+                        background: isPlayed ? '#c4654a' : 'rgba(250,247,242,0.18)',
+                        transformOrigin: 'center',
+                        animation: `waveBar ${dur}s ease-in-out ${delay}s infinite`,
+                      }} />
+                    );
+                  })}
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>waveBar</span>
+              </div>
+
+              {/* Play pulse */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: '50%', background: '#faf7f2',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  animation: 'playPulse 2s ease-in-out infinite',
+                }}>
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+                    <path d="M1.5 1.5L10.5 7L1.5 12.5V1.5Z" fill="#141210" />
+                  </svg>
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>playPulse</span>
+              </div>
+
+              {/* Live pulse */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#c4654a', animation: 'livePulse 1.2s ease-in-out infinite' }} />
+                  <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 500, color: '#c4654a', letterSpacing: '0.06em' }}>LIVE</span>
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>livePulse</span>
+              </div>
+
+              {/* Pill drift */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{
+                  padding: '6px 14px', borderRadius: 999,
+                  background: 'rgba(196,101,74,0.15)', border: '1px solid rgba(196,101,74,0.3)',
+                  fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 500, color: '#c4654a',
+                  animation: 'pillDrift 2.4s ease-in-out 0.3s infinite',
+                }}>
+                  Morning Brief
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>pillDrift</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── 08 Components ── */
+    function ComponentsSection() {
+      const [feedbackSel, setFeedbackSel] = useState(null);
+      const [toggle, setToggle] = useState(true);
+
+      const FEEDBACK_OPTS = ['Interesting topic', 'Well-narrated', 'Perfect length', 'Short source'];
+
+      return (
+        <div id="components" className="ds-section">
+          <div className="ds-eyebrow">08 · Components</div>
+          <div className="ds-section-title">Component library</div>
+          <div className="ds-section-desc">15 recurring patterns — all assembled from the token layers above. Each is documented with variants, token references, and a live render.</div>
+
+          {/* Buttons */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Buttons</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+              <button style={{ padding: '12px 24px', background: '#c4654a', color: '#faf7f2', border: 'none', borderRadius: 0, fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 500, cursor: 'pointer', letterSpacing: '0.01em' }}>
+                Join the waitlist
+              </button>
+              <button style={{ padding: '12px 24px', background: 'rgba(250,247,242,0.08)', color: '#faf7f2', border: '1px solid rgba(250,247,242,0.15)', borderRadius: 0, fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 400, cursor: 'pointer' }}>
+                Learn more
+              </button>
+              <button style={{ padding: '10px 20px', background: 'transparent', color: '#c4654a', border: '1px solid rgba(196,101,74,0.35)', borderRadius: 10, fontFamily: "'Outfit',sans-serif", fontSize: 12, fontWeight: 500, cursor: 'pointer' }}>
+                Read sources
+              </button>
+              <button style={{ width: 44, height: 44, background: 'rgba(250,247,242,0.06)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,247,242,0.7)" strokeWidth="1.5">
+                  <path d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button style={{ height: 44, padding: '0 20px', background: 'linear-gradient(135deg,#1FD078 0%,#16a852 100%)', color: '#fff', border: 'none', borderRadius: 10, fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 500, cursor: 'pointer', boxShadow: '0 4px 14px rgba(31,208,120,0.3)' }}>
+                Done
+              </button>
+              <button style={{ height: 40, padding: '0 20px', background: '#faf7f2', color: '#0f0d0a', border: 'none', borderRadius: 0, fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                Save episode
+              </button>
+            </div>
+            <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {['Coral primary (LP CTA)', 'Ghost dark (secondary)', 'Outlined coral (subtle action)', 'Icon only (28–34px circle)', 'Success gradient (Done)', 'Cream on dark (config save)'].map((l,i) => (
+                <span key={i} style={{ fontFamily: "'Outfit',sans-serif", fontSize: 10, color: 'rgba(250,247,242,0.28)', padding: '2px 6px', borderRadius: 4, border: '1px solid rgba(250,247,242,0.06)' }}>{l}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Badges, Tags & Chips</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+              <span style={{ padding: '5px 12px', background: 'rgba(196,101,74,0.15)', color: '#c4654a', borderRadius: 999, fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Morning Brief</span>
+              <span style={{ padding: '5px 12px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.65)', borderRadius: 999, border: '1px solid rgba(250,247,242,0.1)', fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 500 }}>Geopolitics</span>
+              <span style={{ padding: '5px 12px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.65)', borderRadius: 999, border: '1px solid rgba(250,247,242,0.1)', fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 500 }}>AI</span>
+              <span style={{ padding: '3px 8px', background: 'transparent', color: 'rgba(250,247,242,0.32)', borderRadius: 999, border: '1px solid rgba(250,247,242,0.12)', fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>design board</span>
+              <span style={{ padding: '4px 10px', background: '#c4654a', color: '#faf7f2', borderRadius: 999, fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 500 }}>Live</span>
+              <span style={{ height: 26, padding: '0 11px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.65)', borderRadius: 999, border: '1px solid rgba(250,247,242,0.14)', fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 500, display: 'flex', alignItems: 'center' }}>newsbeat</span>
+            </div>
+          </div>
+
+          {/* Toggle Switch */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Toggle Switch — 34×20px, coral active</div>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+              {[true, false].map(active => (
+                <div key={String(active)} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div
+                    onClick={() => setToggle(!toggle)}
+                    style={{
+                      width: 34, height: 20, borderRadius: 999, cursor: 'pointer',
+                      background: active ? '#c4654a' : 'rgba(250,247,242,0.15)',
+                      position: 'relative', transition: 'background 200ms',
+                    }}
+                  >
+                    <div style={{
+                      position: 'absolute', top: 3, borderRadius: '50%',
+                      width: 14, height: 14, background: '#faf7f2',
+                      left: active ? 17 : 3,
+                      transition: 'left 200ms',
+                      boxShadow: '0 2px 6px rgba(196,101,74,0.4)',
+                    }} />
+                  </div>
+                  <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, color: 'rgba(250,247,242,0.5)' }}>{active ? 'On' : 'Off'}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Progress Bar — audio scrubber & segment dots</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div>
+                <div style={{ position: 'relative', height: 3, background: 'rgba(250,247,242,0.14)', borderRadius: 2 }}>
+                  <div style={{ position: 'absolute', left: 0, top: 0, width: '38%', height: '100%', background: '#c4654a', borderRadius: 2 }} />
+                  <div style={{ position: 'absolute', top: '50%', left: '38%', transform: 'translate(-50%,-50%)', width: 14, height: 14, borderRadius: '50%', background: '#faf7f2', boxShadow: '0 1px 4px rgba(0,0,0,0.4)' }} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.35)' }}>6:58</span>
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.35)' }}>18:12</span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {Array.from({ length: 7 }, (_, i) => (
+                  <div key={i} style={{ flex: 1, height: 2, borderRadius: 1, background: i === 0 ? '#faf7f2' : 'rgba(250,247,242,0.2)' }} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Feedback grid */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Feedback Grid — 2-col, tap to select</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, maxWidth: 320 }}>
+              {FEEDBACK_OPTS.map(opt => {
+                const sel = feedbackSel === opt;
+                return (
+                  <button key={opt} onClick={() => setFeedbackSel(sel ? null : opt)} style={{
+                    padding: '12px', borderRadius: 10, cursor: 'pointer',
+                    background: sel ? 'rgba(196,101,74,0.12)' : 'rgba(250,247,242,0.06)',
+                    border: `1.5px solid ${sel ? '#c4654a' : 'rgba(250,247,242,0.12)'}`,
+                    transition: 'all 200ms ease',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                  }}>
+                    <div style={{ width: 16, height: 16, borderRadius: '50%', border: `1.5px solid ${sel ? '#c4654a' : 'rgba(250,247,242,0.3)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {sel && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#c4654a' }} />}
+                    </div>
+                    <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: sel ? 500 : 300, color: sel ? '#c4654a' : 'rgba(250,247,242,0.75)', transition: 'color 200ms' }}>{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Card */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Card — dark surface, border, structure</div>
+            <div style={{ maxWidth: 300 }}>
+              <div style={{ background: '#1a1510', border: '1px solid rgba(250,247,242,0.08)', borderRadius: 14, overflow: 'hidden' }}>
+                <div style={{ height: 80, background: 'linear-gradient(135deg,rgba(176,137,104,0.3) 0%,rgba(28,25,23,0.8) 100%)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,#1a1510 100%)' }} />
+                </div>
+                <div style={{ padding: 13 }}>
+                  <div style={{ display: 'flex', gap: 4, marginBottom: 5 }}>
+                    <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 7.5, fontWeight: 500, color: '#c4654a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Morning Brief</span>
+                    <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 8, color: 'rgba(250,247,242,0.35)' }}>·</span>
+                    <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 8, color: 'rgba(250,247,242,0.45)', fontWeight: 300 }}>newsbeat</span>
+                  </div>
+                  <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontStyle: 'italic', color: '#faf7f2', lineHeight: 1.3, marginBottom: 6 }}>The AI Governance Reckoning</div>
+                  <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 9.5, fontWeight: 300, color: 'rgba(250,247,242,0.55)', lineHeight: 1.5, marginBottom: 10 }}>Regulators, labs, and senators clash over the first binding rules for frontier AI models.</div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button style={{ flex: 1, height: 30, background: '#c4654a', border: 'none', borderRadius: 999, fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 500, color: '#fff', cursor: 'pointer' }}>Listen</button>
+                    <button style={{ height: 30, padding: '0 14px', background: 'transparent', border: '1px solid rgba(250,247,242,0.15)', borderRadius: 999, fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 300, color: 'rgba(250,247,242,0.55)', cursor: 'pointer' }}>Rate</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Nav Bar */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Navigation patterns</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {/* Top nav */}
+              <div style={{ background: '#0f0d0a', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(250,247,242,0.06)' }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(250,247,242,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(250,247,242,0.65)" strokeWidth="1.5"><path d="M15 19l-7-7 7-7"/></svg>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
+                  <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 15, fontWeight: 300, color: '#faf7f2' }}>your</span>
+                  <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 16, fontStyle: 'italic', color: '#faf7f2' }}>cast</span>
+                </div>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(250,247,242,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(250,247,242,0.65)" strokeWidth="1.5"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+              </div>
+              {/* Bottom tab bar */}
+              <div style={{ background: '#0f0d0a', padding: '0 16px', display: 'flex', borderTop: '1px solid rgba(250,247,242,0.08)' }}>
+                {['Read', 'Sources'].map((label, i) => (
+                  <button key={label} style={{
+                    flex: 1, height: 44, background: 'transparent', border: 'none', cursor: 'pointer',
+                    fontFamily: "'Outfit',sans-serif", fontSize: 12, fontWeight: i === 0 ? 500 : 300,
+                    color: i === 0 ? '#c4654a' : 'rgba(250,247,242,0.45)',
+                    borderTop: i === 0 ? '2px solid #c4654a' : '2px solid transparent',
+                  }}>{label}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Sheet preview */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Bottom Sheet — handle, top-radius, gradient bg</div>
+            <div style={{ maxWidth: 300 }}>
+              <div style={{ background: 'linear-gradient(to bottom,#1a1610 0%,#0f0d0a 100%)', borderRadius: '20px 20px 0 0', padding: '12px 16px 24px', border: '1px solid rgba(250,247,242,0.08)', borderBottom: 'none' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                  <div style={{ width: 30, height: 3, borderRadius: 2, background: 'rgba(250,247,242,0.2)' }} />
+                </div>
+                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 18, fontStyle: 'italic', color: '#faf7f2', marginBottom: 4 }}>What did you like?</div>
+                <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 10, fontWeight: 300, color: 'rgba(250,247,242,0.38)' }}>This segment · 1 of 7</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Email input */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Input — waitlist (light bg), dark bg variant</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', border: '1px solid rgba(45,41,38,0.18)', overflow: 'hidden', background: '#faf7f2', maxWidth: 360 }}>
+                <input placeholder="your@email.com" style={{ flex: 1, padding: '13px 18px', background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Outfit',sans-serif", fontSize: 14, fontWeight: 300, color: '#2d2926', minWidth: 0 }} className="yc-ph-light" />
+                <button style={{ padding: '13px 22px', background: '#2d2926', color: '#faf7f2', border: 'none', cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 400, flexShrink: 0 }}>Join</button>
+              </div>
+              <div style={{ display: 'flex', border: '1px solid rgba(250,247,242,0.12)', borderRadius: 10, overflow: 'hidden', background: 'rgba(250,247,242,0.05)', maxWidth: 360 }}>
+                <input placeholder="Search topics…" style={{ flex: 1, padding: '11px 14px', background: 'transparent', border: 'none', outline: 'none', fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 300, color: '#faf7f2', minWidth: 0 }} className="yc-ph-dark" />
+              </div>
+            </div>
+          </div>
+
+          {/* Section Header pattern */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Section Header — eyebrow + serif heading + body</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+              <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4654a' }}>How it works</div>
+              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 34, fontWeight: 400, fontStyle: 'italic', color: '#faf7f2', lineHeight: 1.2 }}>Three steps to your daily episode</div>
+              <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 14, fontWeight: 300, color: 'rgba(250,247,242,0.5)', lineHeight: 1.65, maxWidth: 460, marginTop: 6 }}>yourcast handles everything from sourcing to narration — you just press play.</div>
+            </div>
+          </div>
+
+          {/* Status bar */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Status Bar — 9px / weight 500, SVG system icons</div>
+            <div style={{ maxWidth: 300 }}>
+              <div style={{ background: '#15110d', padding: '12px 16px 6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: 9, fontWeight: 500, color: '#faf7f2' }}>9:41</span>
+                <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                    {[3,5,7,9].map((h,i) => <rect key={i} x={i*4} y={10-h} width="2" height={h} rx="0.5" fill={`rgba(250,247,242,${i<3?0.6:1})`}/>)}
+                  </svg>
+                  <svg width="15" height="10" viewBox="0 0 15 10" fill="rgba(250,247,242,0.9)">
+                    <path d="M7.5 2.5C9.4 2.5 11.1 3.3 12.3 4.6L13.7 3.2C12.1 1.6 10 0.5 7.5 0.5C5 0.5 2.9 1.6 1.3 3.2L2.7 4.6C3.9 3.3 5.6 2.5 7.5 2.5Z"/>
+                    <path d="M7.5 5.5C8.7 5.5 9.8 6 10.6 6.8L12 5.4C10.9 4.3 9.3 3.5 7.5 3.5C5.7 3.5 4.1 4.3 3 5.4L4.4 6.8C5.2 6 6.3 5.5 7.5 5.5Z"/>
+                    <circle cx="7.5" cy="9" r="1.2"/>
+                  </svg>
+                  <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+                    <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="rgba(250,247,242,0.4)"/>
+                    <rect x="2" y="2" width="16" height="8" rx="2" fill="rgba(250,247,242,0.9)"/>
+                    <path d="M23 4.5V7.5C23.8 7.2 24.5 6.7 24.5 6C24.5 5.3 23.8 4.8 23 4.5Z" fill="rgba(250,247,242,0.4)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── 09 Gradients ── */
+    function GradientsSection() {
+      return (
+        <div id="gradients" className="ds-section">
+          <div className="ds-eyebrow">09 · Gradient Library</div>
+          <div className="ds-section-title">7 named gradients</div>
+          <div className="ds-section-desc">All gradients serve a functional purpose — fading, scrims, atmosphere, modal surfaces. No decorative gradients. Each can be referenced by name in future components.</div>
+          <div className="ds-demo">
+            {GRADIENTS.map(g => (
+              <div key={g.name} className="ds-grad-item">
+                <div className="ds-grad-box" style={{ background: g.value }} />
+                <div className="ds-grad-info">
+                  <div className="ds-grad-name">{g.name}</div>
+                  <div className="ds-grad-value">{g.value}</div>
+                  <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 10, color: 'rgba(250,247,242,0.28)', marginTop: 3 }}>{g.usage}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Design System page root ── */
+    function DesignSystemPage() {
+      const [activeSection, setActiveSection] = useState('brand');
+
+      useEffect(() => {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        DS_SECTIONS.forEach(s => {
+          const el = document.getElementById(s.id);
+          if (el) observer.observe(el);
+        });
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <div>
+          {/* Sub-nav */}
+          <div className="ds-subnav">
+            {DS_SECTIONS.map(s => (
+              <a key={s.id} href={`#${s.id}`} className={`ds-subnav-link${activeSection === s.id ? ' active' : ''}`}>
+                {s.label}
+              </a>
+            ))}
+          </div>
+          <div className="ds-page">
+            <BrandSection />
+            <div className="ds-rule" />
+            <ColorsSection />
+            <div className="ds-rule" />
+            <TypeSection />
+            <div className="ds-rule" />
+            <SpacingSection />
+            <div className="ds-rule" />
+            <RadiusSection />
+            <div className="ds-rule" />
+            <ElevationSection />
+            <div className="ds-rule" />
+            <MotionSection />
+            <div className="ds-rule" />
+            <ComponentsSection />
+            <div className="ds-rule" />
+            <GradientsSection />
           </div>
         </div>
       );
@@ -627,10 +1242,9 @@
 
     /* ─── Board root ─── */
     function BoardApp() {
-      const [tab, setTab] = React.useState('screens');
+      const [tab, setTab] = useState('screens');
       return (
         <div>
-          {/* Topbar */}
           <div className="board-topbar">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div className="board-logo">
@@ -638,34 +1252,25 @@
               </div>
               <div className="board-badge">design board</div>
             </div>
-
             <div className="board-tabs">
-              <button className={`board-tab${tab === 'screens' ? ' active' : ''}`} onClick={() => setTab('screens')}>
-                Screens
-              </button>
-              <button className={`board-tab${tab === 'ds' ? ' active' : ''}`} onClick={() => setTab('ds')}>
-                Design System
-              </button>
+              <button className={`board-tab${tab === 'screens' ? ' active' : ''}`} onClick={() => setTab('screens')}>Screens</button>
+              <button className={`board-tab${tab === 'ds' ? ' active' : ''}`} onClick={() => setTab('ds')}>Design System</button>
             </div>
-
-            <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(250, 247, 242, 0.28)', minWidth: 80, textAlign: 'right' }}>
-              {tab === 'screens' ? `${SCREENS.length} screens` : '5 sections'}
+            <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(250,247,242,0.28)', minWidth: 80, textAlign: 'right' }}>
+              {tab === 'screens' ? `${SCREENS.length} screens` : '9 sections'}
             </div>
           </div>
 
-          {/* Content */}
           {tab === 'screens' ? (
             <div className="board-canvas">
               {SCREENS.map((s, i) => (
                 <React.Fragment key={s.code}>
                   <div className="board-screen-slot">
-                    <PhoneFrame width={s.width}>
-                      <s.component />
-                    </PhoneFrame>
+                    <PhoneFrame width={s.width}><s.component /></PhoneFrame>
                     <div style={{ textAlign: 'center' }}>
                       <div className="board-screen-name">{s.name}</div>
                       <div className="board-screen-code">{s.code}</div>
-                      <div style={{ fontSize: '10px', fontWeight: 300, color: 'rgba(250, 247, 242, 0.38)', marginTop: '3px' }}>{s.desc}</div>
+                      <div style={{ fontSize: '10px', fontWeight: 300, color: 'rgba(250,247,242,0.38)', marginTop: 3 }}>{s.desc}</div>
                     </div>
                   </div>
                   {i < SCREENS.length - 1 && <div className="board-divider" />}
