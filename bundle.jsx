@@ -605,7 +605,7 @@ function PhoneFrame({ children, width = 240 }) {
   const b = Math.round(width * 0.025);
   return (
     <div style={{
-      width, height: h, background: '#0c0a08',
+      width, maxWidth: '100%', aspectRatio: `${width} / ${h}`, background: '#0c0a08',
       borderRadius: r, border: `${b}px solid #221e1a`,
       boxShadow: '0 28px 72px rgba(0,0,0,0.26), 0 6px 20px rgba(0,0,0,0.14)',
       overflow: 'hidden', flexShrink: 0, position: 'relative',
@@ -722,72 +722,74 @@ function ScreenPlayer() {
 function ScreenTopicPicker() {
   const m  = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.60)';
-  const topics = ['AI & Tech', 'Climate', 'Policy', 'Science', 'Business', 'Culture', 'Philosophy', 'Geopolitics', 'Finance', 'Health'];
-  const sel = [0, 1, 2, 6];
+  const AREAS = ['War in Ukraine', 'US politics and elections', 'China and Indo-Pacific', 'Middle East'];
+  const ENTITIES = ['Putin', 'Trump', 'Zelenskyy', 'Xi Jinping', 'Macron', 'NATO'];
+  const Toggle = () => (
+    <div style={{ width:34, height:20, borderRadius:999, background:T.coral, position:'relative', flexShrink:0, boxShadow:'0 2px 6px rgba(196,101,74,0.4)' }}>
+      <div style={{ position:'absolute', top:3, right:3, width:14, height:14, borderRadius:'50%', background:'#fff', boxShadow:'0 1px 3px rgba(0,0,0,0.25)' }} />
+    </div>
+  );
+  const AddBtn = ({ label }) => (
+    <div style={{ margin:'6px 12px 4px', height:36, borderRadius:10, border:'1px dashed rgba(250,247,242,0.2)', display:'flex', alignItems:'center', justifyContent:'center', gap:5, cursor:'pointer' }}>
+      <span style={{ fontFamily:UI, fontSize:14, fontWeight:300, color:T.coral, lineHeight:1 }}>+</span>
+      <span style={{ fontFamily:UI, fontSize:11, fontWeight:400, color:ml }}>{label}</span>
+    </div>
+  );
   return (
-    <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
-      {/* Ambient glow */}
-      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 220, height: 100, background: 'radial-gradient(ellipse at 50% 0%, rgba(196,101,74,0.14) 0%, transparent 70%)', pointerEvents: 'none' }} />
+    <div style={{ width:'100%', height:'100%', background:'#141210', display:'flex', flexDirection:'column', boxSizing:'border-box', overflow:'hidden' }}>
       {/* Status bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0, position: 'relative' }}>
-        <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 500, color: T.cream }}>9:41</span>
-        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 16px 4px', flexShrink:0 }}>
+        <span style={{ fontFamily:UI, fontSize:9, fontWeight:500, color:T.cream }}>9:41</span>
+        <div style={{ display:'flex', gap:4, alignItems:'center' }}>
           <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
           <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
           <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
         </div>
       </div>
-      {/* Nav */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-        <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
-          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'center', gap:8, padding:'6px 14px 10px', flexShrink:0 }}>
+        <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.07)', border:'1px solid rgba(250,247,242,0.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2.5L4 6l4 3.5" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
-        <div style={{ width: 16 }} />
+        <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke={T.cream} strokeWidth="1.1"/><path d="M7 1.5C7 1.5 5 4 5 7s2 5.5 2 5.5M7 1.5C7 1.5 9 4 9 7s-2 5.5-2 5.5M1.5 7h11" stroke={T.cream} strokeWidth="1.1" strokeLinecap="round"/></svg>
+        </div>
+        <span style={{ fontFamily:UI, fontSize:15, fontWeight:600, color:T.cream }}>Geopolitics</span>
       </div>
-      {/* Content */}
-      <div style={{ flex: 1, padding: '2px 14px 14px', display: 'flex', flexDirection: 'column' }}>
-        {/* Progress dots */}
-        <div style={{ display: 'flex', gap: 5, marginBottom: 14 }}>
-          {[0,1,2].map(i => (
-            <div key={i} style={{ height: 3, borderRadius: 2, background: i === 0 ? T.coral : 'rgba(250,247,242,0.15)', width: i === 0 ? 20 : 8, transition: 'width 0.3s' }} />
-          ))}
-        </div>
-        <div style={{ fontFamily: ED, fontSize: 19, fontStyle: 'italic', color: T.cream, lineHeight: 1.2, marginBottom: 4 }}>What do you care about?</div>
-        <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, marginBottom: 14, lineHeight: 1.5 }}>Pick topics to shape your daily podcast</div>
-        {/* Chips */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7, flex: 1, alignContent: 'start' }}>
-          {topics.map((t, i) => {
-            const active = sel.includes(i);
-            return (
-              <div key={i} style={{
-                height: 32, borderRadius: 999,
-                background: active ? 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)' : 'rgba(250,247,242,0.07)',
-                border: `1px solid ${active ? 'rgba(196,101,74,0.5)' : 'rgba(250,247,242,0.13)'}`,
-                boxShadow: active ? '0 3px 12px rgba(196,101,74,0.3), inset 0 1px 0 rgba(255,255,255,0.12)' : 'inset 0 1px 0 rgba(255,255,255,0.04)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
-              }}>
-                {active && (
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l1.8 1.8L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                )}
-                <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: active ? 400 : 300, color: active ? '#fff' : ml, whiteSpace: 'nowrap' }}>{t}</span>
-              </div>
-            );
-          })}
-        </div>
-        {/* Footer */}
-        <div style={{ paddingTop: 12 }}>
-          <div style={{ fontFamily: UI, fontSize: 8, fontWeight: 300, color: m, textAlign: 'center', marginBottom: 8 }}>{sel.length} topics selected</div>
-          <div style={{
-            height: 32, borderRadius: 999,
-            background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)',
-            boxShadow: '0 4px 16px rgba(196,101,74,0.4), inset 0 1px 0 rgba(255,255,255,0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          }}>
-            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 500, color: '#fff', letterSpacing: '0.04em' }}>Continue</span>
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      {/* Scrollable content */}
+      <div style={{ flex:1, overflowY:'auto', padding:'0 12px 14px' }}>
+        {/* AREAS OF INTEREST */}
+        <div style={{ background:'rgba(250,247,242,0.04)', border:'1px solid rgba(250,247,242,0.07)', borderRadius:14, overflow:'hidden', marginBottom:10 }}>
+          <div style={{ padding:'10px 12px 6px' }}>
+            <div style={{ fontFamily:UI, fontSize:8.5, fontWeight:600, color:m, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:3 }}>Areas of Interest</div>
+            <div style={{ fontFamily:UI, fontSize:9.5, fontWeight:300, color:ml }}>AI looks for content matching these areas</div>
           </div>
+          {AREAS.map((area, i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderTop:'1px solid rgba(250,247,242,0.06)' }}>
+              <Toggle />
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontFamily:UI, fontSize:11, fontWeight:500, color:T.cream, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{area}</div>
+                <div style={{ fontFamily:UI, fontSize:9, fontWeight:300, color:m }}>no details</div>
+              </div>
+              <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1.5 1.5L5.5 6l-4 4.5" stroke="rgba(250,247,242,0.3)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+          ))}
+          <AddBtn label="Add Area" />
+        </div>
+        {/* FOLLOWED ENTITIES */}
+        <div style={{ background:'rgba(250,247,242,0.04)', border:'1px solid rgba(250,247,242,0.07)', borderRadius:14, overflow:'hidden' }}>
+          <div style={{ padding:'10px 12px 6px' }}>
+            <div style={{ fontFamily:UI, fontSize:8.5, fontWeight:600, color:m, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:3 }}>Followed Entities</div>
+            <div style={{ fontFamily:UI, fontSize:9.5, fontWeight:300, color:ml }}>AI tracks these people, parties, and institutions</div>
+          </div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:7, padding:'4px 12px 10px' }}>
+            {ENTITIES.map((name, i) => (
+              <div key={i} style={{ height:26, paddingInline:11, borderRadius:999, background:'rgba(250,247,242,0.08)', border:'1px solid rgba(250,247,242,0.14)', display:'flex', alignItems:'center' }}>
+                <span style={{ fontFamily:UI, fontSize:10, fontWeight:500, color:T.cream }}>{name}</span>
+              </div>
+            ))}
+          </div>
+          <AddBtn label="Add entity" />
         </div>
       </div>
     </div>
@@ -866,14 +868,14 @@ function ScreenHomeFeed() {
       title: 'Morning Brief',
       tags: [{ label: 'monologue' }, { label: 'newsbeat', highlight: true }, { label: '18 min' }],
       summary: "Claude 4.7 launches with expanded agentic capabilities, benchmarks up 15%. Karpathy's parallel sessions method goes viral. NATO faces Turkish blockade.",
-      thumb: 'linear-gradient(135deg, #2a1a0e 0%, #1a1008 50%, #0f0a06 100%)',
+      thumb: 'url(uploads/hero-bg-world.jpg) center/cover no-repeat',
     },
     {
       icon: <MoonIcon />,
       title: 'Evening Digest',
       tags: [{ label: 'monologue' }, { label: 'analysis' }, { label: '12 min' }],
       summary: 'Stoltenberg travels to Ankara as Turkey blocks expansion vote. GUS publishes labour report — unemployment 5.2%, real wages up 3.8%.',
-      thumb: 'linear-gradient(135deg, #0e1520 0%, #080e18 50%, #060a12 100%)',
+      thumb: 'url(uploads/evening-bg-world.jpg) center/cover no-repeat',
     },
     {
       icon: <StarIcon />,
@@ -1108,7 +1110,305 @@ function ScreenSources() {
   );
 }
 
-Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenSources });
+function ScreenPlayerHero() {
+  const m  = 'rgba(250,247,242,0.35)';
+  const ml = 'rgba(250,247,242,0.60)';
+  const [playing, setPlaying] = React.useState(false);
+  const [showSources, setShowSources] = React.useState(false);
+  const [closingSources, setClosingSources] = React.useState(false);
+  const [showRead, setShowRead] = React.useState(false);
+  const [closingRead, setClosingRead] = React.useState(false);
+  const audioRef = React.useRef(null);
+  const closeSheet = () => {
+    setClosingSources(true);
+    setTimeout(() => { setShowSources(false); setClosingSources(false); }, 300);
+  };
+  const closeReadSheet = () => {
+    setClosingRead(true);
+    setTimeout(() => { setShowRead(false); setClosingRead(false); }, 300);
+  };
+  const toggle = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) a.pause(); else a.play();
+  };
+  // Mirrored waveform — lens envelope (full bar height, centered = mirror up/down)
+  const BARS = [8,12,16,22,30,40,50,58,52,44,56,48,38,50,42,34,46,40,32,42,36,28,38,44,34,26,36,40,30,24,34,28,22,30,36,26,20,28,22,16,24,28,20,14,18,12,10,8];
+  const coralEnd = 15; // ~30% coral, then fade to gray
+  const barColor = (i) => {
+    if (i < coralEnd) return T.coral;
+    if (i < coralEnd + 4) return `rgba(196,101,74,${0.7 - (i - coralEnd) * 0.17})`;
+    return 'rgba(250,247,242,0.22)';
+  };
+  const ctrlCircle = { width:34, height:34, borderRadius:'50%', background:'rgba(250,247,242,0.06)', border:'1px solid rgba(250,247,242,0.10)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 };
+  const SRCS = [
+    { cat: "KARPATHY'S PARALLEL AI CODING", title: 'Running Parallel Claude Sessions for 50× Productivity', body: 'By running multiple Claude Code sessions simultaneously — each with a distinct role — developers compress weeks of solo work into hours.', src: 'Aibuilderclub' },
+    { cat: 'CLAUDE 4.7', title: 'Anthropic Releases Claude 4.7 With Expanded Agentic Capabilities', body: 'The new model shows 15% improvement across coding benchmarks and introduces native tool-chaining.', src: 'The Verge' },
+    { cat: 'NATO & TURKEY', title: 'Stoltenberg Travels to Ankara as Alliance Faces Turkish Blockade', body: 'NATO chief visits Turkey after Ankara suspended access through the Bosphorus, citing tensions with Black Sea member states.', src: 'Reuters' },
+  ];
+  return (
+    <div style={{ width:'100%', height:'100%', background:'#15110d', display:'flex', flexDirection:'column', boxSizing:'border-box', overflow:'hidden', position:'relative' }}>
+      {/* Background image — fades to dark above waveform */}
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'38%', zIndex:0,
+        backgroundImage:'url(uploads/hero-bg-world.jpg)', backgroundSize:'cover', backgroundPosition:'center top' }} />
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'38%', zIndex:0,
+        background:'linear-gradient(to bottom, rgba(21,17,13,0.25) 0%, rgba(21,17,13,0.6) 55%, #15110d 78%, #15110d 100%)' }} />
+      {/* Status bar */}
+      <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 18px 4px', flexShrink:0 }}>
+        <span style={{ fontFamily:UI, fontSize:9, fontWeight:500, color:T.cream }}>9:41</span>
+        <div style={{ display:'flex', gap:4, alignItems:'center' }}>
+          <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 2C4 2 2.3 2.8 1 4.2L0 3.2C1.6 1.2 3.7 0 6 0s4.4 1.2 6 3.2l-1 1C9.7 2.8 8 2 6 2z" fill="rgba(250,247,242,0.9)"/><path d="M6 4.5c-1.2 0-2.2.5-3 1.3L2 4.8C3.1 3.7 4.5 3 6 3s2.9.7 4 1.8l-1 1c-.8-.8-1.8-1.3-3-1.3z" fill="rgba(250,247,242,0.9)"/><circle cx="6" cy="8" r="1" fill="rgba(250,247,242,0.9)"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
+        </div>
+      </div>
+      {/* Nav */}
+      <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 16px 0', flexShrink:0 }}>
+        <div style={{ width:28, height:28, borderRadius:'50%', background:'rgba(250,247,242,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 3L4.5 7l4 4" stroke="rgba(250,247,242,0.6)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+        <div style={{ width:28, height:28, borderRadius:'50%', background:'rgba(250,247,242,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="14" height="4" viewBox="0 0 14 4" fill="none"><circle cx="2" cy="2" r="1.3" fill="rgba(250,247,242,0.6)"/><circle cx="7" cy="2" r="1.3" fill="rgba(250,247,242,0.6)"/><circle cx="12" cy="2" r="1.3" fill="rgba(250,247,242,0.6)"/></svg>
+        </div>
+      </div>
+      {/* Player content */}
+      <div style={{ position:'relative', zIndex:1, flex:1, display:'flex', flexDirection:'column', padding:'0 18px 16px', overflow:'hidden' }}>
+        {/* Title block — centered */}
+        <div style={{ textAlign:'center', marginTop:18, marginBottom:30 }}>
+          <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:1, marginBottom:8 }}>
+            <span style={{ fontFamily:UI, fontSize:14, fontWeight:900, color:'rgba(250,247,242,0.85)', letterSpacing:'-0.01em' }}>your</span>
+            <span style={{ fontFamily:ED, fontSize:17, fontWeight:400, fontStyle:'italic', color:'rgba(250,247,242,0.85)' }}>daily</span>
+          </div>
+          <div style={{ fontFamily:UI, fontSize:32, fontWeight:500, color:T.cream, letterSpacing:'-0.01em' }}>Morning Brief</div>
+        </div>
+        {/* Waveform — mirrored lens */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:2.5, height:72, marginBottom:30, flexShrink:0 }}>
+          {BARS.map((h, i) => (
+            <div key={i} style={{
+              flex:1, minWidth:2.5, height:h, borderRadius:3, background: barColor(i),
+              transformOrigin: 'center',
+              animation: playing ? `waveBar ${(0.6 + (i % 5) * 0.18).toFixed(2)}s ease-in-out ${((i % 7) * 0.07).toFixed(2)}s infinite` : 'none',
+            }} />
+          ))}
+        </div>
+        {/* Episode title + description — centered */}
+        <div style={{ textAlign:'center', marginBottom:24 }}>
+          <div style={{ fontFamily:UI, fontSize:24, fontWeight:600, color:T.cream, letterSpacing:'-0.01em', lineHeight:1.15, marginBottom:14 }}>The AI Governance Reckoning</div>
+          <div style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:ml, lineHeight:1.5, maxWidth:240, marginInline:'auto' }}>Regulators, labs, and senators clash over the first binding rules for frontier AI models.</div>
+        </div>
+        {/* Reaction buttons — icon only */}
+        <div style={{ display:'flex', gap:14, justifyContent:'center', marginBottom:'auto' }}>
+          <div role="button" aria-label="Like" style={{ width:40, height:40, borderRadius:'50%', background:'rgba(196,101,74,0.10)', border:'1px solid rgba(196,101,74,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><path d="M3.2 6.8L5.2 2.6l1.5.7L5.7 6.4h5a.7.7 0 01.7.7v.8l-.7 3.2a1.1 1.1 0 01-1 .9H4.2a.7.7 0 01-.7-.7l-.3-4.5z" stroke={T.coral} strokeWidth="1.1"/><rect x="1.6" y="6.5" width="2" height="5.8" rx="1" fill={T.coral}/></svg>
+          </div>
+          <div role="button" aria-label="Dislike" style={{ width:40, height:40, borderRadius:'50%', background:'rgba(250,247,242,0.05)', border:'1px solid rgba(250,247,242,0.12)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+            <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><path d="M9.8 6.2L7.8 10.4l-1.5-.7 1-3.3h-5a.7.7 0 01-.7-.7v-.8l.7-3.2A1.1 1.1 0 013.3.8h5.5a.7.7 0 01.7.7l.3 4.7z" stroke="rgba(250,247,242,0.5)" strokeWidth="1.1"/><rect x="9.4" y=".7" width="2" height="5.8" rx="1" fill="rgba(250,247,242,0.5)"/></svg>
+          </div>
+        </div>
+        {/* Progress bar */}
+        <div style={{ marginTop:22, marginBottom:18 }}>
+          <div style={{ position:'relative', height:3, borderRadius:2, background:'rgba(250,247,242,0.14)', marginBottom:8 }}>
+            <div style={{ width:'27%', height:'100%', background:T.coral, borderRadius:2 }} />
+            {/* chapter dots */}
+            {[0.42,0.58,0.72,0.86].map((p, i) => (
+              <div key={i} style={{ position:'absolute', top:'50%', left:`${p*100}%`, transform:'translate(-50%, -50%)', width:3, height:3, borderRadius:'50%', background:'rgba(250,247,242,0.3)' }} />
+            ))}
+            <div style={{ position:'absolute', top:'50%', left:'27%', transform:'translate(-50%, -50%)', width:14, height:14, borderRadius:'50%', background:T.cream, boxShadow:'0 1px 4px rgba(0,0,0,0.4)' }} />
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between' }}>
+            <span style={{ fontFamily:UI, fontSize:9, fontWeight:300, color:T.coral }}>2:16</span>
+            <span style={{ fontFamily:UI, fontSize:9, fontWeight:300, color:m }}>8:20</span>
+          </div>
+        </div>
+        {/* Controls */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
+          <div style={ctrlCircle}>
+            <span style={{ fontFamily:UI, fontSize:10, fontWeight:500, color:ml }}>1×</span>
+          </div>
+          <div style={ctrlCircle}>
+            {/* Previous track */}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="1.5" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.6)"/>
+              <path d="M15.5 2.5L5.5 9L15.5 15.5V2.5Z" fill="rgba(250,247,242,0.6)"/>
+            </svg>
+          </div>
+          {/* Play / Pause — large white */}
+          <div onClick={toggle} role="button" aria-label={playing ? 'Pause' : 'Play'} style={{ width:48, height:48, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', gap:5, flexShrink:0, cursor:'pointer', animation: playing ? 'none' : 'playPulse 2s ease-in-out infinite' }}>
+            {playing ? (
+              <React.Fragment>
+                <div style={{ width:4, height:16, borderRadius:2, background:'#15110d' }}/>
+                <div style={{ width:4, height:16, borderRadius:2, background:'#15110d' }}/>
+              </React.Fragment>
+            ) : (
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" style={{ marginLeft:2 }}><path d="M1.5 1.3L14.5 9L1.5 16.7V1.3Z" fill="#15110d"/></svg>
+            )}
+          </div>
+          <div style={ctrlCircle}>
+            {/* Next track */}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2.5 2.5L12.5 9L2.5 15.5V2.5Z" fill="rgba(250,247,242,0.6)"/>
+              <rect x="14" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.6)"/>
+            </svg>
+          </div>
+          <div style={{ ...ctrlCircle, position:'relative' }}>
+            <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="0" width="15" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/><rect x="0" y="4.7" width="10" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/><rect x="0" y="9.4" width="12" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/></svg>
+            <div style={{ position:'absolute', bottom:7, right:8, width:3, height:3, borderRadius:'50%', background:T.coral }} />
+          </div>
+        </div>
+        {/* Bottom tabs */}
+        <div style={{ borderTop:'1px solid rgba(250,247,242,0.09)', display:'flex', flexShrink:0, paddingTop:10 }}>
+          <div onClick={() => setShowRead(true)} role="button" style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', gap:6, borderRight:'1px solid rgba(250,247,242,0.06)', cursor:'pointer' }}>
+            <svg width="15" height="13" viewBox="0 0 15 13" fill="none"><path d="M7.5 2.5C6 1.3 4 1 1.5 1.3v8.5C4 9.5 6 9.8 7.5 11M7.5 2.5C9 1.3 11 1 13.5 1.3v8.5C11 9.5 9 9.8 7.5 11M7.5 2.5V11" stroke={T.cream} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span style={{ fontFamily:UI, fontSize:10.5, fontWeight:400, color:T.cream }}>Read</span>
+          </div>
+          <div onClick={() => setShowSources(true)} role="button" style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', gap:6, cursor:'pointer' }}>
+            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"><rect x="1.5" y="1" width="10" height="12" rx="1.5" stroke={T.cream} strokeWidth="1.2"/><path d="M4 5h5M4 7.5h5M4 10h3" stroke={T.cream} strokeWidth="1.1" strokeLinecap="round"/></svg>
+            <span style={{ fontFamily:UI, fontSize:10.5, fontWeight:400, color:T.cream }}>Sources</span>
+          </div>
+        </div>
+      </div>
+      {/* Sources bottom sheet overlay */}
+      {showSources && (
+        <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', flexDirection:'column' }}>
+          {/* Backdrop */}
+          <div onClick={closeSheet} style={{ flex:1, background:'rgba(21,17,13,0.55)' }} />
+          {/* Sheet */}
+          <div style={{ background:'#1e1a16', borderRadius:'14px 14px 0 0', display:'flex', flexDirection:'column', overflow:'hidden', height:'78%', animation: closingSources ? 'slideDownSheet 0.3s cubic-bezier(0.32,0.72,0,1) forwards' : 'slideUpSheet 0.32s cubic-bezier(0.32,0.72,0,1)' }}>
+            {/* Handle */}
+            <div style={{ display:'flex', justifyContent:'center', padding:'7px 0 2px', flexShrink:0 }}>
+              <div style={{ width:30, height:3, borderRadius:2, background:'rgba(250,247,242,0.18)' }}/>
+            </div>
+            {/* Header */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'4px 14px 8px', flexShrink:0 }}>
+              <span style={{ fontFamily:UI, fontSize:15, fontWeight:400, color:T.cream }}>Sources</span>
+              <div onClick={closeSheet} role="button" style={{ width:20, height:20, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 1l6 6M7 1L1 7" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              </div>
+            </div>
+            {/* Source items */}
+            <div style={{ flex:1, overflow:'auto', padding:'0 14px' }}>
+              {SRCS.map((s, i) => (
+                <div key={i} style={{ marginBottom:12, paddingBottom:12, borderBottom: i < SRCS.length-1 ? '1px solid rgba(250,247,242,0.07)' : 'none' }}>
+                  <div style={{ fontFamily:UI, fontSize:9.5, fontWeight:500, color:T.coral, letterSpacing:'0.09em', textTransform:'uppercase', marginBottom:4 }}>{s.cat}</div>
+                  {s.title && <div style={{ fontFamily:ED, fontSize:14, fontStyle:'italic', color:T.cream, lineHeight:1.3, marginBottom:5 }}>{s.title}</div>}
+                  {s.body  && <div style={{ fontFamily:UI, fontSize:10, fontWeight:300, color:ml, lineHeight:1.5, marginBottom:6 }}>{s.body}</div>}
+                  {s.src   && (
+                    <div style={{ display:'inline-flex', alignItems:'center', gap:4, height:22, paddingInline:10, borderRadius:999, border:'1px solid rgba(250,247,242,0.18)', background:'rgba(250,247,242,0.04)' }}>
+                      <span style={{ fontFamily:UI, fontSize:10, fontWeight:300, color:ml }}>{s.src}</span>
+                      <svg width="7" height="7" viewBox="0 0 7 7" fill="none"><path d="M1 6L6 1M6 1H3M6 1v3" stroke="rgba(250,247,242,0.45)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            {/* Mini player bar */}
+            <div style={{ borderTop:'1px solid rgba(250,247,242,0.07)', padding:'8px 14px 12px', flexShrink:0 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:7 }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1.5" width="2.5" height="11" rx="1" fill="rgba(250,247,242,0.5)"/><path d="M4.5 7L12 2v10L4.5 7z" fill="rgba(250,247,242,0.5)"/></svg>
+                <div style={{ width:26, height:26, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', gap:3, flexShrink:0 }}>
+                  <div style={{ width:3, height:9, borderRadius:1.5, background:'#141110' }}/>
+                  <div style={{ width:3, height:9, borderRadius:1.5, background:'#141110' }}/>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="10.5" y="1.5" width="2.5" height="11" rx="1" fill="rgba(250,247,242,0.5)"/><path d="M9.5 7L2 2v10l7.5-5z" fill="rgba(250,247,242,0.5)"/></svg>
+                <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:ml, flex:1 }}>Claude 4.7</span>
+                <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:m }}>2:17</span>
+              </div>
+              <div style={{ height:2, borderRadius:1, background:'rgba(250,247,242,0.12)' }}>
+                <div style={{ width:'35%', height:'100%', background:T.coral, borderRadius:1 }}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Read bottom sheet overlay */}
+      {showRead && (
+        <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', flexDirection:'column' }}>
+          <div onClick={closeReadSheet} style={{ flex:1, background:'rgba(21,17,13,0.55)' }} />
+          <div style={{ background:'#1a1714', borderRadius:'14px 14px 0 0', display:'flex', flexDirection:'column', overflow:'hidden', height:'82%', animation: closingRead ? 'slideDownSheet 0.3s cubic-bezier(0.32,0.72,0,1) forwards' : 'slideUpSheet 0.32s cubic-bezier(0.32,0.72,0,1)' }}>
+            {/* Handle */}
+            <div style={{ display:'flex', justifyContent:'center', padding:'7px 0 2px', flexShrink:0 }}>
+              <div style={{ width:30, height:3, borderRadius:2, background:'rgba(250,247,242,0.18)' }}/>
+            </div>
+            {/* Header */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'6px 14px 8px', flexShrink:0, borderBottom:'1px solid rgba(250,247,242,0.08)' }}>
+              <span style={{ fontFamily:UI, fontSize:17, fontWeight:700, color:T.cream }}>Read</span>
+              <div onClick={closeReadSheet} role="button" style={{ width:22, height:22, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 1l6 6M7 1L1 7" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              </div>
+            </div>
+            {/* Scrollable content */}
+            <div style={{ flex:1, overflow:'auto', padding:'12px 14px 0' }}>
+              {/* PODSUMOWANIE */}
+              <div style={{ fontFamily:UI, fontSize:9, fontWeight:600, color:m, letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:10 }}>Podsumowanie</div>
+              {[
+                'EU proposes first binding AI governance framework',
+                'US Senate calls emergency hearing on frontier models',
+                'China signals willingness to join global safety talks',
+                'Tech companies push back on liability clauses',
+                'UN convenes emergency session on autonomous weapons',
+              ].map((item, i) => (
+                <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:9, marginBottom:9 }}>
+                  <div style={{ width:20, height:20, borderRadius:'50%', background:'rgba(250,247,242,0.1)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
+                    <span style={{ fontFamily:UI, fontSize:9, fontWeight:600, color:ml }}>{i+1}</span>
+                  </div>
+                  <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:T.cream, lineHeight:1.5 }}>{item}</span>
+                </div>
+              ))}
+              {/* PERSPEKTYWY */}
+              <div style={{ fontFamily:UI, fontSize:9, fontWeight:600, color:m, letterSpacing:'0.12em', textTransform:'uppercase', marginTop:14, marginBottom:10 }}>Perspektywy</div>
+              {/* ZA */}
+              <div style={{ background:'rgba(34,80,52,0.45)', border:'1px solid rgba(52,168,83,0.25)', borderRadius:10, padding:'10px 12px', marginBottom:8 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:8 }}>
+                  <div style={{ width:7, height:7, borderRadius:'50%', background:'#4ade80', flexShrink:0 }}/>
+                  <span style={{ fontFamily:UI, fontSize:11, fontWeight:700, color:'#4ade80' }}>ZA</span>
+                </div>
+                {['Binding rules needed to prevent catastrophic risks', 'Industry leaders support international coordination', 'Public trust in AI requires accountability frameworks'].map((pt, i) => (
+                  <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:6, marginBottom:5 }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'rgba(74,222,128,0.7)', flexShrink:0, marginTop:4 }}/>
+                    <span style={{ fontFamily:UI, fontSize:10.5, fontWeight:300, color:T.cream, lineHeight:1.45 }}>{pt}</span>
+                  </div>
+                ))}
+              </div>
+              {/* PRZECIW */}
+              <div style={{ background:'rgba(80,20,20,0.45)', border:'1px solid rgba(239,68,68,0.25)', borderRadius:10, padding:'10px 12px', marginBottom:14 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:8 }}>
+                  <div style={{ width:7, height:7, borderRadius:'50%', background:'#f87171', flexShrink:0 }}/>
+                  <span style={{ fontFamily:UI, fontSize:11, fontWeight:700, color:'#f87171' }}>PRZECIW</span>
+                </div>
+                {['Overregulation could stifle innovation globally', 'Enforcement across jurisdictions remains unclear', 'US companies fear competitive disadvantage vs China'].map((pt, i) => (
+                  <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:6, marginBottom:5 }}>
+                    <div style={{ width:5, height:5, borderRadius:'50%', background:'rgba(248,113,113,0.7)', flexShrink:0, marginTop:4 }}/>
+                    <span style={{ fontFamily:UI, fontSize:10.5, fontWeight:300, color:T.cream, lineHeight:1.45 }}>{pt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Mini player */}
+            <div style={{ borderTop:'1px solid rgba(250,247,242,0.07)', padding:'10px 14px 12px', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{ width:30, height:30, borderRadius:'50%', background:'rgba(250,247,242,0.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><rect x="1.5" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.6)"/><path d="M15.5 2.5L5.5 9L15.5 15.5V2.5Z" fill="rgba(250,247,242,0.6)"/></svg>
+              </div>
+              <div style={{ width:36, height:36, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" style={{ marginLeft:2 }}><path d="M1 1L11 7L1 13V1Z" fill="#15110d"/></svg>
+              </div>
+              <div style={{ width:30, height:30, borderRadius:'50%', background:'rgba(250,247,242,0.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M2.5 2.5L12.5 9L2.5 15.5V2.5Z" fill="rgba(250,247,242,0.6)"/><rect x="14" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.6)"/></svg>
+              </div>
+              <span style={{ fontFamily:UI, fontSize:11, fontWeight:500, color:T.cream, flex:1 }}>Morning Brief</span>
+              <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:m }}>3:29</span>
+            </div>
+          </div>
+        </div>
+      )}
+      <audio ref={audioRef} src="uploads/sample-episode.mp3" preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)} />
+    </div>
+  );
+}
+
+Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenSources, ScreenPlayerHero });
 })();
 (() => {
 /* ─── landing-nav.jsx — Fixed Top Navigation ─── */
@@ -1125,6 +1425,7 @@ const NAV_LINKS = [
 function TopNav() {
   const [scrolled, setScrolled] = React.useState(false);
   const [active,   setActive]   = React.useState('');
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     const ids = ['hero', ...NAV_LINKS.map(l => l.id)];
@@ -1189,6 +1490,56 @@ function TopNav() {
           Join waitlist
         </a>
       </div>
+
+      {/* Hamburger (mobile only — toggled via .yc-nav-burger media query) */}
+      <button
+        className="yc-nav-burger"
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen(o => !o)}
+        style={{
+          width: 40, height: 40, border: 'none', background: 'transparent',
+          alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+          flexShrink: 0, padding: 0,
+        }}>
+        {menuOpen ? (
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M5 5l12 12M17 5L5 17" stroke={T.charcoal} strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M3 6h16M3 11h16M3 16h16" stroke={T.charcoal} strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
+
+      {/* Mobile dropdown panel */}
+      {menuOpen && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0,
+          background: 'rgba(250,247,242,0.98)',
+          backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
+          boxShadow: '0 12px 28px rgba(45,41,38,0.12)',
+          borderTop: '1px solid rgba(45,41,38,0.08)',
+          padding: '14px 24px 22px', display: 'flex', flexDirection: 'column', gap: 4,
+        }}>
+          {NAV_LINKS.map(({ id, label }) => (
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} style={{
+              fontFamily: UI, fontSize: 16, fontWeight: 300,
+              color: T.charcoal, textDecoration: 'none',
+              padding: '12px 0', borderBottom: '1px solid rgba(45,41,38,0.06)',
+            }}>{label}</a>
+          ))}
+          <a href="#pricing" onClick={() => setMenuOpen(false)} style={{
+            fontFamily: UI, fontSize: 15, fontWeight: 400,
+            color: T.cream, textDecoration: 'none', textAlign: 'center',
+            padding: '13px 22px', borderRadius: 999, background: T.charcoal,
+            marginTop: 14,
+          }}>
+            Join waitlist
+          </a>
+        </div>
+      )}
     </nav>
   );
 }
@@ -1197,7 +1548,7 @@ Object.assign(window, { TopNav });
 })();
 (() => {
 /* ─── landing-s1-sa.jsx — Hero · Problem · How It Works (standalone) ─── */
-const { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback } = window;
+const { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenPlayerHero } = window;
 
 /* ── Inline waveform (replaces Player.html iframe) ───── */
 const BAR_HEIGHTS = [0.28,0.55,0.72,0.38,0.85,0.62,0.91,0.48,0.32,0.67,0.82,0.41,0.74,0.52,0.29,0.63,0.88,0.44,0.71,0.54,0.31,0.79,0.61,0.43,0.57,0.76,0.35,0.93,0.50,0.65,0.40,0.78,0.33,0.84,0.53,0.68,0.45,0.90,0.36,0.70];
@@ -1266,8 +1617,8 @@ function HeroSection({ th }) {
         </div>
 
         {/* Right: Phone — static image */}
-        <div className="lp-hero-phone" style={{ width: '46%', maxWidth: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px 0 0', position: 'relative', flexShrink: 0 }}>
-          <img src="uploads/hero-phone.png" alt="Yourcast player screen" style={{ width: '100%', maxWidth: 360, maxHeight: '80vh', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.15))' }} />
+        <div className="lp-hero-phone" style={{ width: '46%', maxWidth: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px 0 0', flexShrink: 0 }}>
+          <PhoneFrame width={340}><ScreenPlayerHero /></PhoneFrame>
         </div>
       </div>
       {/* ElevenLabs — bottom of fold */}
@@ -1466,11 +1817,11 @@ function DifferentiatorsSection({ th }) {
           </h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 18 }}>
+        <div className="lp-diff-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 18 }}>
           {DIFF_CARDS.map((card, i) => {
             const gridColumn = i < 3 ? 'span 2' : (i === 3 ? '2 / 4' : '4 / 6');
             return (
-          <div key={i} style={{ gridColumn, padding: '32px 28px', borderRadius: 20, background: cardBg, border: `1px solid ${cardBord}` }}>
+          <div key={i} className="lp-diff-card" style={{ gridColumn, padding: '32px 28px', borderRadius: 20, background: cardBg, border: `1px solid ${cardBord}` }}>
               <div style={{ color: iconFg, marginBottom: 18, opacity: 0.85 }}>{card.glyph}</div>
               <div style={{ fontFamily: UI, fontSize: 17, fontWeight: 400, color: titleFg, marginBottom: 10, lineHeight: 1.3 }}>{card.title}</div>
               <div style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: bodyFg, lineHeight: 1.72 }}>{card.body}</div>
@@ -1817,10 +2168,10 @@ function FinalCTASection({ th }) {
   return (
     <section style={{ background: th.bg, padding: '100px 48px', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 60% at 30% 50%, rgba(250,247,242,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 64, position: 'relative', zIndex: 1 }}>
+      <div className="lp-cta-row" style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 64, position: 'relative', zIndex: 1 }}>
         {/* Left: text + form */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <h2 style={{ fontFamily: ED, fontSize: 'clamp(28px, 3.4vw, 48px)', fontWeight: 400, color: headColor, lineHeight: 1.18, marginBottom: 28, whiteSpace: 'nowrap' }}>
+          <h2 className="lp-cta-head" style={{ fontFamily: ED, fontSize: 'clamp(28px, 3.4vw, 48px)', fontWeight: 400, color: headColor, lineHeight: 1.18, marginBottom: 28, whiteSpace: 'nowrap' }}>
             Your personal researcher<br />is ready to work for you.
           </h2>
           <div style={{ width: '100%', maxWidth: 480 }}>

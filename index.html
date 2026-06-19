@@ -47,16 +47,43 @@
       0%, 100% { transform: scaleY(0.28); }
       50%       { transform: scaleY(1);    }
     }
+    @keyframes slideUpSheet {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0);    }
+    }
+    @keyframes slideDownSheet {
+      from { transform: translateY(0);    }
+      to   { transform: translateY(100%); }
+    }
+    @keyframes playPulse {
+      0%, 100% { transform: scale(1);    }
+      50%       { transform: scale(1.08); }
+    }
     @keyframes livePulse {
       0%, 100% { opacity: 1;   transform: scale(1);   }
       50%       { opacity: 0.3; transform: scale(0.65); }
     }
 
+    /* ── Mobile nav (hamburger) ── */
+    .yc-nav-burger { display: none; }
+
     @media (max-width: 780px) {
-      .lp-step-row    { flex-direction: column !important; gap: 28px !important; }
-      .lp-step-phone  { display: none !important; }
-      .lp-hero-phone  { display: none !important; }
-      .lp-hero-layout { flex-direction: column !important; padding-bottom: 60px; }
+      .lp-step-row    { flex-direction: column !important; gap: 24px !important; padding: 40px 0 !important; }
+      .lp-step-phone  { width: 100% !important; margin-top: 4px; }
+      .lp-hero-phone  { width: 100% !important; padding: 0 !important; margin-top: 32px; }
+      .lp-hero-layout { flex-direction: column !important; padding-top: 84px !important; padding-bottom: 60px; }
+
+      /* nav: collapse links into hamburger */
+      .yc-nav-links  { display: none !important; }
+      .yc-nav-burger { display: flex !important; }
+
+      /* "Why it's different": single column */
+      .lp-diff-grid  { grid-template-columns: 1fr !important; }
+      .lp-diff-card  { grid-column: auto !important; }
+
+      /* Final CTA: stack text over phone */
+      .lp-cta-row    { flex-direction: column !important; gap: 44px !important; }
+      .lp-cta-head   { white-space: normal !important; }
     }
 
     a { color: inherit; }
