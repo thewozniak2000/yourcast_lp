@@ -605,7 +605,7 @@ function PhoneFrame({ children, width = 240 }) {
   const b = Math.round(width * 0.025);
   return (
     <div style={{
-      width, maxWidth: '100%', aspectRatio: `${width} / ${h}`, background: '#0c0a08',
+      width, height: h, maxWidth: '100%', background: '#0c0a08',
       borderRadius: r, border: `${b}px solid #221e1a`,
       boxShadow: '0 28px 72px rgba(0,0,0,0.26), 0 6px 20px rgba(0,0,0,0.14)',
       overflow: 'hidden', flexShrink: 0, position: 'relative',
