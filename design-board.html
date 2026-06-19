@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yourcast · design board</title>
+
+  <meta name="ext-resource-dependency" content="uploads/X_icon.svg.png" data-resource-id="xIcon" />
+  <meta name="ext-resource-dependency" content="uploads/youtube-logo-youtube-icon-transparent-free-png.webp" data-resource-id="youtubeIcon" />
+  <meta name="ext-resource-dependency" content="uploads/Reddit_Logo_Icon.svg.png" data-resource-id="redditIcon" />
+  <meta name="ext-resource-dependency" content="uploads/instagram-logo-instagram-icon-transparent-free-png.webp" data-resource-id="instagramIcon" />
+  <meta name="ext-resource-dependency" content="uploads/facebook-logo-facebook-icon-transparent-free-png.webp" data-resource-id="facebookIcon" />
+  <meta name="ext-resource-dependency" content="uploads/free-apple-mail-icon-svg-download-png-493152.webp" data-resource-id="mailIcon" />
+  <meta name="ext-resource-dependency" content="uploads/rss-color-icon.webp" data-resource-id="rssIcon" />
+  <meta name="ext-resource-dependency" content="uploads/substack.png" data-resource-id="substackIcon" />
+  <meta name="ext-resource-dependency" content="uploads/team_photos-1779999882632.png" data-resource-id="team1Photo" />
+  <meta name="ext-resource-dependency" content="uploads/1730760981526.jpeg" data-resource-id="team2Photo" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #18160f;
+      -webkit-font-smoothing: antialiased;
+      font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+      color: #faf7f2;
+      min-height: 100vh;
+    }
+    #root { isolation: isolate; }
+
+    .yc-ph-light::placeholder { color: rgba(45,41,38,0.38); }
+    .yc-ph-dark::placeholder  { color: rgba(250,247,242,0.38); }
+
+    @keyframes pillDrift {
+      0%,100% { transform: translateY(0px);   opacity: 1;    }
+      30%      { transform: translateY(-4px);  opacity: 0.85; }
+      65%      { transform: translateY(2px);   opacity: 0.95; }
+    }
+    @keyframes waveBar {
+      0%, 100% { transform: scaleY(0.28); }
+      50%       { transform: scaleY(1);    }
+    }
+    @keyframes slideUpSheet {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0);    }
+    }
+    @keyframes slideDownSheet {
+      from { transform: translateY(0);    }
+      to   { transform: translateY(100%); }
+    }
+    @keyframes playPulse {
+      0%, 100% { transform: scale(1);    }
+      50%       { transform: scale(1.08); }
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1;   transform: scale(1);   }
+      50%       { opacity: 0.3; transform: scale(0.65); }
+    }
+
+    a { color: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    /* ── Topbar ── */
+    .board-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18, 14, 10, 0.92);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      backdrop-filter: blur(20px) saturate(140%);
+      border-bottom: 1px solid rgba(250, 247, 242, 0.08);
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .board-logo {
+      display: flex;
+      align-items: baseline;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .board-logo-serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #c4654a;
+    }
+    .board-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.32);
+      padding: 3px 8px;
+      border: 1px solid rgba(250, 247, 242, 0.12);
+      border-radius: 999px;
+    }
+
+    /* ── Tab nav ── */
+    .board-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(250, 247, 242, 0.06);
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .board-tab {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.45);
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+      border: none;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .board-tab:hover { color: rgba(250, 247, 242, 0.75); }
+    .board-tab.active {
+      background: rgba(250, 247, 242, 0.12);
+      color: #faf7f2;
+    }
+
+    /* ── Screens canvas ── */
+    .board-canvas {
+      padding: 48px 48px 80px;
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+      overflow-x: auto;
+      min-height: calc(100vh - 56px);
+    }
+    .board-screen-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+    .board-screen-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(250, 247, 242, 0.85);
+      margin-bottom: 3px;
+      text-align: center;
+    }
+    .board-screen-code {
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.32);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      text-align: center;
+    }
+    .board-divider {
+      width: 1px;
+      background: rgba(250, 247, 242, 0.06);
+      align-self: stretch;
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    /* ── Design system page ── */
+    .ds-page {
+      padding: 56px 64px 100px;
+      max-width: 1100px;
+    }
+    .ds-section {
+      margin-bottom: 64px;
+    }
+    .ds-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.28);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(250, 247, 242, 0.07);
+    }
+    .ds-section-title {
+      font-size: 22px;
+      font-weight: 300;
+      color: #faf7f2;
+      margin-bottom: 6px;
+    }
+    .ds-section-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.42);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* Color swatches */
+    .ds-color-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ds-swatch {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 120px;
+    }
+    .ds-swatch-box {
+      width: 120px;
+      height: 80px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .ds-swatch-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(250, 247, 242, 0.8);
+    }
+    .ds-swatch-hex {
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.35);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+    .ds-swatch-role {
+      font-size: 10px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.25);
+      line-height: 1.4;
+    }
+
+    /* Typography specimens */
+    .ds-type-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(250, 247, 242, 0.05);
+    }
+    .ds-type-row:last-child { border-bottom: none; }
+    .ds-type-meta {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.25);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    /* Spacing tokens */
+    .ds-space-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ds-space-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .ds-space-bar {
+      background: rgba(196, 101, 74, 0.35);
+      height: 20px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .ds-space-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.6);
+      min-width: 32px;
+    }
+    .ds-space-val {
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.28);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    /* Radius tokens */
+    .ds-radius-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .ds-radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .ds-radius-box {
+      background: rgba(250, 247, 242, 0.07);
+      border: 1px solid rgba(250, 247, 242, 0.1);
+      width: 80px;
+      height: 80px;
+    }
+    .ds-radius-label {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.55);
+      text-align: center;
+    }
+    .ds-radius-val {
+      font-size: 10px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.25);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      text-align: center;
+    }
+
+    /* Component examples */
+    .ds-comp-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .ds-comp-card {
+      background: rgba(250, 247, 242, 0.04);
+      border: 1px solid rgba(250, 247, 242, 0.08);
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ds-comp-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.22);
+      margin-bottom: 4px;
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root" style="display:none"></div>
+  <div id="board-root"></div>
+
+  <script>
+    window.__resources = {};
+    document.querySelectorAll('meta[name="ext-resource-dependency"]').forEach(function(meta) {
+      var id = meta.getAttribute('data-resource-id');
+      var path = meta.getAttribute('content');
+      if (id && path) window.__resources[id] = path;
+    });
+  </script>
+
+  <script type="text/babel" src="bundle.jsx"></script>
+
+  <script type="text/babel">
+    const {
+      useState,
+      PhoneFrame,
+      ScreenPlayerHero,
+      ScreenTopicPicker,
+      ScreenHomeFeed,
+      ScreenFeedback,
+      ScreenPodcastConfig,
+      ScreenSegmentModal,
+    } = { useState: React.useState, ...window };
+
+    /* ─── Screens data ─── */
+    const SCREENS = [
+      { name: 'Home Feed',      code: 'ScreenHomeFeed',    desc: 'Lista episodów / feed główny',      component: ScreenHomeFeed,    width: 300 },
+      { name: 'Hero Player',    code: 'ScreenPlayerHero',  desc: 'Player · waveform · bottom sheets', component: ScreenPlayerHero,  width: 300 },
+      { name: 'Feedback',       code: 'ScreenFeedback',    desc: 'Bottom sheet do fragmentu',         component: ScreenFeedback,    width: 300 },
+      { name: 'Segment Modal',  code: 'ScreenSegmentModal',desc: 'Modal oceny segmentu 1/7',          component: ScreenSegmentModal,width: 300 },
+      { name: 'Podcast Config', code: 'ScreenPodcastConfig',desc: 'Konfiguracja odcinka',             component: ScreenPodcastConfig,width: 300 },
+      { name: 'Topic Picker',   code: 'ScreenTopicPicker', desc: 'Krok 01 — wybór tematów i źródeł', component: ScreenTopicPicker, width: 300 },
+    ];
+
+    /* ─── Design system data ─── */
+    const COLORS = [
+      { name: 'Coral',    token: 'coral',    hex: '#c4654a', role: 'Primary accent · CTA · highlights' },
+      { name: 'Cream',    token: 'cream',    hex: '#faf7f2', role: 'Light bg · text on dark · logo' },
+      { name: 'Charcoal', token: 'charcoal', hex: '#2d2926', role: 'Light mode text · dark surfaces' },
+      { name: 'Ink',      token: 'ink',      hex: '#1c1917', role: 'Deepest dark · footer bg' },
+      { name: 'Dark',     token: 'dark',     hex: '#141210', role: 'Darkest bg · pricing dark' },
+      { name: 'Card',     token: 'card',     hex: '#1e1b18', role: 'Dark card surface' },
+      { name: 'Stone',    token: 'stone',    hex: '#f0ebe4', role: 'Light section bg' },
+      { name: 'Linen',    token: 'linen',    hex: '#e8e4dc', role: 'Alt light bg · FAQ section' },
+      { name: 'Copper',   token: 'copper',   hex: '#b08968', role: 'Secondary accent · metadata' },
+      { name: 'Sage',     token: 'sage',     hex: '#6b7c6e', role: 'Muted green · subtle accents' },
+    ];
+
+    const SPACES = [
+      { label: 'xs',  px: 4  },
+      { label: 'sm',  px: 8  },
+      { label: 'md',  px: 16 },
+      { label: 'lg',  px: 24 },
+      { label: 'xl',  px: 40 },
+      { label: '2xl', px: 64 },
+      { label: '3xl', px: 96 },
+    ];
+
+    const RADII = [
+      { label: 'None',   val: '0px',   r: 0  },
+      { label: 'sm',     val: '6px',   r: 6  },
+      { label: 'md',     val: '10px',  r: 10 },
+      { label: 'lg',     val: '14px',  r: 14 },
+      { label: 'xl',     val: '20px',  r: 20 },
+      { label: 'pill',   val: '999px', r: 40 },
+    ];
+
+    const TYPE_SCALE = [
+      { label: 'Display',  size: 52, weight: 300, family: "'Outfit', sans-serif",                              sample: 'Your personal podcast.' },
+      { label: 'Serif H1', size: 40, weight: 400, family: "'Cormorant Garamond', serif", italic: true,         sample: 'A podcast no one else will hear.' },
+      { label: 'H2',       size: 28, weight: 300, family: "'Outfit', sans-serif",                              sample: 'What makes yourcast different' },
+      { label: 'H3',       size: 20, weight: 400, family: "'Outfit', sans-serif",                              sample: 'AI that listens to you' },
+      { label: 'Body',     size: 16, weight: 300, family: "'Outfit', sans-serif",                              sample: 'yourcast turns your reading list into a private podcast — tailored to you, narrated by AI, delivered every morning.' },
+      { label: 'Label',    size: 13, weight: 500, family: "'Outfit', sans-serif", upper: true, spacing: '0.08em', sample: 'How it works' },
+      { label: 'Caption',  size: 12, weight: 300, family: "'Outfit', sans-serif",                              sample: 'Just a launch update once we go live soon.' },
+      { label: 'Micro',    size: 11, weight: 300, family: "'Outfit', sans-serif", upper: true, spacing: '0.1em', sample: 'Tuesday, 27 May · Morning Brief' },
+    ];
+
+    /* ─── Subcomponents ─── */
+    function ColorSwatches() {
+      return (
+        <div className="ds-color-grid">
+          {COLORS.map(c => (
+            <div className="ds-swatch" key={c.token}>
+              <div className="ds-swatch-box" style={{ background: c.hex }} />
+              <div>
+                <div className="ds-swatch-name">{c.name}</div>
+                <div className="ds-swatch-hex">{c.hex}</div>
+                <div className="ds-swatch-role">{c.role}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function SpacingTokens() {
+      const max = Math.max(...SPACES.map(s => s.px));
+      return (
+        <div className="ds-space-grid">
+          {SPACES.map(s => (
+            <div className="ds-space-row" key={s.label}>
+              <div className="ds-space-label">{s.label}</div>
+              <div className="ds-space-bar" style={{ width: Math.round((s.px / max) * 320) }} />
+              <div className="ds-space-val">{s.px}px</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function RadiusTokens() {
+      return (
+        <div className="ds-radius-grid">
+          {RADII.map(r => (
+            <div className="ds-radius-item" key={r.label}>
+              <div className="ds-radius-box" style={{ borderRadius: r.r }} />
+              <div>
+                <div className="ds-radius-label">{r.label}</div>
+                <div className="ds-radius-val">{r.val}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function TypeScale() {
+      return (
+        <div>
+          {TYPE_SCALE.map(t => (
+            <div className="ds-type-row" key={t.label}>
+              <div className="ds-type-meta">{t.label} · {t.size}px / {t.weight}</div>
+              <div style={{
+                fontFamily: t.family,
+                fontSize: Math.min(t.size, 44),
+                fontWeight: t.weight,
+                fontStyle: t.italic ? 'italic' : 'normal',
+                textTransform: t.upper ? 'uppercase' : 'none',
+                letterSpacing: t.spacing || 'normal',
+                color: '#faf7f2',
+                lineHeight: 1.25,
+                opacity: 0.9,
+              }}>
+                {t.sample}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function ComponentExamples() {
+      const UI = "'Outfit', sans-serif";
+      const ED = "'Cormorant Garamond', serif";
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+
+          {/* Buttons */}
+          <div className="ds-comp-card">
+            <div className="ds-comp-label">Buttons</div>
+            <div className="ds-comp-row">
+              <button style={{ padding: '13px 28px', background: '#c4654a', color: '#faf7f2', border: 'none', borderRadius: 0, fontFamily: UI, fontSize: 14, fontWeight: 400, cursor: 'pointer', letterSpacing: '0.01em' }}>
+                Join the waitlist
+              </button>
+              <button style={{ padding: '13px 28px', background: 'transparent', color: '#faf7f2', border: '1px solid rgba(250,247,242,0.25)', borderRadius: 0, fontFamily: UI, fontSize: 14, fontWeight: 400, cursor: 'pointer' }}>
+                Learn more
+              </button>
+              <button style={{ padding: '10px 20px', background: 'transparent', color: '#c4654a', border: '1px solid rgba(196,101,74,0.35)', borderRadius: 0, fontFamily: UI, fontSize: 13, fontWeight: 400, cursor: 'pointer' }}>
+                Read sources
+              </button>
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="ds-comp-card">
+            <div className="ds-comp-label">Badges & Pills</div>
+            <div className="ds-comp-row">
+              <span style={{ padding: '4px 10px', background: 'rgba(196,101,74,0.15)', color: '#c4654a', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Morning Brief</span>
+              <span style={{ padding: '4px 10px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.55)', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 400 }}>AI · Geopolitics · Tech</span>
+              <span style={{ padding: '3px 8px', background: 'transparent', color: 'rgba(250,247,242,0.32)', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', border: '1px solid rgba(250,247,242,0.12)' }}>design board</span>
+              <span style={{ padding: '4px 10px', background: '#c4654a', color: '#faf7f2', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500 }}>Live</span>
+            </div>
+          </div>
+
+          {/* Input */}
+          <div className="ds-comp-card">
+            <div className="ds-comp-label">Email input · Waitlist</div>
+            <div style={{ display: 'flex', border: '1px solid rgba(45,41,38,0.2)', borderRadius: 0, overflow: 'hidden', background: '#faf7f2', maxWidth: 420 }}>
+              <input
+                placeholder="your@email.com"
+                style={{ flex: 1, padding: '13px 20px', background: 'transparent', border: 'none', outline: 'none', fontFamily: UI, fontSize: 14, fontWeight: 300, color: '#2d2926', minWidth: 0 }}
+                className="yc-ph-light"
+              />
+              <button style={{ padding: '13px 24px', background: '#2d2926', color: '#faf7f2', border: 'none', cursor: 'pointer', fontFamily: UI, fontSize: 14, fontWeight: 400, whiteSpace: 'nowrap', flexShrink: 0 }}>
+                Join
+              </button>
+            </div>
+          </div>
+
+          {/* Logo */}
+          <div className="ds-comp-card">
+            <div className="ds-comp-label">Logo · DualVoice</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {[{ size: 40, dark: false }, { size: 28, dark: false }, { size: 20, dark: false }].map(({ size, dark }) => (
+                <div key={size} style={{ display: 'flex', alignItems: 'baseline', lineHeight: 1, gap: 0 }}>
+                  <span style={{ fontFamily: UI, fontSize: size, fontWeight: 400, color: '#faf7f2', letterSpacing: '0.01em' }}>your</span>
+                  <span style={{ fontFamily: ED, fontSize: size * 1.1, fontWeight: 400, fontStyle: 'italic', color: '#c4654a', letterSpacing: '0.03em', marginLeft: size * 0.025 }}>cast</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section header pattern */}
+          <div className="ds-comp-card">
+            <div className="ds-comp-label">Section header pattern</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4654a' }}>How it works</div>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 400, fontStyle: 'italic', color: '#faf7f2', lineHeight: 1.2 }}>Three steps to your daily episode</div>
+              <div style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: 'rgba(250,247,242,0.55)', marginTop: 8, lineHeight: 1.6, maxWidth: 480 }}>
+                yourcast handles everything from sourcing to narration — you just press play.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      );
+    }
+
+    function DesignSystemPage() {
+      return (
+        <div className="ds-page">
+          <div style={{ marginBottom: 56 }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontStyle: 'italic', fontWeight: 400, color: '#faf7f2', marginBottom: 8 }}>Design System</div>
+            <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 300, color: 'rgba(250,247,242,0.38)', lineHeight: 1.6 }}>
+              Tokens, typography, spacing, and components — the visual language of yourcast.
+            </div>
+          </div>
+
+          <div className="ds-section">
+            <div className="ds-section-label">01 · Colors</div>
+            <div className="ds-section-desc">10 core tokens. Coral is the only vivid hue; everything else is warm neutrals.</div>
+            <ColorSwatches />
+          </div>
+
+          <div className="ds-section">
+            <div className="ds-section-label">02 · Typography</div>
+            <div className="ds-section-desc">Outfit (UI sans) pairs with Cormorant Garamond (editorial serif). Weights: 300 body, 400 normal, 500–600 labels.</div>
+            <TypeScale />
+          </div>
+
+          <div className="ds-section">
+            <div className="ds-section-label">03 · Spacing</div>
+            <div className="ds-section-desc">Base-4 scale. All padding, margin, and gap values come from this set.</div>
+            <SpacingTokens />
+          </div>
+
+          <div className="ds-section">
+            <div className="ds-section-label">04 · Border Radius</div>
+            <div className="ds-section-desc">Sharp by default (0px for buttons/inputs). Soft rounding for cards and modals.</div>
+            <RadiusTokens />
+          </div>
+
+          <div className="ds-section">
+            <div className="ds-section-label">05 · Components</div>
+            <div className="ds-section-desc">Recurring UI patterns assembled from the token set above.</div>
+            <ComponentExamples />
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── Board root ─── */
+    function BoardApp() {
+      const [tab, setTab] = React.useState('screens');
+      return (
+        <div>
+          {/* Topbar */}
+          <div className="board-topbar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="board-logo">
+                your<span className="board-logo-serif">cast</span>
+              </div>
+              <div className="board-badge">design board</div>
+            </div>
+
+            <div className="board-tabs">
+              <button className={`board-tab${tab === 'screens' ? ' active' : ''}`} onClick={() => setTab('screens')}>
+                Screens
+              </button>
+              <button className={`board-tab${tab === 'ds' ? ' active' : ''}`} onClick={() => setTab('ds')}>
+                Design System
+              </button>
+            </div>
+
+            <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(250, 247, 242, 0.28)', minWidth: 80, textAlign: 'right' }}>
+              {tab === 'screens' ? `${SCREENS.length} screens` : '5 sections'}
+            </div>
+          </div>
+
+          {/* Content */}
+          {tab === 'screens' ? (
+            <div className="board-canvas">
+              {SCREENS.map((s, i) => (
+                <React.Fragment key={s.code}>
+                  <div className="board-screen-slot">
+                    <PhoneFrame width={s.width}>
+                      <s.component />
+                    </PhoneFrame>
+                    <div style={{ textAlign: 'center' }}>
+                      <div className="board-screen-name">{s.name}</div>
+                      <div className="board-screen-code">{s.code}</div>
+                      <div style={{ fontSize: '10px', fontWeight: 300, color: 'rgba(250, 247, 242, 0.38)', marginTop: '3px' }}>{s.desc}</div>
+                    </div>
+                  </div>
+                  {i < SCREENS.length - 1 && <div className="board-divider" />}
+                </React.Fragment>
+              ))}
+            </div>
+          ) : (
+            <DesignSystemPage />
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('board-root')).render(<BoardApp />);
+  </script>
+</body>
+</html>
