@@ -898,12 +898,12 @@ function ScreenHomeFeed() {
       </div>
       {/* Nav */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+        <div style={{ width: 16 }} />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
-          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
-          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
+          <span style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
+          <span style={{ fontFamily: ED, fontSize: 16, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
         </div>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M11.5 3.1l-1.4 1.4M4.5 11.5l-1.4 1.4" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="3" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5"/></svg>
       </div>
       {/* Date */}
       <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: 'rgba(250,247,242,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', paddingInline: 16, marginBottom: 10, flexShrink: 0 }}>Tuesday, 27 May</div>
@@ -943,16 +943,111 @@ function ScreenEpisodeReady() {
 
 /* ── App Screen: Feedback ────────────────────────────── */
 function ScreenFeedback() {
-  const m  = 'rgba(250,247,242,0.35)';
-  const ml = 'rgba(250,247,242,0.60)';
-  const TUNE_TAGS = ['More AI', 'Less politics', 'Shorter', 'More depth'];
-  const active = 0;
+  const [selected, setSelected] = React.useState([0]);
+  const m = 'rgba(250,247,242,0.35)';
+  const ml = 'rgba(250,247,242,0.62)';
+  const FEEDBACK_OPTIONS = [
+    { label: 'Interesting topic', icon: '▫' },
+    { label: 'Well narrated', icon: '▫' },
+    { label: 'Perfect length', icon: '▫' },
+    { label: 'Great sources', icon: '▫' },
+  ];
+
   return (
     <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
-      {/* Ambient glow */}
-      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 220, height: 100, background: 'radial-gradient(ellipse at 50% 0%, rgba(196,101,74,0.10) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      {/* Hero Player as background */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <ScreenPlayerHero />
+      </div>
+
+      {/* Overlay scrim */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(15,13,10,0.88) 70%)', zIndex: 1, pointerEvents: 'none' }} />
+
+      {/* Bottom sheet */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, background: 'linear-gradient(to bottom, #1a1610 0%, #0f0d0a 100%)', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: '20px 16px 28px', border: '1px solid rgba(250,247,242,0.08)', borderBottom: 'none' }}>
+        {/* Close button */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+          <button style={{ background: 'none', border: 'none', color: 'rgba(250,247,242,0.4)', fontSize: 20, cursor: 'pointer', padding: 0, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+        </div>
+
+        {/* Title */}
+        <div style={{ fontFamily: ED, fontSize: 18, fontStyle: 'italic', color: T.cream, marginBottom: 3 }}>What did you like?</div>
+        <div style={{ fontFamily: UI, fontSize: 10, fontWeight: 300, color: m, marginBottom: 16 }}>Claude 4.7</div>
+
+        {/* Feedback options */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
+          {FEEDBACK_OPTIONS.map((opt, i) => (
+            <button
+              key={i}
+              onClick={() => setSelected(selected.includes(i) ? selected.filter(x => x !== i) : [...selected, i])}
+              style={{
+                padding: '12px',
+                borderRadius: 10,
+                border: `1.5px solid ${selected.includes(i) ? T.coral : 'rgba(250,247,242,0.12)'}`,
+                background: selected.includes(i) ? 'rgba(196,101,74,0.12)' : 'rgba(250,247,242,0.06)',
+                color: selected.includes(i) ? T.coral : ml,
+                fontFamily: UI,
+                fontSize: 11,
+                fontWeight: selected.includes(i) ? 500 : 300,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                textAlign: 'center',
+                transition: 'all 200ms ease',
+              }}>
+              <span style={{ color: selected.includes(i) ? T.coral : 'rgba(250,247,242,0.3)' }}>
+                {selected.includes(i) ? '✓' : '○'}
+              </span>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Text and voice inputs */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button style={{
+            flex: 1, height: 40, borderRadius: 10, border: '1px solid rgba(250,247,242,0.12)', background: 'rgba(250,247,242,0.06)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, color: ml, fontFamily: UI, fontSize: 11, cursor: 'pointer'
+          }}>
+            <span>✎</span> Write…
+          </button>
+          <button style={{
+            flex: 1, height: 40, borderRadius: 10, border: '1px solid rgba(250,247,242,0.12)', background: 'rgba(250,247,242,0.06)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, color: ml, fontFamily: UI, fontSize: 11, cursor: 'pointer'
+          }}>
+            <span>🎤</span> Record
+          </button>
+        </div>
+
+        {/* Done button */}
+        <button style={{
+          width: '100%', height: 44, borderRadius: 12, background: 'linear-gradient(135deg, #1FD078 0%, #16a852 100%)',
+          border: 'none', color: '#000', fontFamily: UI, fontSize: 14, fontWeight: 600, cursor: 'pointer',
+          boxShadow: '0 4px 14px rgba(31,208,120,0.3)'
+        }}>
+          Done
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ScreenPodcastConfig() {
+  const m = 'rgba(250,247,242,0.35)';
+  const ml = 'rgba(250,247,242,0.62)';
+  const TOPICS = [
+    { name: 'Politics', icon: '🏛', areas: 4, followed: 12, active: true },
+    { name: 'Technology', icon: '⚙', areas: 7, followed: 0, active: true },
+    { name: 'Geopolitics', icon: '🌐', areas: 4, followed: 6, active: true },
+    { name: 'Economy', icon: '📈', areas: 1, followed: 0, active: false },
+  ];
+
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#0f0d0a', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative' }}>
       {/* Status bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0, position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px 4px', flexShrink: 0 }}>
         <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 500, color: T.cream }}>9:41</span>
         <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
           <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><rect x="0" y="3" width="2" height="5" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="3" y="2" width="2" height="6" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="6" y="1" width="2" height="7" rx="0.5" fill="rgba(250,247,242,0.9)"/><rect x="9" y="0" width="2" height="8" rx="0.5" fill="rgba(250,247,242,0.4)"/></svg>
@@ -960,74 +1055,172 @@ function ScreenFeedback() {
           <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" stroke="rgba(250,247,242,0.35)" strokeWidth="1"/><rect x="1.5" y="1.5" width="14" height="7" rx="1.5" fill="rgba(250,247,242,0.9)"/><path d="M20 3.5v3a1.5 1.5 0 000-3z" fill="rgba(250,247,242,0.4)"/></svg>
         </div>
       </div>
-      {/* Nav */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 16px 10px', flexShrink: 0 }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(250,247,242,0.5)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-        <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
-          <span style={{ fontFamily: ED, fontSize: 14, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
-        </div>
-        <div style={{ width: 16 }} />
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 16px 10px', flexShrink: 0, borderBottom: '1px solid rgba(250,247,242,0.06)' }}>
+        <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream }}>←</span>
+        <span style={{ fontFamily: UI, fontSize: 16, fontWeight: 400, color: T.cream, flex: 1, textAlign: 'center' }}>Morning Brief</span>
+        <span style={{ fontFamily: UI, fontSize: 13, color: T.coral }}>✎</span>
       </div>
+
       {/* Content */}
-      <div style={{ flex: 1, padding: '2px 14px 14px', display: 'flex', flexDirection: 'column' }}>
-        {/* Episode context card */}
-        <div style={{ background: '#1a1510', borderRadius: 12, padding: '10px 12px', marginBottom: 14, border: '1px solid rgba(250,247,242,0.07)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-            <SunIcon />
-            <span style={{ fontFamily: ED, fontSize: 13, fontStyle: 'italic', color: T.cream }}>Morning Brief</span>
-            <span style={{ fontFamily: UI, fontSize: 8, fontWeight: 300, color: m, marginLeft: 'auto' }}>18 min</span>
+      <div style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
+        {/* Tagline */}
+        <div style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: ml, marginBottom: 20 }}>Let's fine-tune your podcast</div>
+
+        {/* Persona section */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 600, color: m, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Persona</div>
+          <div style={{ background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.08)', borderRadius: 12, padding: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontFamily: UI, fontSize: 12, fontWeight: 500, color: T.cream, marginBottom: 4 }}>Greg Newcaster</div>
+              <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, fontStyle: 'italic' }}>"Coffee, 5 mins, what you need to know."</div>
+            </div>
+            <button style={{ fontFamily: UI, fontSize: 10, fontWeight: 400, color: T.coral, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Change</button>
           </div>
-          <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: ml, lineHeight: 1.5 }}>Karpathy's parallel sessions method goes viral. NATO faces Turkish blockade...</div>
         </div>
-        {/* Question */}
-        <div style={{ fontFamily: ED, fontSize: 17, fontStyle: 'italic', color: T.cream, lineHeight: 1.25, marginBottom: 4 }}>How was the Karpathy story?</div>
-        <div style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: m, marginBottom: 14, lineHeight: 1.5 }}>Your feedback tunes the next episode.</div>
-        {/* Main buttons */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-          <div style={{
-            flex: 1, height: 32, borderRadius: 999,
-            background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)',
-            boxShadow: '0 3px 12px rgba(196,101,74,0.3), inset 0 1px 0 rgba(255,255,255,0.12)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+
+        {/* Interests section */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 600, color: m, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Interests</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {TOPICS.map((topic, i) => (
+              <div key={i} style={{
+                background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.08)', borderRadius: 12, padding: '12px',
+                display: 'flex', alignItems: 'center', gap: 10, opacity: topic.active ? 1 : 0.5
+              }}>
+                <span style={{ fontSize: 18 }}>{topic.icon}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: T.cream, marginBottom: 2 }}>{topic.name}</div>
+                  <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: m }}>{topic.areas} areas · {topic.followed} followed</div>
+                </div>
+                {!topic.active && <span style={{ fontFamily: UI, fontSize: 7, fontWeight: 600, color: m, textTransform: 'uppercase', letterSpacing: '0.06em' }}>inactive</span>}
+                <span style={{ color: ml }}>›</span>
+              </div>
+            ))}
+          </div>
+          <button style={{
+            width: '100%', marginTop: 8, padding: '10px', borderRadius: 10, border: '1.5px dashed rgba(250,247,242,0.12)',
+            background: 'transparent', color: ml, fontFamily: UI, fontSize: 11, fontWeight: 300, cursor: 'pointer'
           }}>
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2.5 4.8L4.5 1.2l1.1.6L4.5 4.6h4.3a.6.6 0 01.6.6v.7l-.6 2.7a1 1 0 01-.9.9H3.7a.6.6 0 01-.6-.6L2.5 4.8z" stroke="white" strokeWidth="1.1"/><rect x="1.2" y="4.5" width="1.7" height="4.8" rx=".85" fill="white"/></svg>
-            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 500, color: '#fff' }}>Loved it</span>
-          </div>
-          <div style={{
-            flex: 1, height: 32, borderRadius: 999,
-            background: 'rgba(250,247,242,0.06)', border: '1px solid rgba(250,247,242,0.12)',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
-          }}>
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M8.5 6.2L6.5 9.8l-1.1-.6 1.1-2.8H2.2a.6.6 0 01-.6-.6v-.7l.6-2.7A1 1 0 013.1 2H7.3a.6.6 0 01.6.6L8.5 6.2z" stroke="rgba(250,247,242,0.4)" strokeWidth="1.1"/><rect x="8.1" y="1.7" width="1.7" height="4.8" rx=".85" fill="rgba(250,247,242,0.4)"/></svg>
-            <span style={{ fontFamily: UI, fontSize: 10, fontWeight: 300, color: ml }}>Skip next</span>
+            + Add Topic
+          </button>
+        </div>
+
+        {/* Format section (minimal) */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 600, color: m, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Format</div>
+          <div style={{ background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.08)', borderRadius: 12, padding: '12px', height: 40, display: 'flex', alignItems: 'center', color: ml, fontFamily: UI, fontSize: 11 }}>
+            (Format settings)
           </div>
         </div>
-        {/* Voice / text input */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16, background: 'rgba(250,247,242,0.06)', border: '1px solid rgba(250,247,242,0.12)', borderRadius: 999, padding: '0 6px 0 14px', height: 34 }}>
-          <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: 'rgba(250,247,242,0.35)', flex: 1 }}>Tell us what you think…</span>
-          <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'linear-gradient(135deg, #c4654a 0%, #a8472e 100%)', boxShadow: '0 0 10px rgba(196,101,74,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg width="10" height="13" viewBox="0 0 10 13" fill="none">
-              <rect x="3" y="0.5" width="4" height="7" rx="2" fill="white"/>
-              <path d="M1 6.5c0 2.2 1.8 4 4 4s4-1.8 4-4" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-              <line x1="5" y1="10.5" x2="5" y2="12.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
-            </svg>
-          </div>
+      </div>
+
+      {/* Save button */}
+      <div style={{ padding: '16px', borderTop: '1px solid rgba(250,247,242,0.06)', flexShrink: 0 }}>
+        <button style={{
+          width: '100%', height: 44, borderRadius: 12, background: T.cream, color: '#0f0d0a', border: 'none',
+          fontFamily: UI, fontSize: 14, fontWeight: 600, cursor: 'pointer'
+        }}>
+          Save Changes
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ScreenSegmentModal() {
+  const [liked, setLiked] = React.useState(null);
+  const m = 'rgba(250,247,242,0.35)';
+  const ml = 'rgba(250,247,242,0.62)';
+
+  return (
+    <div style={{
+      width: '100%', height: '100%',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 32px', boxSizing: 'border-box', position: 'relative', overflow: 'hidden'
+    }}>
+      {/* Hero Player background - blurred */}
+      <div style={{ position: 'absolute', inset: -20, zIndex: 0, filter: 'blur(8px)', opacity: 0.85 }}>
+        <ScreenPlayerHero />
+      </div>
+
+      {/* Light scrim overlay */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(circle at 50% 30%, rgba(15,13,10,0.1) 0%, rgba(15,13,10,0.45) 100%)' }} />
+      {/* Modal card */}
+      <div style={{ width: 'calc(100% - 64px)', maxWidth: 320, background: 'linear-gradient(135deg, #1a1610 0%, #141110 100%)', borderRadius: 16, padding: '20px', border: '1px solid rgba(250,247,242,0.1)', position: 'absolute', zIndex: 20, boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
+        {/* Close button */}
+        <button style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(250,247,242,0.1)', border: 'none', borderRadius: 20, width: 28, height: 28, color: T.cream, fontSize: 16, cursor: 'pointer' }}>✕</button>
+
+        {/* Progress bar */}
+        <div style={{ display: 'flex', gap: 2, marginBottom: 14, justifyContent: 'center' }}>
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} style={{ width: 24, height: 2, background: i === 0 ? T.cream : 'rgba(250,247,242,0.2)', borderRadius: 1 }} />
+          ))}
         </div>
-        {/* Tune chips */}
-        <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: m, marginBottom: 9 }}>More or less like this?</div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {TUNE_TAGS.map((l, i) => (
-            <div key={i} style={{
-              height: 26, paddingInline: 12, borderRadius: 999,
-              background: i === active ? 'rgba(196,101,74,0.15)' : 'rgba(250,247,242,0.06)',
-              border: `1px solid ${i === active ? 'rgba(196,101,74,0.5)' : 'rgba(250,247,242,0.12)'}`,
-              display: 'flex', alignItems: 'center',
-            }}>
-              <span style={{ fontFamily: UI, fontSize: 9.5, fontWeight: i === active ? 400 : 300, color: i === active ? T.coral : ml }}>{l}</span>
+
+        {/* Segment label */}
+        <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: m, letterSpacing: '0.08em', textTransform: 'uppercase', textAlign: 'center', marginBottom: 10 }}>SEGMENT 1 / 7</div>
+
+        {/* Title */}
+        <div style={{ fontFamily: ED, fontSize: 20, fontStyle: 'italic', color: T.cream, lineHeight: 1.25, marginBottom: 14, textAlign: 'center' }}>Karpathy's Parallel AI Coding</div>
+
+        {/* Content bullets */}
+        <div style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid rgba(250,247,242,0.08)' }}>
+          {[
+            'Multiple Claude Code sessions running in parallel',
+            '50x productivity boost for developers',
+            'Managing AI agents like a large team',
+          ].map((bullet, i) => (
+            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: i < 2 ? 8 : 0, fontFamily: UI, fontSize: 10, fontWeight: 300, color: ml, lineHeight: 1.45 }}>
+              <span style={{ color: m, flexShrink: 0, marginTop: 2 }}>•</span>
+              <span>{bullet}</span>
             </div>
           ))}
+        </div>
+
+        {/* Audio player */}
+        <div style={{ background: 'rgba(196,101,74,0.08)', borderRadius: 10, padding: '10px 12px', marginBottom: 16, border: '1px solid rgba(196,101,74,0.15)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(196,101,74,0.3)', border: 'none', color: T.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 14 }}>▶</button>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: ml }}>0:00</span>
+            <div style={{ flex: 1, height: 3, background: 'rgba(250,247,242,0.1)', borderRadius: 1.5, position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '30%', top: 0, height: '100%', background: T.coral, borderRadius: 1.5 }} />
+            </div>
+            <span style={{ fontFamily: UI, fontSize: 9, fontWeight: 300, color: ml }}>1:20</span>
+          </div>
+        </div>
+
+        {/* Feedback question */}
+        <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 300, color: ml, marginBottom: 12, textAlign: 'center' }}>How was this segment?</div>
+
+        {/* Like/Dislike buttons */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            onClick={() => setLiked(true)}
+            style={{
+              flex: 1, height: 40, borderRadius: 10,
+              background: liked === true ? 'rgba(31,208,120,0.2)' : 'rgba(250,247,242,0.06)',
+              border: `1.5px solid ${liked === true ? '#1FD078' : 'rgba(250,247,242,0.12)'}`,
+              color: liked === true ? '#1FD078' : ml,
+              fontFamily: UI, fontSize: 11, fontWeight: liked === true ? 500 : 300,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              transition: 'all 200ms'
+            }}>
+            <span>👍</span> Like
+          </button>
+          <button
+            onClick={() => setLiked(false)}
+            style={{
+              flex: 1, height: 40, borderRadius: 10,
+              background: liked === false ? 'rgba(196,101,74,0.2)' : 'rgba(250,247,242,0.06)',
+              border: `1.5px solid ${liked === false ? T.coral : 'rgba(250,247,242,0.12)'}`,
+              color: liked === false ? T.coral : ml,
+              fontFamily: UI, fontSize: 11, fontWeight: liked === false ? 500 : 300,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              transition: 'all 200ms'
+            }}>
+            <span>👎</span> Dislike
+          </button>
         </div>
       </div>
     </div>
@@ -1118,6 +1311,8 @@ function ScreenPlayerHero() {
   const [closingSources, setClosingSources] = React.useState(false);
   const [showRead, setShowRead] = React.useState(false);
   const [closingRead, setClosingRead] = React.useState(false);
+  const [showChapters, setShowChapters] = React.useState(false);
+  const [closingChapters, setClosingChapters] = React.useState(false);
   const audioRef = React.useRef(null);
   const closeSheet = () => {
     setClosingSources(true);
@@ -1127,6 +1322,19 @@ function ScreenPlayerHero() {
     setClosingRead(true);
     setTimeout(() => { setShowRead(false); setClosingRead(false); }, 300);
   };
+  const closeChaptersSheet = () => {
+    setClosingChapters(true);
+    setTimeout(() => { setShowChapters(false); setClosingChapters(false); }, 300);
+  };
+  const CHAPTERS = [
+    { title: "Karpathy's Parallel AI Coding", time: '0:00', done: true },
+    { title: 'Claude 4.7', time: '1:20', current: true },
+    { title: 'Parliament — budget', time: '3:05' },
+    { title: 'Fun fact', time: '4:35' },
+    { title: 'NATO summit', time: '4:50' },
+    { title: 'Quick hits', time: '6:50' },
+    { title: 'Closing', time: '8:00' },
+  ];
   const toggle = () => {
     const a = audioRef.current;
     if (!a) return;
@@ -1250,7 +1458,7 @@ function ScreenPlayerHero() {
               <rect x="14" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.6)"/>
             </svg>
           </div>
-          <div style={{ ...ctrlCircle, position:'relative' }}>
+          <div onClick={() => setShowChapters(true)} role="button" aria-label="Chapters" style={{ ...ctrlCircle, position:'relative', cursor:'pointer' }}>
             <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="0" width="15" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/><rect x="0" y="4.7" width="10" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/><rect x="0" y="9.4" width="12" height="1.6" rx="0.8" fill="rgba(250,247,242,0.6)"/></svg>
             <div style={{ position:'absolute', bottom:7, right:8, width:3, height:3, borderRadius:'50%', background:T.coral }} />
           </div>
@@ -1267,6 +1475,71 @@ function ScreenPlayerHero() {
           </div>
         </div>
       </div>
+      {/* Chapters bottom sheet overlay */}
+      {showChapters && (
+        <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', flexDirection:'column' }}>
+          <div onClick={closeChaptersSheet} style={{ flex:1, background:'rgba(21,17,13,0.55)' }} />
+          <div style={{ background:'#1c1916', borderRadius:'14px 14px 0 0', display:'flex', flexDirection:'column', overflow:'hidden', height:'80%', animation: closingChapters ? 'slideDownSheet 0.3s cubic-bezier(0.32,0.72,0,1) forwards' : 'slideUpSheet 0.32s cubic-bezier(0.32,0.72,0,1)' }}>
+            {/* Handle */}
+            <div style={{ display:'flex', justifyContent:'center', padding:'7px 0 2px', flexShrink:0 }}>
+              <div style={{ width:30, height:3, borderRadius:2, background:'rgba(250,247,242,0.18)' }}/>
+            </div>
+            {/* Header */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'6px 16px 10px', flexShrink:0 }}>
+              <span style={{ fontFamily:UI, fontSize:17, fontWeight:700, color:T.cream }}>Chapters</span>
+              <div onClick={closeChaptersSheet} role="button" style={{ width:22, height:22, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 1l6 6M7 1L1 7" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              </div>
+            </div>
+            {/* Chapter list */}
+            <div style={{ flex:1, overflow:'auto', padding:'0 14px 4px' }}>
+              {CHAPTERS.map((ch, i) => (
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 4px', borderRadius:10, background: ch.current ? 'rgba(250,247,242,0.06)' : 'transparent', marginBottom:2, paddingLeft: ch.current ? 10 : 4, paddingRight: ch.current ? 10 : 4 }}>
+                  {/* Icon */}
+                  {ch.done ? (
+                    <div style={{ width:28, height:28, borderRadius:'50%', background:'#22c55e', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  ) : ch.current ? (
+                    <div style={{ width:28, height:28, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <svg width="10" height="12" viewBox="0 0 10 12" fill="none" style={{ marginLeft:1 }}><path d="M1 1L9 6L1 11V1Z" fill="#15110d"/></svg>
+                    </div>
+                  ) : (
+                    <div style={{ width:28, height:28, borderRadius:'50%', border:'1.5px solid rgba(250,247,242,0.2)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }} />
+                  )}
+                  {/* Title */}
+                  <span style={{ fontFamily:UI, fontSize:13, fontWeight: ch.current ? 500 : 300, color: ch.current ? T.cream : 'rgba(250,247,242,0.65)', flex:1, lineHeight:1.3 }}>{ch.title}</span>
+                  {/* Time */}
+                  <span style={{ fontFamily:UI, fontSize:12, fontWeight:300, color: ch.done ? 'rgba(250,247,242,0.35)' : ch.current ? T.coral : 'rgba(250,247,242,0.35)', flexShrink:0 }}>{ch.time}</span>
+                </div>
+              ))}
+              {/* Total duration */}
+              <div style={{ textAlign:'right', padding:'8px 4px 4px' }}>
+                <span style={{ fontFamily:UI, fontSize:11, fontWeight:300, color:'rgba(250,247,242,0.35)' }}>Total 8:20</span>
+              </div>
+            </div>
+            {/* Mini player bar */}
+            <div style={{ borderTop:'1px solid rgba(250,247,242,0.07)', padding:'8px 16px 14px', flexShrink:0 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><rect x="1.5" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.5)"/><path d="M15.5 2.5L5.5 9L15.5 15.5V2.5Z" fill="rgba(250,247,242,0.5)"/></svg>
+                </div>
+                <div style={{ width:30, height:30, borderRadius:'50%', background:T.cream, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <div style={{ display:'flex', gap:3 }}>
+                    <div style={{ width:3, height:10, borderRadius:1.5, background:'#15110d' }}/>
+                    <div style={{ width:3, height:10, borderRadius:1.5, background:'#15110d' }}/>
+                  </div>
+                </div>
+                <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M2.5 2.5L12.5 9L2.5 15.5V2.5Z" fill="rgba(250,247,242,0.5)"/><rect x="14" y="2.5" width="2.5" height="13" rx="1" fill="rgba(250,247,242,0.5)"/></svg>
+                </div>
+                <span style={{ fontFamily:UI, fontSize:12, fontWeight:400, color:T.cream, flex:1 }}>Claude 4.7</span>
+                <span style={{ fontFamily:UI, fontSize:12, fontWeight:300, color:'rgba(250,247,242,0.45)' }}>2:19</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Sources bottom sheet overlay */}
       {showSources && (
         <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', flexDirection:'column' }}>
@@ -1408,7 +1681,7 @@ function ScreenPlayerHero() {
   );
 }
 
-Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenSources, ScreenPlayerHero });
+Object.assign(window, { T, UI, ED, DualVoiceLogo, PhoneFrame, WaitlistForm, ScreenPlayer, ScreenTopicPicker, ScreenHomeFeed, ScreenEpisodeReady, ScreenFeedback, ScreenPodcastConfig, ScreenSegmentModal, ScreenSources, ScreenPlayerHero });
 })();
 (() => {
 /* ─── landing-nav.jsx — Fixed Top Navigation ─── */
