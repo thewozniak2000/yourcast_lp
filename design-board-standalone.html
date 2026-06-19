@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yourcast · design board</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #18160f;
+      -webkit-font-smoothing: antialiased;
+      font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+      color: #faf7f2;
+      min-height: 100vh;
+    }
+    #root { isolation: isolate; }
+
+    .yc-ph-light::placeholder { color: rgba(45,41,38,0.38); }
+    .yc-ph-dark::placeholder  { color: rgba(250,247,242,0.38); }
+
+    @keyframes pillDrift {
+      0%,100% { transform: translateY(0px); opacity: 1; }
+      30%      { transform: translateY(-4px); opacity: 0.85; }
+      65%      { transform: translateY(2px); opacity: 0.95; }
+    }
+    @keyframes waveBar {
+      0%, 100% { transform: scaleY(0.28); }
+      50%       { transform: scaleY(1); }
+    }
+    @keyframes slideUpSheet {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    @keyframes slideDownSheet {
+      from { transform: translateY(0); }
+      to   { transform: translateY(100%); }
+    }
+    @keyframes playPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.3; transform: scale(0.65); }
+    }
+
+    a { color: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    /* ── Topbar ── */
+    .board-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18, 14, 10, 0.92);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      backdrop-filter: blur(20px) saturate(140%);
+      border-bottom: 1px solid rgba(250, 247, 242, 0.08);
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .board-logo {
+      display: flex;
+      align-items: baseline;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .board-logo-serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #c4654a;
+    }
+    .board-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.32);
+      padding: 3px 8px;
+      border: 1px solid rgba(250, 247, 242, 0.12);
+      border-radius: 999px;
+    }
+
+    /* ── Tab nav ── */
+    .board-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(250, 247, 242, 0.06);
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .board-tab {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.45);
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+      border: none;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .board-tab:hover { color: rgba(250, 247, 242, 0.75); }
+    .board-tab.active { background: rgba(250, 247, 242, 0.12); color: #faf7f2; }
+
+    /* ── DS sub-nav ── */
+    .ds-subnav {
+      position: sticky;
+      top: 56px;
+      z-index: 90;
+      background: rgba(18, 14, 10, 0.88);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(250, 247, 242, 0.05);
+      padding: 0 64px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .ds-subnav::-webkit-scrollbar { display: none; }
+    .ds-subnav-link {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(250, 247, 242, 0.35);
+      padding: 0 14px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      white-space: nowrap;
+      border: none;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.04em;
+      transition: color 0.15s;
+      text-decoration: none;
+    }
+    .ds-subnav-link:hover { color: rgba(250, 247, 242, 0.75); }
+    .ds-subnav-link.active { color: #c4654a; }
+
+    /* ── Design System page ── */
+    .ds-page {
+      padding: 64px 64px 120px;
+      max-width: 960px;
+    }
+
+    /* Section structure */
+    .ds-section {
+      margin-bottom: 80px;
+      scroll-margin-top: 96px;
+    }
+    .ds-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(196, 101, 74, 0.7);
+      margin-bottom: 6px;
+    }
+    .ds-section-title {
+      font-size: 26px;
+      font-weight: 300;
+      color: #faf7f2;
+      margin-bottom: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+    .ds-section-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.42);
+      margin-bottom: 32px;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+    .ds-rule { height: 1px; background: rgba(250,247,242,0.06); margin-bottom: 80px; }
+
+    /* Token table */
+    .ds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .ds-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.28);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(250,247,242,0.06);
+    }
+    .ds-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(250,247,242,0.04);
+      vertical-align: middle;
+    }
+    .ds-table tr:last-child td { border-bottom: none; }
+    .ds-table .mono {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 11px;
+      color: rgba(250,247,242,0.65);
+    }
+    .ds-table .usage {
+      font-size: 11px;
+      color: rgba(250,247,242,0.35);
+    }
+
+    /* Demo area */
+    .ds-demo {
+      background: rgba(250,247,242,0.03);
+      border: 1px solid rgba(250,247,242,0.07);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .ds-demo-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.2);
+      margin-bottom: 16px;
+    }
+
+    /* Swatch */
+    .ds-swatch-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .ds-swatch { display: flex; flex-direction: column; gap: 8px; width: 110px; }
+    .ds-swatch-box { width: 110px; height: 72px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
+    .ds-swatch-name { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.8); }
+    .ds-swatch-hex { font-size: 11px; font-weight: 300; color: rgba(250,247,242,0.38); font-family: ui-monospace,'SF Mono',Menlo,monospace; }
+    .ds-swatch-role { font-size: 10px; font-weight: 300; color: rgba(250,247,242,0.25); line-height: 1.4; }
+
+    /* Opacity strip */
+    .ds-opacity-row { display: flex; gap: 4px; margin-bottom: 16px; }
+    .ds-opacity-cell { flex: 1; height: 40px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .ds-opacity-val { font-size: 9px; font-weight: 500; font-family: ui-monospace,monospace; }
+
+    /* Type specimens */
+    .ds-type-row { padding: 16px 0; border-bottom: 1px solid rgba(250,247,242,0.05); }
+    .ds-type-row:last-child { border-bottom: none; }
+    .ds-type-meta { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(250,247,242,0.25); font-family: ui-monospace,monospace; margin-bottom: 6px; }
+
+    /* Spacing bars */
+    .ds-space-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+    .ds-space-bar { background: rgba(196,101,74,0.3); height: 18px; border-radius: 3px; flex-shrink: 0; }
+    .ds-space-token { font-size: 11px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.55); min-width: 64px; }
+    .ds-space-val { font-size: 11px; color: rgba(250,247,242,0.3); min-width: 36px; }
+
+    /* Radius items */
+    .ds-radius-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ds-radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .ds-radius-box { width: 72px; height: 72px; background: rgba(250,247,242,0.06); border: 1px solid rgba(250,247,242,0.1); }
+    .ds-radius-lbl { font-size: 11px; color: rgba(250,247,242,0.55); text-align: center; }
+    .ds-radius-val-lbl { font-size: 10px; color: rgba(250,247,242,0.25); font-family: ui-monospace,monospace; text-align: center; }
+
+    /* Shadow items */
+    .ds-shadow-item { display: flex; align-items: center; gap: 20px; padding: 14px 0; border-bottom: 1px solid rgba(250,247,242,0.04); }
+    .ds-shadow-item:last-child { border-bottom: none; }
+    .ds-shadow-box { width: 56px; height: 36px; background: rgba(250,247,242,0.08); border-radius: 8px; flex-shrink: 0; }
+    .ds-shadow-info { flex: 1; }
+    .ds-shadow-token { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.7); margin-bottom: 3px; }
+    .ds-shadow-value { font-size: 10px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.3); }
+
+    /* Anim demo */
+    .ds-anim-demo { display: flex; gap: 24px; flex-wrap: wrap; }
+    .ds-anim-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .ds-anim-label { font-size: 10px; color: rgba(250,247,242,0.3); text-align: center; font-family: ui-monospace,monospace; }
+
+    /* Gradient items */
+    .ds-grad-item { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(250,247,242,0.04); }
+    .ds-grad-item:last-child { border-bottom: none; }
+    .ds-grad-box { width: 80px; height: 48px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.06); }
+    .ds-grad-info { flex: 1; min-width: 0; }
+    .ds-grad-name { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.7); margin-bottom: 3px; }
+    .ds-grad-value { font-size: 10px; font-family: ui-monospace,monospace; color: rgba(250,247,242,0.28); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="board-root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const UI = "'Outfit', sans-serif";
+    const ED = "'Cormorant Garamond', serif";
+
+    /* Design System Data */
+    const PRIMITIVE_COLORS = [
+      { name: 'Coral',    token: 'coral',    hex: '#c4654a', role: 'Primary accent · CTA · highlights' },
+      { name: 'Cream',    token: 'cream',    hex: '#faf7f2', role: 'Light bg · text on dark · logo' },
+      { name: 'Charcoal', token: 'charcoal', hex: '#2d2926', role: 'Light mode text · dark surfaces' },
+      { name: 'Ink',      token: 'ink',      hex: '#1c1917', role: 'Deepest dark · footer bg' },
+      { name: 'Dark',     token: 'dark',     hex: '#141210', role: 'Darkest bg · pricing dark' },
+      { name: 'Card',     token: 'card',     hex: '#1e1b18', role: 'Dark card surface' },
+      { name: 'Stone',    token: 'stone',    hex: '#f0ebe4', role: 'Light section bg' },
+      { name: 'Linen',    token: 'linen',    hex: '#e8e4dc', role: 'Alt light bg · FAQ section' },
+      { name: 'Copper',   token: 'copper',   hex: '#b08968', role: 'Secondary accent · metadata' },
+      { name: 'Sage',     token: 'sage',     hex: '#6b7c6e', role: 'Muted green · subtle accents' },
+    ];
+
+    const TYPE_SCALE = [
+      { role: 'display',     font: 'Outfit',           size: 32, weight: 500, italic: false, usage: 'Episode title in player' },
+      { role: 'h1-serif',    font: 'Cormorant Garamond',size: 24, weight: 400, italic: true,  usage: 'Episode title in feed cards' },
+      { role: 'h2-serif',    font: 'Cormorant Garamond',size: 20, weight: 400, italic: true,  usage: 'Modal title, section headings' },
+      { role: 'h3',          font: 'Outfit',           size: 17, weight: 600, italic: false, usage: 'Nav title, config heading' },
+      { role: 'h4',          font: 'Outfit',           size: 15, weight: 400, italic: false, usage: 'Config title, sub-header' },
+      { role: 'body',        font: 'Outfit',           size: 13, weight: 300, italic: false, usage: 'Descriptions, read sheet body' },
+      { role: 'body-sm',     font: 'Outfit',           size: 11, weight: 300, italic: false, usage: 'Tags, form labels, list items' },
+      { role: 'label',       font: 'Outfit',           size: 11, weight: 500, italic: false, usage: 'Buttons, badges, interactive labels' },
+      { role: 'caption',     font: 'Outfit',           size: 9,  weight: 300, italic: false, usage: 'Timestamps, metadata' },
+      { role: 'micro',       font: 'Outfit',           size: 8,  weight: 600, italic: false, usage: 'Uppercase section labels, status bar' },
+    ];
+
+    const SPACING = [
+      { token: 'space-1',  px: 4  }, { token: 'space-2',  px: 8  },
+      { token: 'space-3',  px: 12 }, { token: 'space-4',  px: 16 },
+      { token: 'space-5',  px: 20 }, { token: 'space-6',  px: 24 },
+      { token: 'space-8',  px: 32 }, { token: 'space-10', px: 40 },
+      { token: 'space-12', px: 48 }, { token: 'space-16', px: 64 },
+    ];
+
+    const RADII = [
+      { token: 'radius-sm',     px: '6px',   r: 6  },
+      { token: 'radius-md',     px: '10px',  r: 10 },
+      { token: 'radius-lg',     px: '14px',  r: 14 },
+      { token: 'radius-xl',     px: '16px',  r: 16 },
+      { token: 'radius-2xl',    px: '20px',  r: 20 },
+      { token: 'radius-pill',   px: '999px', r: 40 },
+      { token: 'radius-circle', px: '50%',   r: 36 },
+    ];
+
+    const SHADOWS = [
+      { token: 'shadow-sm',    value: '0 1px 3px rgba(0,0,0,0.2)',                                       usage: 'Slider thumb' },
+      { token: 'shadow-md',    value: '0 4px 12px rgba(0,0,0,0.3)',                                       usage: 'Cards, sheet handles' },
+      { token: 'shadow-coral', value: '0 10px 28px rgba(196,101,74,0.4)',                                 usage: 'Coral CTA buttons' },
+      { token: 'shadow-modal', value: '0 20px 60px rgba(0,0,0,0.6)',                                      usage: 'Centered modals' },
+      { token: 'shadow-phone', value: '0 28px 72px rgba(0,0,0,0.26), 0 6px 20px rgba(0,0,0,0.14)',       usage: 'PhoneFrame container' },
+    ];
+
+    const GRADIENTS = [
+      { name: 'image-fade',    value: 'linear-gradient(to bottom, transparent 40%, #1a1510 100%)',                                                                    usage: 'Feed card thumbnail fade to card bg' },
+      { name: 'scrim-heavy',   value: 'linear-gradient(to bottom, rgba(21,17,13,0.25) 0%, rgba(21,17,13,0.6) 55%, #15110d 78%, #15110d 100%)',                       usage: 'Hero player background scrim' },
+      { name: 'scrim-light',   value: 'linear-gradient(to bottom, transparent 30%, rgba(15,13,10,0.88) 70%)',                                                         usage: 'Feedback screen overlay' },
+      { name: 'hero-radial',   value: 'radial-gradient(ellipse 80% 70% at 22% 18%, rgba(176,137,104,0.28) 0%, transparent 52%)',                                     usage: 'LP hero warm depth atmosphere' },
+      { name: 'modal-bg',      value: 'linear-gradient(135deg, #1a1610 0%, #141110 100%)',                                                                            usage: 'Centered modal background' },
+      { name: 'sheet-bg',      value: 'linear-gradient(to bottom, #1a1610 0%, #0f0d0a 100%)',                                                                         usage: 'Bottom sheet backgrounds' },
+      { name: 'success-btn',   value: 'linear-gradient(135deg, #1FD078 0%, #16a852 100%)',                                                                            usage: 'Done / confirm buttons (green)' },
+    ];
+
+    const DS_SECTIONS = [
+      { id: 'brand',      label: '01 · Brand'      },
+      { id: 'colors',     label: '02 · Colors'     },
+      { id: 'type',       label: '03 · Typography' },
+      { id: 'spacing',    label: '04 · Spacing'    },
+      { id: 'radius',     label: '05 · Radius'     },
+      { id: 'elevation',  label: '06 · Elevation'  },
+      { id: 'motion',     label: '07 · Motion'     },
+      { id: 'components', label: '08 · Components' },
+      { id: 'gradients',  label: '09 · Gradients'  },
+    ];
+
+    /* Component Demos */
+    function BrandSection() {
+      return (
+        <div id="brand" className="ds-section">
+          <div className="ds-eyebrow">01 · Brand Identity</div>
+          <div className="ds-section-title">DualVoice Identity</div>
+          <div className="ds-section-desc">Two typefaces in one wordmark — Outfit (rational, modern) answers Cormorant Garamond (editorial, intimate). The tension between them is the brand.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Wordmark — three scales</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {[48, 32, 22].map(s => (
+                <div key={s} style={{ display: 'flex', alignItems: 'baseline' }}>
+                  <span style={{ fontFamily: UI, fontSize: s, fontWeight: 400, color: '#faf7f2', letterSpacing: '0.01em' }}>your</span>
+                  <span style={{ fontFamily: ED, fontSize: s * 1.1, fontWeight: 400, fontStyle: 'italic', color: '#c4654a', letterSpacing: '0.03em', marginLeft: s * 0.025 }}>cast</span>
+                  <span style={{ fontFamily: UI, fontSize: 11, fontWeight: 300, color: 'rgba(250,247,242,0.28)', marginLeft: 16 }}>{s}px</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Brand colours — the only three that matter</div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {[
+                { name: 'Coral',   hex: '#c4654a', role: 'Accent · CTA · accent-only hue' },
+                { name: 'Cream',   hex: '#faf7f2', role: 'Text on dark · primary light surface' },
+                { name: 'Ink',     hex: '#1c1917', role: 'Deepest dark · footer · body type' },
+              ].map(c => (
+                <div key={c.name} style={{ display: 'flex', gap: 12, alignItems: 'center', background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.07)', borderRadius: 10, padding: '12px 16px' }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, background: c.hex, border: '1px solid rgba(255,255,255,0.08)', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontFamily: UI, fontSize: 13, fontWeight: 500, color: '#faf7f2' }}>{c.name}</div>
+                    <div style={{ fontFamily: 'ui-monospace,monospace', fontSize: 11, color: 'rgba(250,247,242,0.38)' }}>{c.hex}</div>
+                    <div style={{ fontFamily: UI, fontSize: 10, color: 'rgba(250,247,242,0.25)', marginTop: 2 }}>{c.role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Tagline specimen</div>
+            <div style={{ fontFamily: ED, fontSize: 20, fontStyle: 'italic', color: 'rgba(250,247,242,0.75)', lineHeight: 1.4 }}>
+              A podcast no one else will hear.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ColorsSection() {
+      return (
+        <div id="colors" className="ds-section">
+          <div className="ds-eyebrow">02 · Color System</div>
+          <div className="ds-section-title">Primitive → Semantic → Component</div>
+          <div className="ds-section-desc">10 primitive tokens. One vivid hue (coral). All other colors are warm earth neutrals.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Primitive palette</div>
+            <div className="ds-swatch-grid">
+              {PRIMITIVE_COLORS.map(c => (
+                <div className="ds-swatch" key={c.token}>
+                  <div className="ds-swatch-box" style={{ background: c.hex }} />
+                  <div className="ds-swatch-name">{c.name}</div>
+                  <div className="ds-swatch-hex">{c.hex}</div>
+                  <div className="ds-swatch-role">{c.role}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Cream opacity scale — text hierarchy on dark</div>
+            <div className="ds-opacity-row">
+              {[0.35,0.38,0.45,0.62,0.72,0.85,0.9,1.0].map(o => (
+                <div key={o} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: '100%', height: 36, borderRadius: 4, background: `rgba(250,247,242,${o})`, border: '1px solid rgba(255,255,255,0.05)' }} />
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 9, color: 'rgba(250,247,242,0.4)' }}>{Math.round(o*100)}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function TypeSection() {
+      return (
+        <div id="type" className="ds-section">
+          <div className="ds-eyebrow">03 · Typography</div>
+          <div className="ds-section-title">Two voices, one system</div>
+          <div className="ds-section-desc">Outfit carries UI clarity at all weights. Cormorant Garamond carries editorial intimacy.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Type scale</div>
+            {TYPE_SCALE.map(t => (
+              <div className="ds-type-row" key={t.role}>
+                <div className="ds-type-meta">{t.role} · {t.font} · {t.size}px / {t.weight}{t.italic ? ' italic' : ''}</div>
+                <div style={{
+                  fontFamily: t.font === 'Outfit' ? UI : ED,
+                  fontSize: Math.min(t.size, 32),
+                  fontWeight: t.weight,
+                  fontStyle: t.italic ? 'italic' : 'normal',
+                  color: '#faf7f2',
+                  lineHeight: 1.2,
+                }}>
+                  The AI Governance Reckoning
+                </div>
+                <div style={{ fontFamily: UI, fontSize: 10, color: 'rgba(250,247,242,0.25)', marginTop: 4 }}>{t.usage}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function SpacingSection() {
+      const max = Math.max(...SPACING.map(s => s.px));
+      return (
+        <div id="spacing" className="ds-section">
+          <div className="ds-eyebrow">04 · Spacing</div>
+          <div className="ds-section-title">4px base grid</div>
+          <div className="ds-section-desc">Every padding, gap, and margin in the app is a multiple of 4.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Spacing tokens</div>
+            {SPACING.map(s => (
+              <div className="ds-space-row" key={s.token}>
+                <span className="ds-space-token">{s.token}</span>
+                <div className="ds-space-bar" style={{ width: Math.round((s.px / max) * 360) }} />
+                <span className="ds-space-val">{s.px}px</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function RadiusSection() {
+      return (
+        <div id="radius" className="ds-section">
+          <div className="ds-eyebrow">05 · Border Radius</div>
+          <div className="ds-section-title">Radius scale</div>
+          <div className="ds-section-desc">Sharp edges signal action. Soft rounding signals containment. Pill is reserved for chips and tags only.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Visual scale</div>
+            <div className="ds-radius-grid">
+              {RADII.map(r => (
+                <div className="ds-radius-item" key={r.token}>
+                  <div className="ds-radius-box" style={{ borderRadius: r.r }} />
+                  <div className="ds-radius-lbl">{r.token.replace('radius-','')}</div>
+                  <div className="ds-radius-val-lbl">{r.px}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ElevationSection() {
+      return (
+        <div id="elevation" className="ds-section">
+          <div className="ds-eyebrow">06 · Elevation & Shadows</div>
+          <div className="ds-section-title">Shadow scale</div>
+          <div className="ds-section-desc">Dark surfaces use shadow sparingly — depth comes from bg-surface vs bg-card contrast.</div>
+          <div className="ds-demo">
+            <div className="ds-demo-label">Shadow tokens</div>
+            {SHADOWS.map(s => (
+              <div className="ds-shadow-item" key={s.token}>
+                <div className="ds-shadow-box" style={{ boxShadow: s.value }} />
+                <div className="ds-shadow-info">
+                  <div className="ds-shadow-token">{s.token}</div>
+                  <div className="ds-shadow-value">{s.value}</div>
+                  <div style={{ fontFamily: UI, fontSize: 11, color: 'rgba(250,247,242,0.3)', marginTop: 3 }}>{s.usage}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function MotionSection() {
+      return (
+        <div id="motion" className="ds-section">
+          <div className="ds-eyebrow">07 · Motion & Animation</div>
+          <div className="ds-section-title">Timing tokens & Keyframes</div>
+          <div className="ds-section-desc">All interactive transitions share a small set of duration + easing tokens.</div>
+
+          <div className="ds-demo">
+            <div className="ds-demo-label">Live animation demos</div>
+            <div style={{ display: 'flex', gap: 32, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+              {/* Waveform demo */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 2.5, height: 40, alignItems: 'center' }}>
+                  {Array.from({ length: 24 }, (_, i) => {
+                    const heights = [12,18,28,36,40,32,24,16,22,38,36,28,20,30,38,32,22,16,26,38,30,20,14,10];
+                    const dur = 0.6 + (i % 7) * 0.09;
+                    const delay = (i % 7) * 0.07;
+                    return (
+                      <div key={i} style={{
+                        width: 2.5, height: heights[i] || 16, borderRadius: 2,
+                        background: i < 10 ? '#c4654a' : 'rgba(250,247,242,0.18)',
+                        transformOrigin: 'center',
+                        animation: `waveBar ${dur}s ease-in-out ${delay}s infinite`,
+                      }} />
+                    );
+                  })}
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>waveBar</span>
+              </div>
+
+              {/* Play pulse */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: '50%', background: '#faf7f2',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  animation: 'playPulse 2s ease-in-out infinite',
+                }}>
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+                    <path d="M1.5 1.5L10.5 7L1.5 12.5V1.5Z" fill="#141210" />
+                  </svg>
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>playPulse</span>
+              </div>
+
+              {/* Live pulse */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#c4654a', animation: 'livePulse 1.2s ease-in-out infinite' }} />
+                  <span style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: '#c4654a', letterSpacing: '0.06em' }}>LIVE</span>
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>livePulse</span>
+              </div>
+
+              {/* Pill drift */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{
+                  padding: '6px 14px', borderRadius: 999,
+                  background: 'rgba(196,101,74,0.15)', border: '1px solid rgba(196,101,74,0.3)',
+                  fontFamily: UI, fontSize: 11, fontWeight: 500, color: '#c4654a',
+                  animation: 'pillDrift 2.4s ease-in-out 0.3s infinite',
+                }}>
+                  Morning Brief
+                </div>
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 10, color: 'rgba(250,247,242,0.3)' }}>pillDrift</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ComponentsSection() {
+      const [feedbackSel, setFeedbackSel] = useState(null);
+      const [toggle, setToggle] = useState(true);
+      const FEEDBACK_OPTS = ['Interesting topic', 'Well-narrated', 'Perfect length', 'Short source'];
+
+      return (
+        <div id="components" className="ds-section">
+          <div className="ds-eyebrow">08 · Components</div>
+          <div className="ds-section-title">Component library</div>
+          <div className="ds-section-desc">15 recurring patterns assembled from the token layers above.</div>
+
+          {/* Buttons */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Buttons</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+              <button style={{ padding: '12px 24px', background: '#c4654a', color: '#faf7f2', border: 'none', borderRadius: 0, fontFamily: UI, fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                Join the waitlist
+              </button>
+              <button style={{ padding: '12px 24px', background: 'rgba(250,247,242,0.08)', color: '#faf7f2', border: '1px solid rgba(250,247,242,0.15)', borderRadius: 0, fontFamily: UI, fontSize: 13, cursor: 'pointer' }}>
+                Learn more
+              </button>
+              <button style={{ height: 44, padding: '0 20px', background: 'linear-gradient(135deg,#1FD078 0%,#16a852 100%)', color: '#fff', border: 'none', borderRadius: 10, fontFamily: UI, fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                Done
+              </button>
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Badges & Chips</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+              <span style={{ padding: '5px 12px', background: 'rgba(196,101,74,0.15)', color: '#c4654a', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500 }}>Morning Brief</span>
+              <span style={{ padding: '5px 12px', background: 'rgba(250,247,242,0.08)', color: 'rgba(250,247,242,0.65)', borderRadius: 999, border: '1px solid rgba(250,247,242,0.1)', fontFamily: UI, fontSize: 10, fontWeight: 500 }}>Geopolitics</span>
+              <span style={{ padding: '4px 10px', background: '#c4654a', color: '#faf7f2', borderRadius: 999, fontFamily: UI, fontSize: 11, fontWeight: 500 }}>Live</span>
+            </div>
+          </div>
+
+          {/* Toggle */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Toggle Switch — 34×20px, coral active</div>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+              <div
+                onClick={() => setToggle(!toggle)}
+                style={{
+                  width: 34, height: 20, borderRadius: 999, cursor: 'pointer',
+                  background: toggle ? '#c4654a' : 'rgba(250,247,242,0.15)',
+                  position: 'relative', transition: 'background 200ms',
+                }}
+              >
+                <div style={{
+                  position: 'absolute', top: 3, borderRadius: '50%',
+                  width: 14, height: 14, background: '#faf7f2',
+                  left: toggle ? 17 : 3,
+                  transition: 'left 200ms',
+                }} />
+              </div>
+              <span style={{ fontFamily: UI, fontSize: 11, color: 'rgba(250,247,242,0.5)' }}>{toggle ? 'On' : 'Off'}</span>
+            </div>
+          </div>
+
+          {/* Feedback Grid */}
+          <div className="ds-demo">
+            <div className="ds-demo-label">Feedback Grid — 2-col, tap to select</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, maxWidth: 320 }}>
+              {FEEDBACK_OPTS.map(opt => {
+                const sel = feedbackSel === opt;
+                return (
+                  <button key={opt} onClick={() => setFeedbackSel(sel ? null : opt)} style={{
+                    padding: '12px', borderRadius: 10, cursor: 'pointer',
+                    background: sel ? 'rgba(196,101,74,0.12)' : 'rgba(250,247,242,0.06)',
+                    border: `1.5px solid ${sel ? '#c4654a' : 'rgba(250,247,242,0.12)'}`,
+                    transition: 'all 200ms ease',
+                  }}>
+                    <div style={{ fontFamily: UI, fontSize: 11, fontWeight: sel ? 500 : 300, color: sel ? '#c4654a' : 'rgba(250,247,242,0.75)' }}>{opt}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function GradientsSection() {
+      return (
+        <div id="gradients" className="ds-section">
+          <div className="ds-eyebrow">09 · Gradient Library</div>
+          <div className="ds-section-title">7 named gradients</div>
+          <div className="ds-section-desc">All gradients serve a functional purpose — fading, scrims, atmosphere, modal surfaces.</div>
+          <div className="ds-demo">
+            {GRADIENTS.map(g => (
+              <div key={g.name} className="ds-grad-item">
+                <div className="ds-grad-box" style={{ background: g.value }} />
+                <div className="ds-grad-info">
+                  <div className="ds-grad-name">{g.name}</div>
+                  <div className="ds-grad-value">{g.value}</div>
+                  <div style={{ fontFamily: UI, fontSize: 10, color: 'rgba(250,247,242,0.28)', marginTop: 3 }}>{g.usage}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function DesignSystemPage() {
+      const [activeSection, setActiveSection] = useState('brand');
+
+      useEffect(() => {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        DS_SECTIONS.forEach(s => {
+          const el = document.getElementById(s.id);
+          if (el) observer.observe(el);
+        });
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <div>
+          <div className="ds-subnav">
+            {DS_SECTIONS.map(s => (
+              <a key={s.id} href={`#${s.id}`} className={`ds-subnav-link${activeSection === s.id ? ' active' : ''}`}>
+                {s.label}
+              </a>
+            ))}
+          </div>
+          <div className="ds-page">
+            <BrandSection />
+            <div className="ds-rule" />
+            <ColorsSection />
+            <div className="ds-rule" />
+            <TypeSection />
+            <div className="ds-rule" />
+            <SpacingSection />
+            <div className="ds-rule" />
+            <RadiusSection />
+            <div className="ds-rule" />
+            <ElevationSection />
+            <div className="ds-rule" />
+            <MotionSection />
+            <div className="ds-rule" />
+            <ComponentsSection />
+            <div className="ds-rule" />
+            <GradientsSection />
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return <DesignSystemPage />;
+    }
+
+    ReactDOM.createRoot(document.getElementById('board-root')).render(<App />);
+  </script>
+</body>
+</html>
