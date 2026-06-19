@@ -2117,7 +2117,7 @@ function PricingSection({ th }) {
   const ghostBord = isLight ? 'rgba(45,41,38,0.12)'  : 'rgba(250,247,242,0.12)';
 
   return (
-    <section style={{ background: th.bg, padding: '96px 24px' }}>
+    <section className="lp-price-section" style={{ background: th.bg, padding: '96px 24px' }}>
       <div style={{ maxWidth: 840, margin: '0 auto' }}>
         <h2 style={{ fontFamily: ED, fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 400, color: headFg, textAlign: 'center', marginBottom: 16 }}>
           Early access is free.
@@ -2126,7 +2126,7 @@ function PricingSection({ th }) {
           We're finishing up our Beta — launching summer&nbsp;'26.
         </p>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 320px', padding: '36px 32px', borderRadius: 24, background: card1Bg, border: `1.5px solid ${T.coral}`, display: 'flex', flexDirection: 'column' }}>
+          <div className="lp-price-card" style={{ flex: '1 1 320px', padding: '36px 32px', borderRadius: 24, background: card1Bg, border: `1.5px solid ${T.coral}`, display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: T.coral, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Closed Beta</div>
             <div style={{ fontFamily: ED, fontSize: 52, fontStyle: 'italic', fontWeight: 400, color: textFg, lineHeight: 1, marginBottom: 6 }}>Free</div>
             <div style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: mutedFg, marginBottom: 28, lineHeight: 1.55 }}>In exchange for your feedback.</div>
@@ -2137,7 +2137,7 @@ function PricingSection({ th }) {
             </div>
             <WaitlistForm light={isLight} />
           </div>
-          <div style={{ flex: '1 1 320px', padding: '36px 32px', borderRadius: 24, background: card2Bg, border: `1px solid ${ghostBord}`, display: 'flex', flexDirection: 'column', opacity: 0.7 }}>
+          <div className="lp-price-card" style={{ flex: '1 1 320px', padding: '36px 32px', borderRadius: 24, background: card2Bg, border: `1px solid ${ghostBord}`, display: 'flex', flexDirection: 'column', opacity: 0.7 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
               <div style={{ fontFamily: UI, fontSize: 11, fontWeight: 500, color: mutedFg, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Premium</div>
               <div style={{ padding: '2px 9px', borderRadius: 999, background: ghostBg }}>
