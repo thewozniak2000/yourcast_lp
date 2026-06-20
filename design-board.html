@@ -359,6 +359,81 @@
     .ds-anim-demo { display: flex; gap: 24px; flex-wrap: wrap; }
     .ds-anim-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .ds-anim-label { font-size: 10px; color: rgba(250,247,242,0.3); text-align: center; font-family: ui-monospace,monospace; }
+
+    /* ── Prototype tab ── */
+    .proto-stage {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 56px 24px 80px;
+      gap: 48px;
+    }
+    .proto-main { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .proto-inner { position: relative; width: 100%; height: 100%; overflow: hidden; }
+    .proto-screen { position: absolute; inset: 0; }
+    .proto-screen.entering-push  { animation: protoSlideInRight 0.30s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.exiting-push   { animation: protoSlideOutLeft  0.30s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.entering-pop   { animation: protoSlideInLeft   0.30s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.exiting-pop    { animation: protoSlideOutRight 0.30s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.entering-sheet { animation: protoSlideInUp     0.32s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.exiting-sheet  { animation: protoSlideOutDown  0.24s cubic-bezier(0.32,0.72,0,1) both; }
+    .proto-screen.entering-fade  { animation: protoFadeIn  0.22s ease-out both; }
+    .proto-screen.exiting-fade   { animation: protoFadeOut 0.18s ease-in  both; }
+    @keyframes protoSlideInRight  { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    @keyframes protoSlideOutLeft  { from { transform: translateX(0); }    to { transform: translateX(-28%); } }
+    @keyframes protoSlideInLeft   { from { transform: translateX(-28%); } to { transform: translateX(0); } }
+    @keyframes protoSlideOutRight { from { transform: translateX(0); }    to { transform: translateX(100%); } }
+    @keyframes protoSlideInUp     { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes protoSlideOutDown  { from { transform: translateY(0); }    to { transform: translateY(100%); } }
+    @keyframes protoFadeIn        { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes protoFadeOut       { from { opacity: 1; } to { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .proto-screen { animation: none !important; } }
+    .proto-hotspot {
+      position: absolute; cursor: pointer; z-index: 20; border-radius: 6px;
+      transition: background 0.12s;
+    }
+    .proto-hotspot:hover { background: rgba(196,101,74,0.16); }
+    .proto-hotspot-reveal {
+      border: 1.5px solid rgba(196,101,74,0.55) !important;
+      background: rgba(196,101,74,0.1) !important;
+    }
+    .proto-hotspot-lbl {
+      position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
+      font-size: 7px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(196,101,74,0.9); white-space: nowrap; pointer-events: none;
+    }
+    .proto-controls {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(250,247,242,0.04); border: 1px solid rgba(250,247,242,0.07);
+      border-radius: 12px; padding: 8px 14px;
+    }
+    .proto-ctrl-btn {
+      font-size: 11px; font-weight: 400; color: rgba(250,247,242,0.5);
+      background: rgba(250,247,242,0.05); border: 1px solid rgba(250,247,242,0.09);
+      border-radius: 7px; padding: 5px 11px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .proto-ctrl-btn:hover { color: #faf7f2; background: rgba(250,247,242,0.1); }
+    .proto-ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .proto-ctrl-btn.on { color: #c4654a; border-color: rgba(196,101,74,0.3); background: rgba(196,101,74,0.08); }
+    .proto-ctrl-screen { font-size: 12px; font-weight: 500; color: rgba(250,247,242,0.75); min-width: 110px; text-align: center; }
+    .proto-ctrl-sep { width: 1px; height: 14px; background: rgba(250,247,242,0.09); flex-shrink: 0; }
+    .proto-sidebar { padding-top: 0; display: flex; flex-direction: column; gap: 6px; width: 196px; flex-shrink: 0; }
+    .proto-sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,247,242,0.2); padding: 0 10px; margin-bottom: 6px; }
+    .proto-flow-node {
+      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+      border-radius: 8px; background: rgba(250,247,242,0.03); border: 1px solid transparent;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .proto-flow-node:hover { background: rgba(250,247,242,0.06); }
+    .proto-flow-node.cur { background: rgba(196,101,74,0.09); border-color: rgba(196,101,74,0.22); }
+    .proto-flow-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(250,247,242,0.18); flex-shrink: 0; }
+    .proto-flow-node.cur .proto-flow-dot { background: #c4654a; }
+    .proto-flow-name { font-size: 12px; font-weight: 400; color: rgba(250,247,242,0.5); }
+    .proto-flow-node.cur .proto-flow-name { color: rgba(250,247,242,0.92); }
+    .proto-flow-code { font-size: 9.5px; color: rgba(250,247,242,0.22); font-family: ui-monospace,monospace; margin-top: 1px; }
   </style>
 
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -381,7 +456,7 @@
   <script type="text/babel" src="bundle.jsx"></script>
 
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    const { useState, useEffect, useRef, useCallback } = React;
     const { PhoneFrame, ScreenPlayerHero, ScreenTopicPicker, ScreenHomeFeed,
             ScreenFeedback, ScreenPodcastConfig, ScreenSegmentModal } = window;
 
@@ -1240,6 +1315,173 @@
       );
     }
 
+    /* ─── Prototype tab ─── */
+    const PROTO_FLOW = {
+      home: {
+        component: ScreenHomeFeed, name: 'Home Feed', code: 'ScreenHomeFeed',
+        hotspots: [
+          { top:'2%',  left:'82%', width:'15%', height:'6.5%', to:'config',  transition:'push', label:'Settings' },
+          { top:'15%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 1' },
+          { top:'38%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 2' },
+          { top:'61%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 3' },
+        ]
+      },
+      player: {
+        component: ScreenPlayerHero, name: 'Hero Player', code: 'ScreenPlayerHero',
+        hotspots: [
+          { top:'2.5%', left:'1%',  width:'13%', height:'6%',  to:'home',     transition:'pop',   label:'Back' },
+          { top:'55%',  left:'60%', width:'36%', height:'9%',  to:'feedback', transition:'sheet', label:'Feedback' },
+          { top:'70%',  left:'8%',  width:'84%', height:'8%',  to:'segment',  transition:'fade',  label:'Segment' },
+        ]
+      },
+      feedback: {
+        component: ScreenFeedback, name: 'Feedback', code: 'ScreenFeedback',
+        hotspots: [
+          { top:'36%', left:'84%', width:'12%', height:'5.5%', to:'player', transition:'pop', label:'Close' },
+          { top:'82%', left:'8%',  width:'84%', height:'7%',   to:'player', transition:'pop', label:'Done' },
+        ]
+      },
+      segment: {
+        component: ScreenSegmentModal, name: 'Segment Modal', code: 'ScreenSegmentModal',
+        hotspots: [
+          { top:'22%', left:'84%', width:'12%', height:'5.5%', to:'player', transition:'fade', label:'Close' },
+        ]
+      },
+      config: {
+        component: ScreenPodcastConfig, name: 'Podcast Config', code: 'ScreenPodcastConfig',
+        hotspots: [
+          { top:'2.5%', left:'1%',  width:'13%', height:'6%',  to:'home',   transition:'pop',  label:'Back' },
+          { top:'42%',  left:'3%',  width:'94%', height:'30%', to:'topics', transition:'push', label:'Topics' },
+          { top:'84%',  left:'8%',  width:'84%', height:'7%',  to:'player', transition:'push', label:'Save' },
+        ]
+      },
+      topics: {
+        component: ScreenTopicPicker, name: 'Topic Picker', code: 'ScreenTopicPicker',
+        hotspots: [
+          { top:'3%', left:'1%', width:'12%', height:'5.5%', to:'config', transition:'pop', label:'Back' },
+        ]
+      },
+    };
+
+    const PROTO_NODES = [
+      { id:'home',     name:'Home Feed',     code:'ScreenHomeFeed' },
+      { id:'player',   name:'Hero Player',   code:'ScreenPlayerHero' },
+      { id:'feedback', name:'Feedback',      code:'ScreenFeedback' },
+      { id:'segment',  name:'Segment Modal', code:'ScreenSegmentModal' },
+      { id:'config',   name:'Podcast Config',code:'ScreenPodcastConfig' },
+      { id:'topics',   name:'Topic Picker',  code:'ScreenTopicPicker' },
+    ];
+
+    function PrototypeRunner() {
+      const [current, setCurrent]         = useState('home');
+      const [history, setHistory]         = useState([]);
+      const [transitioning, setTrans]     = useState(false);
+      const [fromScreen, setFromScreen]   = useState(null);
+      const [animType, setAnimType]       = useState('push');
+      const [showHotspots, setShowHS]     = useState(false);
+      const timerRef = useRef(null);
+
+      const DURATION = 330;
+
+      const doNavigate = useCallback((to, type, newHistory) => {
+        if (transitioning) return;
+        setFromScreen(current);
+        setAnimType(type);
+        setHistory(newHistory);
+        setCurrent(to);
+        setTrans(true);
+        timerRef.current = setTimeout(() => {
+          setTrans(false);
+          setFromScreen(null);
+        }, DURATION);
+      }, [current, transitioning]);
+
+      const navigate = (to, type) => doNavigate(to, type, [...history, current]);
+
+      const goBack = () => {
+        if (history.length === 0 || transitioning) return;
+        const prev = history[history.length - 1];
+        doNavigate(prev, 'pop', history.slice(0, -1));
+      };
+
+      const reset = () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setTrans(false); setFromScreen(null);
+        setCurrent('home'); setHistory([]); setAnimType('push');
+      };
+
+      const jumpTo = (id) => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setTrans(false); setFromScreen(null);
+        setCurrent(id); setHistory([]); setAnimType('push');
+      };
+
+      useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+      const flow = PROTO_FLOW[current];
+      const FromComp = fromScreen ? PROTO_FLOW[fromScreen].component : null;
+      const CurComp  = flow.component;
+
+      return (
+        <div className="proto-stage">
+          <div className="proto-main">
+            {/* Controls */}
+            <div className="proto-controls">
+              <button className="proto-ctrl-btn" onClick={goBack} disabled={history.length === 0 || transitioning}>← Back</button>
+              <div className="proto-ctrl-sep" />
+              <div className="proto-ctrl-screen">{flow.name}</div>
+              <div className="proto-ctrl-sep" />
+              <button className={`proto-ctrl-btn${showHotspots ? ' on' : ''}`} onClick={() => setShowHS(s => !s)}>Hotspots</button>
+              <button className="proto-ctrl-btn" onClick={reset}>⟲ Restart</button>
+            </div>
+
+            {/* Phone */}
+            <PhoneFrame width={300}>
+              <div className="proto-inner">
+                {transitioning && FromComp && (
+                  <div className={`proto-screen exiting-${animType}`}>
+                    <FromComp />
+                  </div>
+                )}
+                <div className={transitioning ? `proto-screen entering-${animType}` : 'proto-screen'}>
+                  <CurComp />
+                  {flow.hotspots.map(h => (
+                    <div
+                      key={h.label}
+                      className={`proto-hotspot${showHotspots ? ' proto-hotspot-reveal' : ''}`}
+                      style={{ top: h.top, left: h.left, width: h.width, height: h.height }}
+                      onClick={() => navigate(h.to, h.transition)}
+                      title={`→ ${h.label}`}
+                    >
+                      {showHotspots && <span className="proto-hotspot-lbl">{h.label}</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </PhoneFrame>
+
+            <div style={{ fontSize:'11px', color:'rgba(250,247,242,0.2)', textAlign:'center', maxWidth:300 }}>
+              {showHotspots ? 'Coral outlines = tappable navigation zones' : 'Tap elements to navigate · enable Hotspots to see zones'}
+            </div>
+          </div>
+
+          {/* Sidebar flow map */}
+          <div className="proto-sidebar">
+            <div className="proto-sidebar-label">Screens</div>
+            {PROTO_NODES.map(node => (
+              <div key={node.id} className={`proto-flow-node${current === node.id ? ' cur' : ''}`} onClick={() => jumpTo(node.id)}>
+                <div className="proto-flow-dot" />
+                <div>
+                  <div className="proto-flow-name">{node.name}</div>
+                  <div className="proto-flow-code">{node.code}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     /* ─── Board root ─── */
     function BoardApp() {
       const [tab, setTab] = useState('screens');
@@ -1255,9 +1497,10 @@
             <div className="board-tabs">
               <button className={`board-tab${tab === 'screens' ? ' active' : ''}`} onClick={() => setTab('screens')}>Screens</button>
               <button className={`board-tab${tab === 'ds' ? ' active' : ''}`} onClick={() => setTab('ds')}>Design System</button>
+              <button className={`board-tab${tab === 'proto' ? ' active' : ''}`} onClick={() => setTab('proto')}>Prototype</button>
             </div>
             <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(250,247,242,0.28)', minWidth: 80, textAlign: 'right' }}>
-              {tab === 'screens' ? `${SCREENS.length} screens` : '9 sections'}
+              {tab === 'screens' ? `${SCREENS.length} screens` : tab === 'ds' ? '9 sections' : 'click-through'}
             </div>
           </div>
 
@@ -1277,8 +1520,10 @@
                 </React.Fragment>
               ))}
             </div>
-          ) : (
+          ) : tab === 'ds' ? (
             <DesignSystemPage />
+          ) : (
+            <PrototypeRunner />
           )}
         </div>
       );
