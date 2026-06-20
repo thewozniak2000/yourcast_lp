@@ -719,7 +719,7 @@ function ScreenPlayer() {
 }
 
 /* ── App Screen: Topic Picker ────────────────────────── */
-function ScreenTopicPicker() {
+function ScreenTopicPicker({ onNavigate }) {
   const m  = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.60)';
   const AREAS = ['War in Ukraine', 'US politics and elections', 'China and Indo-Pacific', 'Middle East'];
@@ -748,7 +748,7 @@ function ScreenTopicPicker() {
       </div>
       {/* Header */}
       <div style={{ display:'flex', alignItems:'center', gap:8, padding:'6px 14px 10px', flexShrink:0 }}>
-        <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.07)', border:'1px solid rgba(250,247,242,0.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div onClick={onNavigate ? () => onNavigate('config', 'pop') : undefined} style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.07)', border:'1px solid rgba(250,247,242,0.1)', display:'flex', alignItems:'center', justifyContent:'center', cursor: onNavigate ? 'pointer' : 'default' }}>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2.5L4 6l4 3.5" stroke="rgba(250,247,242,0.65)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
         <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(250,247,242,0.09)', display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -820,12 +820,12 @@ function StarIcon() {
   );
 }
 
-function FeedCard({ episode }) {
+function FeedCard({ episode, onClick }) {
   const { icon, title, tags, summary, thumb } = episode;
   const m  = 'rgba(250,247,242,0.38)';
   const ml = 'rgba(250,247,242,0.72)';
   return (
-    <div style={{ background: '#1a1510', borderRadius: 14, overflow: 'hidden', flexShrink: 0 }}>
+    <div onClick={onClick} style={{ background: '#1a1510', borderRadius: 14, overflow: 'hidden', flexShrink: 0, cursor: onClick ? 'pointer' : 'default' }}>
       {/* Thumbnail */}
       <div style={{ height: 80, background: thumb, position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, #1a1510 100%)' }} />
@@ -860,7 +860,7 @@ function FeedCard({ episode }) {
   );
 }
 
-function ScreenHomeFeed() {
+function ScreenHomeFeed({ onNavigate }) {
   const m = 'rgba(250,247,242,0.35)';
   const EPISODES = [
     {
@@ -903,13 +903,13 @@ function ScreenHomeFeed() {
           <span style={{ fontFamily: UI, fontSize: 15, fontWeight: 300, color: T.cream, letterSpacing: '-0.01em' }}>your</span>
           <span style={{ fontFamily: ED, fontSize: 16, fontStyle: 'italic', fontWeight: 400, color: T.cream }}>cast</span>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="3" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5"/></svg>
+        <svg onClick={onNavigate ? () => onNavigate('config', 'push') : undefined} width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ cursor: onNavigate ? 'pointer' : 'default' }}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="3" stroke="rgba(250,247,242,0.6)" strokeWidth="1.5"/></svg>
       </div>
       {/* Date */}
       <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 300, color: 'rgba(250,247,242,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', paddingInline: 16, marginBottom: 10, flexShrink: 0 }}>Tuesday, 27 May</div>
       {/* Feed */}
       <div style={{ flex: 1, overflowY: 'hidden', paddingInline: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {EPISODES.map((ep, i) => <FeedCard key={i} episode={ep} />)}
+        {EPISODES.map((ep, i) => <FeedCard key={i} episode={ep} onClick={onNavigate ? () => onNavigate('player', 'push') : undefined} />)}
       </div>
     </div>
   );
@@ -942,7 +942,7 @@ function ScreenEpisodeReady() {
 }
 
 /* ── App Screen: Feedback ────────────────────────────── */
-function ScreenFeedback() {
+function ScreenFeedback({ onNavigate }) {
   const [selected, setSelected] = React.useState([0]);
   const m = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.62)';
@@ -967,7 +967,7 @@ function ScreenFeedback() {
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, background: 'linear-gradient(to bottom, #1a1610 0%, #0f0d0a 100%)', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: '20px 16px 28px', border: '1px solid rgba(250,247,242,0.08)', borderBottom: 'none' }}>
         {/* Close button */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
-          <button style={{ background: 'none', border: 'none', color: 'rgba(250,247,242,0.4)', fontSize: 20, cursor: 'pointer', padding: 0, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+          <button onClick={onNavigate ? () => onNavigate('player', 'pop') : undefined} style={{ background: 'none', border: 'none', color: 'rgba(250,247,242,0.4)', fontSize: 20, cursor: 'pointer', padding: 0, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
         </div>
 
         {/* Title */}
@@ -1022,7 +1022,7 @@ function ScreenFeedback() {
         </div>
 
         {/* Done button */}
-        <button style={{
+        <button onClick={onNavigate ? () => onNavigate('player', 'pop') : undefined} style={{
           width: '100%', height: 44, borderRadius: 12, background: 'linear-gradient(135deg, #1FD078 0%, #16a852 100%)',
           border: 'none', color: '#000', fontFamily: UI, fontSize: 14, fontWeight: 600, cursor: 'pointer',
           boxShadow: '0 4px 14px rgba(31,208,120,0.3)'
@@ -1034,7 +1034,7 @@ function ScreenFeedback() {
   );
 }
 
-function ScreenPodcastConfig() {
+function ScreenPodcastConfig({ onNavigate }) {
   const m = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.62)';
   const TOPICS = [
@@ -1058,7 +1058,7 @@ function ScreenPodcastConfig() {
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 16px 10px', flexShrink: 0, borderBottom: '1px solid rgba(250,247,242,0.06)' }}>
-        <span style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream }}>←</span>
+        <span onClick={onNavigate ? () => onNavigate('home', 'pop') : undefined} style={{ fontFamily: UI, fontSize: 13, fontWeight: 300, color: T.cream, cursor: onNavigate ? 'pointer' : 'default', padding: '4px 8px' }}>←</span>
         <span style={{ fontFamily: UI, fontSize: 16, fontWeight: 400, color: T.cream, flex: 1, textAlign: 'center' }}>Morning Brief</span>
         <span style={{ fontFamily: UI, fontSize: 13, color: T.coral }}>✎</span>
       </div>
@@ -1085,9 +1085,9 @@ function ScreenPodcastConfig() {
           <div style={{ fontFamily: UI, fontSize: 8.5, fontWeight: 600, color: m, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Interests</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {TOPICS.map((topic, i) => (
-              <div key={i} style={{
+              <div key={i} onClick={onNavigate ? () => onNavigate('topics', 'push') : undefined} style={{
                 background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(250,247,242,0.08)', borderRadius: 12, padding: '12px',
-                display: 'flex', alignItems: 'center', gap: 10, opacity: topic.active ? 1 : 0.5
+                display: 'flex', alignItems: 'center', gap: 10, opacity: topic.active ? 1 : 0.5, cursor: onNavigate ? 'pointer' : 'default'
               }}>
                 <span style={{ fontSize: 18 }}>{topic.icon}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -1118,7 +1118,7 @@ function ScreenPodcastConfig() {
 
       {/* Save button */}
       <div style={{ padding: '16px', borderTop: '1px solid rgba(250,247,242,0.06)', flexShrink: 0 }}>
-        <button style={{
+        <button onClick={onNavigate ? () => onNavigate('player', 'push') : undefined} style={{
           width: '100%', height: 44, borderRadius: 12, background: T.cream, color: '#0f0d0a', border: 'none',
           fontFamily: UI, fontSize: 14, fontWeight: 600, cursor: 'pointer'
         }}>
@@ -1129,7 +1129,7 @@ function ScreenPodcastConfig() {
   );
 }
 
-function ScreenSegmentModal() {
+function ScreenSegmentModal({ onNavigate }) {
   const [liked, setLiked] = React.useState(null);
   const m = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.62)';
@@ -1149,7 +1149,7 @@ function ScreenSegmentModal() {
       {/* Modal card */}
       <div style={{ width: 'calc(100% - 64px)', maxWidth: 320, background: 'linear-gradient(135deg, #1a1610 0%, #141110 100%)', borderRadius: 16, padding: '20px', border: '1px solid rgba(250,247,242,0.1)', position: 'absolute', zIndex: 20, boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
         {/* Close button */}
-        <button style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(250,247,242,0.1)', border: 'none', borderRadius: 20, width: 28, height: 28, color: T.cream, fontSize: 16, cursor: 'pointer' }}>✕</button>
+        <button onClick={onNavigate ? () => onNavigate('player', 'fade') : undefined} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(250,247,242,0.1)', border: 'none', borderRadius: 20, width: 28, height: 28, color: T.cream, fontSize: 16, cursor: 'pointer' }}>✕</button>
 
         {/* Progress bar */}
         <div style={{ display: 'flex', gap: 2, marginBottom: 14, justifyContent: 'center' }}>
@@ -1303,7 +1303,7 @@ function ScreenSources() {
   );
 }
 
-function ScreenPlayerHero() {
+function ScreenPlayerHero({ onNavigate }) {
   const m  = 'rgba(250,247,242,0.35)';
   const ml = 'rgba(250,247,242,0.60)';
   const [playing, setPlaying] = React.useState(false);
@@ -1372,7 +1372,7 @@ function ScreenPlayerHero() {
       </div>
       {/* Nav */}
       <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 16px 0', flexShrink:0 }}>
-        <div style={{ width:28, height:28, borderRadius:'50%', background:'rgba(250,247,242,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div onClick={onNavigate ? () => onNavigate('home', 'pop') : undefined} style={{ width:28, height:28, borderRadius:'50%', background:'rgba(250,247,242,0.06)', display:'flex', alignItems:'center', justifyContent:'center', cursor: onNavigate ? 'pointer' : 'default' }}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 3L4.5 7l4 4" stroke="rgba(250,247,242,0.6)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
         <div style={{ width:28, height:28, borderRadius:'50%', background:'rgba(250,247,242,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -1406,15 +1406,15 @@ function ScreenPlayerHero() {
         </div>
         {/* Reaction buttons — icon only */}
         <div style={{ display:'flex', gap:14, justifyContent:'center', marginBottom:'auto' }}>
-          <div role="button" aria-label="Like" style={{ width:40, height:40, borderRadius:'50%', background:'rgba(196,101,74,0.10)', border:'1px solid rgba(196,101,74,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+          <div role="button" aria-label="Like" onClick={onNavigate ? () => onNavigate('feedback', 'sheet') : undefined} style={{ width:40, height:40, borderRadius:'50%', background:'rgba(196,101,74,0.10)', border:'1px solid rgba(196,101,74,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
             <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><path d="M3.2 6.8L5.2 2.6l1.5.7L5.7 6.4h5a.7.7 0 01.7.7v.8l-.7 3.2a1.1 1.1 0 01-1 .9H4.2a.7.7 0 01-.7-.7l-.3-4.5z" stroke={T.coral} strokeWidth="1.1"/><rect x="1.6" y="6.5" width="2" height="5.8" rx="1" fill={T.coral}/></svg>
           </div>
-          <div role="button" aria-label="Dislike" style={{ width:40, height:40, borderRadius:'50%', background:'rgba(250,247,242,0.05)', border:'1px solid rgba(250,247,242,0.12)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+          <div role="button" aria-label="Dislike" onClick={onNavigate ? () => onNavigate('feedback', 'sheet') : undefined} style={{ width:40, height:40, borderRadius:'50%', background:'rgba(250,247,242,0.05)', border:'1px solid rgba(250,247,242,0.12)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
             <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><path d="M9.8 6.2L7.8 10.4l-1.5-.7 1-3.3h-5a.7.7 0 01-.7-.7v-.8l.7-3.2A1.1 1.1 0 013.3.8h5.5a.7.7 0 01.7.7l.3 4.7z" stroke="rgba(250,247,242,0.5)" strokeWidth="1.1"/><rect x="9.4" y=".7" width="2" height="5.8" rx="1" fill="rgba(250,247,242,0.5)"/></svg>
           </div>
         </div>
         {/* Progress bar */}
-        <div style={{ marginTop:22, marginBottom:18 }}>
+        <div onClick={onNavigate ? () => onNavigate('segment', 'fade') : undefined} style={{ marginTop:22, marginBottom:18, cursor: onNavigate ? 'pointer' : 'default' }}>
           <div style={{ position:'relative', height:3, borderRadius:2, background:'rgba(250,247,242,0.14)', marginBottom:8 }}>
             <div style={{ width:'27%', height:'100%', background:T.coral, borderRadius:2 }} />
             {/* chapter dots */}

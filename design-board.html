@@ -1316,69 +1316,23 @@
     }
 
     /* ─── Prototype tab ─── */
-    const PROTO_FLOW = {
-      home: {
-        component: ScreenHomeFeed, name: 'Home Feed', code: 'ScreenHomeFeed',
-        hotspots: [
-          { top:'2%',  left:'82%', width:'15%', height:'6.5%', to:'config',  transition:'push', label:'Settings' },
-          { top:'15%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 1' },
-          { top:'38%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 2' },
-          { top:'61%', left:'3%',  width:'94%', height:'21%',  to:'player',  transition:'push', label:'Episode 3' },
-        ]
-      },
-      player: {
-        component: ScreenPlayerHero, name: 'Hero Player', code: 'ScreenPlayerHero',
-        hotspots: [
-          { top:'2.5%', left:'1%',  width:'13%', height:'6%',  to:'home',     transition:'pop',   label:'Back' },
-          { top:'55%',  left:'60%', width:'36%', height:'9%',  to:'feedback', transition:'sheet', label:'Feedback' },
-          { top:'70%',  left:'8%',  width:'84%', height:'8%',  to:'segment',  transition:'fade',  label:'Segment' },
-        ]
-      },
-      feedback: {
-        component: ScreenFeedback, name: 'Feedback', code: 'ScreenFeedback',
-        hotspots: [
-          { top:'36%', left:'84%', width:'12%', height:'5.5%', to:'player', transition:'pop', label:'Close' },
-          { top:'82%', left:'8%',  width:'84%', height:'7%',   to:'player', transition:'pop', label:'Done' },
-        ]
-      },
-      segment: {
-        component: ScreenSegmentModal, name: 'Segment Modal', code: 'ScreenSegmentModal',
-        hotspots: [
-          { top:'22%', left:'84%', width:'12%', height:'5.5%', to:'player', transition:'fade', label:'Close' },
-        ]
-      },
-      config: {
-        component: ScreenPodcastConfig, name: 'Podcast Config', code: 'ScreenPodcastConfig',
-        hotspots: [
-          { top:'2.5%', left:'1%',  width:'13%', height:'6%',  to:'home',   transition:'pop',  label:'Back' },
-          { top:'42%',  left:'3%',  width:'94%', height:'30%', to:'topics', transition:'push', label:'Topics' },
-          { top:'84%',  left:'8%',  width:'84%', height:'7%',  to:'player', transition:'push', label:'Save' },
-        ]
-      },
-      topics: {
-        component: ScreenTopicPicker, name: 'Topic Picker', code: 'ScreenTopicPicker',
-        hotspots: [
-          { top:'3%', left:'1%', width:'12%', height:'5.5%', to:'config', transition:'pop', label:'Back' },
-        ]
-      },
+    const PROTO_SCREENS = {
+      home:     { component: ScreenHomeFeed,     name: 'Home Feed',     code: 'ScreenHomeFeed' },
+      player:   { component: ScreenPlayerHero,   name: 'Hero Player',   code: 'ScreenPlayerHero' },
+      feedback: { component: ScreenFeedback,     name: 'Feedback',      code: 'ScreenFeedback' },
+      segment:  { component: ScreenSegmentModal, name: 'Segment Modal', code: 'ScreenSegmentModal' },
+      config:   { component: ScreenPodcastConfig,name: 'Podcast Config',code: 'ScreenPodcastConfig' },
+      topics:   { component: ScreenTopicPicker,  name: 'Topic Picker',  code: 'ScreenTopicPicker' },
     };
 
-    const PROTO_NODES = [
-      { id:'home',     name:'Home Feed',     code:'ScreenHomeFeed' },
-      { id:'player',   name:'Hero Player',   code:'ScreenPlayerHero' },
-      { id:'feedback', name:'Feedback',      code:'ScreenFeedback' },
-      { id:'segment',  name:'Segment Modal', code:'ScreenSegmentModal' },
-      { id:'config',   name:'Podcast Config',code:'ScreenPodcastConfig' },
-      { id:'topics',   name:'Topic Picker',  code:'ScreenTopicPicker' },
-    ];
+    const PROTO_NODES = ['home','player','feedback','segment','config','topics'].map(id => ({ id, ...PROTO_SCREENS[id] }));
 
     function PrototypeRunner() {
-      const [current, setCurrent]         = useState('home');
-      const [history, setHistory]         = useState([]);
-      const [transitioning, setTrans]     = useState(false);
-      const [fromScreen, setFromScreen]   = useState(null);
-      const [animType, setAnimType]       = useState('push');
-      const [showHotspots, setShowHS]     = useState(false);
+      const [current, setCurrent]       = useState('home');
+      const [history, setHistory]       = useState([]);
+      const [transitioning, setTrans]   = useState(false);
+      const [fromScreen, setFromScreen] = useState(null);
+      const [animType, setAnimType]     = useState('push');
       const timerRef = useRef(null);
 
       const DURATION = 330;
@@ -1418,9 +1372,9 @@
 
       useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
-      const flow = PROTO_FLOW[current];
-      const FromComp = fromScreen ? PROTO_FLOW[fromScreen].component : null;
-      const CurComp  = flow.component;
+      const screen = PROTO_SCREENS[current];
+      const FromComp = fromScreen ? PROTO_SCREENS[fromScreen].component : null;
+      const CurComp  = screen.component;
 
       return (
         <div className="proto-stage">
@@ -1429,9 +1383,8 @@
             <div className="proto-controls">
               <button className="proto-ctrl-btn" onClick={goBack} disabled={history.length === 0 || transitioning}>← Back</button>
               <div className="proto-ctrl-sep" />
-              <div className="proto-ctrl-screen">{flow.name}</div>
+              <div className="proto-ctrl-screen">{screen.name}</div>
               <div className="proto-ctrl-sep" />
-              <button className={`proto-ctrl-btn${showHotspots ? ' on' : ''}`} onClick={() => setShowHS(s => !s)}>Hotspots</button>
               <button className="proto-ctrl-btn" onClick={reset}>⟲ Restart</button>
             </div>
 
@@ -1444,24 +1397,13 @@
                   </div>
                 )}
                 <div className={transitioning ? `proto-screen entering-${animType}` : 'proto-screen'}>
-                  <CurComp />
-                  {flow.hotspots.map(h => (
-                    <div
-                      key={h.label}
-                      className={`proto-hotspot${showHotspots ? ' proto-hotspot-reveal' : ''}`}
-                      style={{ top: h.top, left: h.left, width: h.width, height: h.height }}
-                      onClick={() => navigate(h.to, h.transition)}
-                      title={`→ ${h.label}`}
-                    >
-                      {showHotspots && <span className="proto-hotspot-lbl">{h.label}</span>}
-                    </div>
-                  ))}
+                  <CurComp onNavigate={navigate} />
                 </div>
               </div>
             </PhoneFrame>
 
             <div style={{ fontSize:'11px', color:'rgba(250,247,242,0.2)', textAlign:'center', maxWidth:300 }}>
-              {showHotspots ? 'Coral outlines = tappable navigation zones' : 'Tap elements to navigate · enable Hotspots to see zones'}
+              Tap cards, buttons and icons to navigate between screens
             </div>
           </div>
 
